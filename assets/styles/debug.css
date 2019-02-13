@@ -1,0 +1,433 @@
+/**
+ * XSLT for Kirby
+ *
+ * hana+nils · Büro für Gestaltung
+ * https://hananils.de · buero@hananils.de
+ */
+
+/**
+ * Basics
+ */
+
+*,
+::before,
+::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica,
+        Arial, sans-serif;
+    -webkit-overflow-scrolling: touch;
+    background-color: #181b21;
+    color: #efefef;
+}
+
+/**
+ * Layout
+ */
+
+.l-main {
+    display: grid;
+    grid-template-columns: 30rem auto;
+}
+
+.l-secondary {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    overflow: auto;
+    height: 100vh;
+}
+.l-primary {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    overflow: auto;
+    height: 100vh;
+    background-color: #282c34;
+    scroll-behavior: smooth;
+}
+
+/**
+ * Icons
+ */
+
+.has-icon {
+    display: flex;
+    align-items: center;
+}
+
+.m-icon {
+    margin-right: 1.4rem;
+    padding-top: 0.3rem;
+}
+
+.m-icon svg {
+    height: 1.6rem;
+    fill: #fff;
+}
+
+.m-icon-label {
+    display: inline-block;
+}
+
+/**
+ * Header
+ */
+
+.m-header {
+    border-bottom: 0.1rem solid hsla(180, 2%, 55%, 0.6);
+}
+
+.m-header-title {
+    font-size: 2.4rem;
+    font-weight: 500;
+    line-height: 1.15em;
+    padding: 4vh 2.4rem 1.2rem;
+}
+
+.m-header-title a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.m-header-nav {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0.8rem 2.4rem;
+    min-height: 3.8rem;
+}
+
+.m-header-nav-item {
+    font-size: 1.4rem;
+    color: #b1b1b1;
+    transform: color 0.25s ease-in;
+    text-decoration: none;
+}
+
+.m-header-nav-item:hover {
+    color: #fff;
+}
+
+.m-header-nav-item + .m-header-nav-item {
+    margin-left: 2.4rem;
+}
+
+/**
+ * Index
+ */
+
+.m-index-list {
+    list-style: none;
+    border-bottom: 0.1rem solid hsla(180, 2%, 55%, 0.3);
+}
+
+.m-index-item {
+    border-top: 0.1rem solid hsla(180, 2%, 55%, 0.3);
+}
+
+.m-index-list > .m-index-item:first-child {
+    border-top: 0;
+}
+
+.m-index-list-secondary .m-index-item {
+    border-top-color: hsla(180, 2%, 55%, 0.1);
+}
+
+.m-index-actions {
+    display: flex;
+}
+
+.m-index-link {
+    color: #8a8e94;
+    text-decoration: none;
+    padding: 1rem 2.4rem 0.8rem;
+    display: block;
+    font-size: 1.4rem;
+    min-height: 3.8rem;
+    width: 100%;
+}
+
+.m-index-list-secondary .m-index-link::before {
+    content: '→';
+    padding-right: 1rem;
+}
+
+.m-index-switch {
+    border: none;
+    background: none;
+    width: 3.8rem;
+    height: 3.8rem;
+}
+
+.m-index-switch svg {
+    fill: #8a8e94;
+}
+
+.m-index-switch:hover svg {
+    fill: #fff;
+}
+
+.m-index-actions.is-collapsed .m-index-link,
+.m-index-actions.is-collapsed + ul .m-index-link,
+.m-index-actions.is-collapsed .m-index-switch svg,
+.m-index-actions.is-collapsed + ul .m-index-switch svg {
+    color: #33363d;
+    fill: #33363d;
+}
+
+/**
+ * Errors
+ */
+
+.m-errors {
+    position: sticky;
+    bottom: 0;
+    font-size: 1.4rem;
+    background-color: #cc6666;
+    z-index: 20000;
+}
+
+.m-errors-entry + .m-errors-entry {
+    border-top: 0.1rem solid rgba(255, 255, 255, 0.3);
+}
+
+.m-errors a {
+    color: #fff;
+    padding: 0 2.4rem;
+    text-decoration: none;
+    display: block;
+    font-size: 1.4rem;
+    min-height: 3.8rem;
+    padding: 1rem 2.4rem 0.8rem;
+}
+
+.m-errors code {
+    font-size: 1.4rem;
+    display: inline-block;
+    border: none;
+}
+
+/**
+ * XML
+ */
+
+pre {
+    min-height: 100vh;
+}
+
+pre.is-invalid {
+    color: #8a8e94;
+}
+
+pre,
+code {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
+        monospace;
+    font-weight: 400;
+    font-size: 1.2rem;
+    text-align: left;
+    white-space: pre-wrap;
+    display: block;
+}
+
+code {
+    padding: 1.2rem 0;
+    z-index: 1000;
+    position: relative;
+    counter-reset: linenumber;
+    border-left: 0.1rem solid #282c34;
+}
+
+/* Nodes */
+
+a[id] {
+    height: 0;
+    transform: translateY(calc(-1.8rem * 5));
+    display: block;
+}
+
+a:target + .node .line,
+a:target + .node .line > * {
+    background-color: #191b20;
+}
+
+/* Lines */
+
+.node.is-collapsed > .line ~ * {
+    position: absolute;
+    top: -100%;
+    left: -100%;
+}
+
+.node.is-collapsed > .line::after {
+    content: '…</' attr(data-name) '>';
+    color: #8a8e94;
+}
+
+.line {
+    padding: 0 1.2rem 0 4.5rem;
+    position: sticky;
+    top: 0;
+    line-height: 1.6rem;
+    background-color: #282c34;
+    z-index: 11000;
+    background-image: repeating-linear-gradient(
+        to right,
+        hsl(222, 9%, 22%) 0,
+        hsl(222, 9%, 22%) 0.1rem,
+        transparent 0.1rem,
+        transparent 1.8rem
+    );
+    background-position: 4.5rem 0;
+    background-repeat: no-repeat;
+    background-size: 1.8rem 100%;
+}
+
+.node[data-depth='1'] .line {
+    top: 1.6rem;
+    z-index: 10000;
+    padding-left: calc(4.5rem + 1.8rem);
+}
+
+.node[data-depth='2'] .line {
+    top: calc(1.6rem * 2);
+    z-index: 9000;
+    padding-left: calc(4.5rem + 1.8rem * 2);
+    background-size: calc(1.8rem * 2) 100%;
+}
+
+.node[data-depth='3'] .line {
+    top: calc(1.6rem * 3);
+    z-index: 8000;
+    padding-left: calc(4.5rem + 1.8rem * 3);
+    background-size: calc(1.8rem * 3) 100%;
+}
+
+.node[data-depth='4'] .line {
+    top: calc(1.6rem * 4);
+    z-index: 7000;
+    padding-left: calc(4.5rem + 1.8rem * 4);
+    background-size: calc(1.8rem * 4) 100%;
+}
+
+.node[data-depth='5'] .line {
+    top: calc(1.6rem * 5);
+    z-index: 6000;
+    padding-left: calc(4.5rem + 1.8rem * 5);
+    background-size: calc(1.8rem * 5) 100%;
+}
+
+.node[data-depth='6'] .line {
+    top: calc(1.6rem * 6);
+    z-index: 5000;
+    padding-left: calc(4.5rem + 1.8rem * 6);
+    background-size: calc(1.8rem * 6) 100%;
+}
+
+.node[data-depth='7'] .line {
+    top: calc(1.6rem * 7);
+    z-index: 5000;
+    padding-left: calc(4.5rem + 1.8rem * 7);
+    background-size: calc(1.8rem * 7) 100%;
+}
+
+.node[data-depth='8'] .line {
+    top: calc(1.6rem * 8);
+    z-index: 5000;
+    padding-left: calc(4.5rem + 1.8rem * 8);
+    background-size: calc(1.8rem * 8) 100%;
+}
+
+.node[data-depth='9'] .line {
+    top: calc(1.6rem * 9);
+    z-index: 5000;
+    padding-left: calc(4.5rem + 1.8rem * 9);
+    background-size: calc(1.8rem * 9) 100%;
+}
+
+.node[data-depth='10'] .line {
+    top: calc(1.6rem * 10);
+    z-index: 5000;
+    padding-left: calc(4.5rem + 1.8rem * 10);
+    background-size: calc(1.8rem * 10) 100%;
+}
+
+.line::before {
+    content: counter(linenumber);
+    counter-increment: linenumber;
+    color: #8a8e94;
+    display: block;
+    padding-right: 0.8rem;
+    text-align: right;
+    position: absolute;
+    left: 0;
+    width: 4.2rem;
+}
+
+.line > * {
+    padding: 0.1rem 0;
+    display: inline-block;
+    text-decoration: none;
+    background-color: #282c34;
+}
+
+.line.has-errored {
+    color: #fff;
+    background-color: #b294bb;
+}
+
+.line.is-ref {
+    background-color: #cc6666;
+    color: #fff;
+}
+
+.line.is-ref::before,
+.line.has-errored::before {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Syntax */
+
+.tag {
+    color: #8abeb7;
+}
+
+.prolog {
+    color: #b294bb;
+}
+
+.punctuation {
+    color: #dee0e3;
+}
+
+.attr-name {
+    color: #8a8e94;
+}
+
+.attr-value {
+    color: #a4d6ff;
+}
+
+/* Line numbers */
+
+.linenumber {
+    position: absolute;
+    left: 0;
+    width: 3.2rem;
+}
+
+.linenumber::before {
+    content: counter(linenumber);
+    counter-increment: linenumber;
+    color: #8a8e94;
+    display: block;
+    padding-right: 0.8rem;
+    text-align: right;
+}
