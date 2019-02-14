@@ -221,13 +221,127 @@ page:
     extends: default
 ```
 
+### Helper Objects
+
+The plugin bundles two helper objects to be used inside your controllers:
+
+```php
+<?php
+
+return function ($kirby) {
+    return [
+        'datetime' => $kirby->collection('datetime'),
+        'assets' => $kirby->collection('assets')
+    ];
+};
+```
+
+#### Date and Time
+
+This object returns current date and time information as well as localized month and weekday names:
+
+```xml
+<datetime>
+    <today day="14" iso="2019-02-14T20:24:38+00:00" month="2" offset="+0000" time="20:24" timestamp="1550175878" weekday="4" year="2019">2019-02-14</today>
+    <language id="en" locale="en_ca">
+        <months>
+            <month abbr="Jan" id="1">January</month>
+            <month abbr="Feb" id="2">February</month>
+            <month abbr="Mar" id="3">March</month>
+            <month abbr="Apr" id="4">April</month>
+            <month abbr="May" id="5">May</month>
+            <month abbr="Jun" id="6">June</month>
+            <month abbr="Jul" id="7">July</month>
+            <month abbr="Aug" id="8">August</month>
+            <month abbr="Sep" id="9">September</month>
+            <month abbr="Oct" id="10">October</month>
+            <month abbr="Nov" id="11">November</month>
+            <month abbr="Dec" id="12">December</month>
+        </months>
+        <weekdays>
+            <weekday abbr="Sun" id="1">Sunday</weekday>
+            <weekday abbr="Mon" id="2">Monday</weekday>
+            <weekday abbr="Tue" id="3">Tuesday</weekday>
+            <weekday abbr="Wed" id="4">Wednesday</weekday>
+            <weekday abbr="Thu" id="5">Thursday</weekday>
+            <weekday abbr="Fri" id="6">Friday</weekday>
+            <weekday abbr="Sat" id="7">Saturday</weekday>
+        </weekdays>
+    </language>
+</datetime>
+```
+
+The used locale can be set in the config:
+
+```php
+<?php
+
+return [
+    'locale' => 'en_CA.utf-8'
+];
+```
+
+#### Assets
+
+This object return information about all files and folders inside the `/asset` folder:
+
+```xml
+<assets>
+    <images>
+        <file extension="png" mime="image/png" modified="1544107969">apple-touch-icon.png</file>
+    </images>
+    <scripts>
+        <file extension="js" mime="text/plain" modified="1549887572">app.js</file>
+    </scripts>
+    <styles>
+        <file extension="css" mime="text/plain" modified="1544531895">app.globals.css</file>
+        <file extension="css" mime="text/plain" modified="1549887572">app.layouts.css</file>
+    </styles>
+</assets>
+```
+
+This information can be used to automatically generate links for scripts and styles. It's also possible to use the `modified` attribute to create timestamped links.
+
 # Templates
+
+Templates are defined in the default `templates` and `snippets` folders. If you are using the Kirby Starterkit or Plainkit, please remove the default PHP templates and add a new `default.xsl` file. This works well as a starting point:
+
+```xsl
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+<xsl:output method="html"
+    omit-xml-declaration="yes"
+    media-type="text/html"
+    encoding="utf-8"
+    doctype-system="about:legacy-compat" />
+
+<xsl:template match="data">
+  <html>
+    <head>
+      <title>
+        <xsl:value-of select="page/title" />
+      </title>
+    </head>
+    <body>
+      <h1>
+        <xsl:value-of select="page/title" />
+      </h1>
+    </body>
+  </html>
+</xsl:template>
+
+</xsl:stylesheet>
+```
+
+Template naming conventions follow the default Kirby scheme, see https://getkirby.com/docs/guide/templates/basics#naming-your-templates.
 
 # Shortcomings
 
-The plugin is work in progress. We extend it for our own needs:
+The plugin is work in progress. We are extending it based on our own needs:
 
 -   There is no support for multilingual setups yet.
--   Field support is limited to the core fields and a few additional fields.
+-   Field support is limited to the core fields and a few additional fields we use ourselves.
 
 Contributions are always welcome.
