@@ -8,6 +8,26 @@ This plugin enables XSLT templating in your Kirby install by generating XML for 
 
 # Installation
 
+## Via Download
+
+Download the latest release from https://github.com/hananils/kirby-xslt/releases, unzip all files and copy them to folder `/site/plugins/xslt`.
+
+## Via Git Submodule
+
+Add this repository as submodule to `/site/plugins/xslt`:
+
+```git
+git submodule add https://github.com/hananils/kirby-xslt.git site/plugins/xslt
+```
+
+## Via Composer
+
+Require this plugin using composer:
+
+```
+composer require hananils/kirby-xslt
+```
+
 # Data
 
 By default, the plugin provides XML nodes for the `$kirby`, `$site`, `$pages` and `$page` objects. As soon as you are logged in, you can view the data of any page by appending `?data` to the URL. The base output without additional setting using the Plainkit looks similar to this:
