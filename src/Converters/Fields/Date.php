@@ -4,8 +4,10 @@ namespace Hananils\Converters\Fields;
 
 use Hananils\Xml;
 
-class Date extends Xml {
-    public function parse($field, $blueprint) {
+class Date extends Xml
+{
+    public function parse($field, $blueprint)
+    {
         if ($field->isEmpty()) {
             return;
         }

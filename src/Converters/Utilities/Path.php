@@ -4,8 +4,10 @@ namespace Hananils\Converters\Utilities;
 
 use Hananils\Xml;
 
-class Path extends Xml {
-    public function parse($page, $url = null) {
+class Path extends Xml
+{
+    public function parse($page, $url = null)
+    {
         if ($url === null) {
             $url = $page->uri();
         }

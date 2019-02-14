@@ -9,27 +9,32 @@ use Hananils\Converters\Pages;
 use Hananils\Definitions\Definitions;
 use Kirby\Toolkit\Str;
 
-class Xml {
+class Xml
+{
     protected $document;
     protected $root;
 
     public $included = true;
 
-    public function __construct($root = 'data', $version = '1.0', $encoding = 'utf-8') {
+    public function __construct($root = 'data', $version = '1.0', $encoding = 'utf-8')
+    {
         $this->document = new DOMDocument($version, $encoding);
         $this->root = $this->document->createElement($root);
         $this->document->appendChild($this->root);
     }
 
-    public function document() {
+    public function document()
+    {
         return $this->document;
     }
 
-    public function root() {
+    public function root()
+    {
         return $this->root;
     }
 
-    public function addData($data) {
+    public function addData($data)
+    {
         unset($data['errorCode']);
         unset($data['errorMessage']);
         unset($data['errorType']);
@@ -51,34 +56,30 @@ class Xml {
             $type = preg_replace('/.*([A-Z][a-z]+)$/', '$1', get_class($object));
 
             switch ($type) {
-            case 'App':
-                $node = new Kirby($name);
-                $node->import($object);
-                $content = $node->root();
-                break;
-            case 'Pages':
-                $node = new Pages($name);
-                if (!empty($included)) {
+                case 'App':
+                    $node = new Kirby($name);
+                    $node->import($object);
+                    $content = $node->root();
+                    break;
+                case 'Pages':
+                    $node = new Pages($name);
                     $node->setIncluded($included);
-                }
-                $node->import($object);
-                $content = $node->root();
-                break;
-            case 'Site':
-            case 'Page':
-                $node = new Page($name);
-                if (!empty($included)) {
+                    $node->import($object);
+                    $content = $node->root();
+                    break;
+                case 'Site':
+                case 'Page':
+                    $node = new Page($name);
                     $node->setIncluded($included);
-                }
-                $node->import($object);
-                $content = $node->root();
-                break;
-            case 'Document':
-                $content = $object->documentElement;
-                break;
-            case 'Element':
-                $content = $object;
-                break;
+                    $node->import($object);
+                    $content = $node->root();
+                    break;
+                case 'Document':
+                    $content = $object->documentElement;
+                    break;
+                case 'Element':
+                    $content = $object;
+                    break;
             }
 
             if ($content) {
@@ -87,8 +88,9 @@ class Xml {
         }
     }
 
-    public function addElement($name, $content = null, $attributes = null, $context = null) {
-        if (is_a($content, 'DOMElement')) {
+    public function addElement($name, $content = null, $attributes = null, $context = null)
+    {
+        if (is_a($content, 'DOMElement') || is_a($content, 'DOMNode')) {
             $element = $this->document->importNode($content, true);
         } else {
             $name = Str::slug($name);
@@ -104,7 +106,8 @@ class Xml {
         return $context->appendChild($element);
     }
 
-    public function addAttributes($attributes = [], $element = null, $force = false) {
+    public function addAttributes($attributes = [], $element = null, $force = false)
+    {
         if (!is_array($attributes)) {
             return;
         }
@@ -118,7 +121,8 @@ class Xml {
         }
     }
 
-    public function addAttribute($name, $value, $element = null, $force = false) {
+    public function addAttribute($name, $value, $element = null, $force = false)
+    {
         if (!$force && empty(trim($value))) {
             return;
         }
@@ -134,7 +138,8 @@ class Xml {
         return $element->appendChild($attribute);
     }
 
-    public function setIncluded($included) {
+    public function setIncluded($included)
+    {
         if (is_array($this->included) && is_array($included)) {
             $this->included = array_replace_recursive($this->included, $included);
         } else {
@@ -142,7 +147,8 @@ class Xml {
         }
     }
 
-    public function addNode($name, $context) {
+    public function addNode($name, $context)
+    {
         $handler = 'add' . Str::ucfirst($name);
 
         if ($this->included === true || (isset($this->included[$name]) && ($this->included[$name] === true || is_array($this->included[$name])))) {
@@ -150,11 +156,13 @@ class Xml {
         }
     }
 
-    public function sanitize($string) {
+    public function sanitize($string)
+    {
         return htmlspecialchars($string, ENT_COMPAT, 'UTF-8', false);
     }
 
-    public function generate() {
+    public function generate()
+    {
         return $this->document->saveXml();
     }
 }

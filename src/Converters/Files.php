@@ -5,10 +5,12 @@ namespace Hananils\Converters;
 use Hananils\Converters\File;
 use Hananils\Xml;
 
-class Files extends Xml {
+class Files extends Xml
+{
     private $wrapper;
 
-    public function import($files) {
+    public function import($files)
+    {
         if ($files->isEmpty()) {
             return;
         }
@@ -30,7 +32,8 @@ class Files extends Xml {
         }
     }
 
-    private function addFile($child, $included = true) {
+    private function addFile($child, $included = true)
+    {
         $file = new File('file');
         $file->setIncluded($included);
         $file->import($child);

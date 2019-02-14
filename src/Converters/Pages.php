@@ -5,8 +5,10 @@ namespace Hananils\Converters;
 use Hananils\Converters\Page;
 use Hananils\Xml;
 
-class Pages extends Xml {
-    public function import($pages) {
+class Pages extends Xml
+{
+    public function import($pages)
+    {
         if ($pages->isEmpty()) {
             return;
         }
@@ -31,7 +33,7 @@ class Pages extends Xml {
         foreach ($pages->data() as $child) {
             $page = new Page('page');
 
-            if (is_array($this->included) && array_key_exists('children', $this->included)) {
+            if (is_array($this->included) && array_key_exists('children', $this->included) && count($this->included) === 1) {
                 $page->setIncluded($this->included['children']);
             } else {
                 $page->setIncluded($this->included);

@@ -5,8 +5,10 @@ namespace Hananils\Converters\Fields;
 use DOMDocument;
 use Hananils\Xml;
 
-class Textarea extends Xml {
-    public function parse($field, $blueprint) {
+class Textarea extends Xml
+{
+    public function parse($field, $blueprint)
+    {
         if ($field->isEmpty()) {
             return;
         }
@@ -18,13 +20,15 @@ class Textarea extends Xml {
         }
     }
 
-    public function addUnformatted($field) {
+    public function addUnformatted($field)
+    {
         $this->addAttribute('format', 'unformatted');
         $cdata = $this->document->createCDATASection($field->toString());
         $this->root->appendChild($cdata);
     }
 
-    public function addFormatted($field, $format) {
+    public function addFormatted($field, $format)
+    {
         if ($format === 'markdown') {
             $html = $field->markdown();
         } else {
@@ -35,9 +39,9 @@ class Textarea extends Xml {
         $handling = libxml_use_internal_errors(true);
 
         $tag = $this->root->tagName;
-        $xml = new DOMDocument();
+        $xml = new DOMDocument('1.0', 'utf-8');
 
-        if ($xml->loadXML('<' . $tag . ' format="' . $format . '">' . $html . '</' . $tag . '>')) {
+        if ($xml->loadHTML('<?xml encoding="UTF-8"><' . $tag . ' format="' . $format . '">' . $html . '</' . $tag . '>', LIBXML_HTML_NOIMPLIED)) {
             $this->root = $xml->documentElement;
         } else {
             $error = $this->addElement('error', null, [

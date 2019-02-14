@@ -8,12 +8,15 @@ use Kirby\Cms\App;
 use Kirby\Cms\Template;
 use XSLTProcessor;
 
-class Xslt extends Template {
-    public function extension(): string {
+class Xslt extends Template
+{
+    public function extension(): string
+    {
         return 'xsl';
     }
 
-    public function render(array $data = []): string {
+    public function render(array $data = []): string
+    {
         if ($this->exists() === false) {
             throw new Exception($this->missingViewMessage());
         }
@@ -30,7 +33,8 @@ class Xslt extends Template {
         }
     }
 
-    public function transform($xml, $xsl) {
+    public function transform($xml, $xsl)
+    {
         libxml_disable_entity_loader(false);
         libxml_use_internal_errors(true);
 

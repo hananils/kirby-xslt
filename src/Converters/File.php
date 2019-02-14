@@ -41,9 +41,9 @@ class File extends Xml
         $thumbs = $this->addElement('thumbs');
 
         foreach ($this->included['thumbs'] as $attributes) {
-            if (array_key_exists('crop', $attributes) && strpos($attributes['crop'], 'field.') === 0) {
+            if (array_key_exists('crop', $attributes) && strpos($attributes['crop'], 'fields.') === 0) {
                 $field = explode('.', $attributes['crop'])[1];
-                $crop = $file->content()->get($field)->value();
+                $crop = $file->content()->get($field)->toString();
 
                 if ($crop) {
                     $attributes['crop'] = $crop;

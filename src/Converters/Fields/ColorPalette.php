@@ -4,8 +4,10 @@ namespace Hananils\Converters\Fields;
 
 use Hananils\Xml;
 
-class ColorPalette extends Xml {
-    public function parse($field, $blueprint) {
+class ColorPalette extends Xml
+{
+    public function parse($field, $blueprint)
+    {
         if ($field->isEmpty()) {
             return;
         }

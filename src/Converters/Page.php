@@ -6,7 +6,8 @@ use Hananils\Converters\Content;
 use Hananils\Converters\Utilities\Path;
 use Hananils\Xml;
 
-class Page extends Xml {
+class Page extends Xml
+{
     public $included = [
         'title' => true,
         'path' => false,
@@ -14,7 +15,8 @@ class Page extends Xml {
         'files' => false
     ];
 
-    public function import($page) {
+    public function import($page)
+    {
         $this->addAttributes([
             'id' => $page->id(),
             'num' => $page->num(),
@@ -33,19 +35,22 @@ class Page extends Xml {
         $this->addNode('files', $page);
     }
 
-    public function addTitle($page) {
+    public function addTitle($page)
+    {
         $title = htmlspecialchars($page->title()->toString());
         $this->addElement('title', $title);
     }
 
-    public function addPath($page) {
+    public function addPath($page)
+    {
         $path = new Path('path');
         $path->parse($page);
 
         $this->addElement('path', $path->root());
     }
 
-    public function addContent($page) {
+    public function addContent($page)
+    {
         $content = new Content('content');
         $content->setIncluded($this->included['content']);
         $content->parse($page->content(), $page->blueprint()->fields());
@@ -53,7 +58,8 @@ class Page extends Xml {
         $this->addElement('content', $content->root());
     }
 
-    public function addChildren($page) {
+    public function addChildren($page)
+    {
         if ($page->hasChildren()) {
             $children = new Pages('children');
             $children->setIncluded($this->included['children']);
@@ -63,7 +69,8 @@ class Page extends Xml {
         }
     }
 
-    public function addFiles($page) {
+    public function addFiles($page)
+    {
         if ($page->hasFiles()) {
             $files = new Files('files');
             $files->setIncluded($this->included['files']);

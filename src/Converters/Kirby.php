@@ -7,8 +7,10 @@ use Hananils\Converters\Utilities\Path;
 use Hananils\Xml;
 use Kirby\Toolkit\Str;
 
-class Kirby extends Xml {
-    public function import($kirby) {
+class Kirby extends Xml
+{
+    public function import($kirby)
+    {
         $this->addAttributes([
             'content-extension' => $kirby->contentExtension(),
             'language' => $kirby->language(),
@@ -21,7 +23,8 @@ class Kirby extends Xml {
         $this->addNode('user', $kirby);
     }
 
-    public function addUrls($kirby) {
+    public function addUrls($kirby)
+    {
         $element = $this->addElement('urls');
 
         foreach ($kirby->urls()->toArray() as $name => $url) {
@@ -35,7 +38,8 @@ class Kirby extends Xml {
         }
     }
 
-    public function addRequest($kirby) {
+    public function addRequest($kirby)
+    {
         $element = $this->addElement('request');
 
         $this->addPath($kirby, $element);
@@ -43,7 +47,8 @@ class Kirby extends Xml {
         $this->addQuery($kirby, $element);
     }
 
-    public function addPath($kirby, $parent) {
+    public function addPath($kirby, $parent)
+    {
         $url = $kirby->request()->url()->toString();
         $url = preg_replace('/\/(?!localhost)[-_0-9a-zA-Z]*\:.*/', '', $url);
         $url = preg_replace('/\/?\?.*/', '', $url);
@@ -54,7 +59,8 @@ class Kirby extends Xml {
         $this->addElement('path', $path->root(), null, $parent);
     }
 
-    public function addParams($kirby, $parent) {
+    public function addParams($kirby, $parent)
+    {
         $element = $this->addElement('params', null, null, $parent);
 
         foreach (params() as $name => $value) {
@@ -62,7 +68,8 @@ class Kirby extends Xml {
         }
     }
 
-    public function addQuery($kirby, $parent) {
+    public function addQuery($kirby, $parent)
+    {
         $element = $this->addElement('query', null, null, $parent);
 
         foreach (get() as $key => $value) {
@@ -82,7 +89,8 @@ class Kirby extends Xml {
         }
     }
 
-    public function addUser($kirby) {
+    public function addUser($kirby)
+    {
         if ($kirby->user()) {
             $user = new User('user');
             $user->setIncluded(true);

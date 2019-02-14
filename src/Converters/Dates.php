@@ -6,8 +6,10 @@ use DateTime;
 use Hananils\Xml;
 use IntlDateFormatter;
 
-class Dates extends Xml {
-    public function parse($datetime = 'now') {
+class Dates extends Xml
+{
+    public function parse($datetime = 'now')
+    {
         $date = new DateTime($datetime);
 
         // Today
