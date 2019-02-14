@@ -3,9 +3,13 @@
 namespace Hananils;
 
 use DomDocument;
+use Hananils\Converters\File;
+use Hananils\Converters\Files;
 use Hananils\Converters\Kirby;
 use Hananils\Converters\Page;
 use Hananils\Converters\Pages;
+use Hananils\Converters\User;
+use Hananils\Converters\Users;
 use Hananils\Definitions\Definitions;
 use Kirby\Toolkit\Str;
 
@@ -70,6 +74,30 @@ class Xml
                 case 'Site':
                 case 'Page':
                     $node = new Page($name);
+                    $node->setIncluded($included);
+                    $node->import($object);
+                    $content = $node->root();
+                    break;
+                case 'Files':
+                    $node = new Files($name);
+                    $node->setIncluded($included);
+                    $node->import($object);
+                    $content = $node->root();
+                    break;
+                case 'File':
+                    $node = new File($name);
+                    $node->setIncluded($included);
+                    $node->import($object);
+                    $content = $node->root();
+                    break;
+                case 'Users':
+                    $node = new Users($name);
+                    $node->setIncluded($included);
+                    $node->import($object);
+                    $content = $node->root();
+                    break;
+                case 'User':
+                    $node = new User($name);
                     $node->setIncluded($included);
                     $node->import($object);
                     $content = $node->root();
