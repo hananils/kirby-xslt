@@ -5,6 +5,7 @@ This plugin enables XSLT templating in your Kirby install by generating XML for 
 -   [installation](#installation)
 -   [settings up XML output](#data)
 -   [creating templates](#templates)
+-   [shortcomings](#shortcomings)
 
 # Installation
 
