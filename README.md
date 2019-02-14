@@ -150,6 +150,8 @@ page:
 -   The `files` object can be switched on and off by setting `true` or `false`. It also takes additional settings, see below.
 -   The `files` object can be switched on and off by setting `true` or `false`. It also takes additional settings from the `pages` object, see below.
 
+#### Additional field settings
+
 There is one field with additional settings: the textarea field accepts format settings `unformatted`, `markdown` or `kirbytext`. The default is `kirbytext`. If you'd like to change the default, the `content` object needs to be changed from:
 
 ```yml
@@ -164,6 +166,10 @@ content:
     description: unformatted
     tags: true
 ```
+
+#### Telephone field
+
+When using a Composer setup, you can install the optional libphonenumber library. This will add additional phone number formats to the XML output (E164, national, international and RFC3966).
 
 ### Pages
 
