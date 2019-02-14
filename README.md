@@ -1,6 +1,12 @@
 # XSLT for Kirby 3
 
-This plugin enables XSLT templating in your Kirby install by generating XML for all front-end pages. Based on the page template (blueprint), you can setup custom nodes and specify included element.
+This plugin enables XSLT templating in your Kirby install by generating XML for all front-end pages. Based on the page template (blueprint), you can setup custom nodes and specify included element:
+
+-   [installation](#installation)
+-   [settings up XML output](#data)
+-   [creating templates](#templates)
+
+# Installation
 
 # Data
 
@@ -216,3 +222,12 @@ page:
 ```
 
 # Templates
+
+# Shortcomings
+
+The plugin is work in progress. We extend it for our own needs:
+
+-   There is no support for multilingual setups yet.
+-   Field support is limited to the core fields and a few additional fields.
+
+Contributions are always welcome.
