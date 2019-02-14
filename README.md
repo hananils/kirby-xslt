@@ -337,6 +337,10 @@ Templates are defined in the default `templates` and `snippets` folders. If you 
 
 Template naming conventions follow the default Kirby scheme, see https://getkirby.com/docs/guide/templates/basics#naming-your-templates.
 
+## Doctype
+
+If you use `doctype-system="about:legacy-compat"` as in the example above, the plugin will automatically shorten the default doctype output `<!DOCTYPE html SYSTEM "about:legacy-compat">` to `<!DOCTYPE html>`.
+
 # Shortcomings
 
 The plugin is work in progress. We are extending it based on our own needs:
