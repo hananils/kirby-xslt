@@ -2,10 +2,10 @@
 
 This plugin enables XSLT templating in your Kirby install by generating XML for all front-end pages. Based on the page template (blueprint), you can setup custom nodes and specify included element:
 
-- [installation](#installation)
-- [settings up XML output](#data)
-- [creating templates](#templates)
-- [shortcomings](#shortcomings)
+-   [installation](#installation)
+-   [settings up XML output](#data)
+-   [creating templates](#templates)
+-   [shortcomings](#shortcomings)
 
 # Installation
 
@@ -23,10 +23,10 @@ git submodule add https://github.com/hananils/kirby-xslt.git site/plugins/xslt
 
 ## Via Composer
 
-<del>Require this plugin using composer:</del> <ins>This is still work in progress …</ins>
+Require this plugin using composer:
 
 ```
-//composer require hananils/kirby-xslt
+composer require hananils/xslt
 ```
 
 # Data
@@ -101,16 +101,16 @@ return function ($kirby) {
 
 Known types are:
 
-- `Kirby\Cms\App`, see [Kirby docs](https://getkirby.com/docs/reference/objects/kirby)
-- `Kirby\Cms\Site`, see [Kirby docs](https://getkirby.com/docs/reference/objects/site)
-- `Kirby\Cms\Pages`, see [Kirby docs](https://getkirby.com/docs/reference/objects/pages)
-- `Kirby\Cms\Page`, see [Kirby docs](https://getkirby.com/docs/reference/objects/page)
-- `Kirby\Cms\Files`, see [Kirby docs](https://getkirby.com/docs/reference/objects/files)
-- `Kirby\Cms\File`, see [Kirby docs](https://getkirby.com/docs/reference/objects/file)
-- `Kirby\Cms\Users`, see [Kirby docs](https://getkirby.com/docs/reference/objects/users)
-- `Kirby\Cms\User`, see [Kirby docs](https://getkirby.com/docs/reference/objects/user)
-- `DomDocument`, see [PHP docs](https://secure.php.net/manual/en/class.domdocument.php)
-- `DomElement`, see [PHP docs](https://secure.php.net/manual/en/class.domelement.php)
+-   `Kirby\Cms\App`, see [Kirby docs](https://getkirby.com/docs/reference/objects/kirby)
+-   `Kirby\Cms\Site`, see [Kirby docs](https://getkirby.com/docs/reference/objects/site)
+-   `Kirby\Cms\Pages`, see [Kirby docs](https://getkirby.com/docs/reference/objects/pages)
+-   `Kirby\Cms\Page`, see [Kirby docs](https://getkirby.com/docs/reference/objects/page)
+-   `Kirby\Cms\Files`, see [Kirby docs](https://getkirby.com/docs/reference/objects/files)
+-   `Kirby\Cms\File`, see [Kirby docs](https://getkirby.com/docs/reference/objects/file)
+-   `Kirby\Cms\Users`, see [Kirby docs](https://getkirby.com/docs/reference/objects/users)
+-   `Kirby\Cms\User`, see [Kirby docs](https://getkirby.com/docs/reference/objects/user)
+-   `DomDocument`, see [PHP docs](https://secure.php.net/manual/en/class.domdocument.php)
+-   `DomElement`, see [PHP docs](https://secure.php.net/manual/en/class.domelement.php)
 
 ## Included Elements
 
@@ -137,18 +137,18 @@ The `page` objects know the following subsettings:
 
 ```yml
 page:
-  title: true
-  path: true
-  content: true
-  files: true
-  children: false
+    title: true
+    path: true
+    content: true
+    files: true
+    children: false
 ```
 
-- The `title` object can be switched on and off by setting `true` or `false`.
-- The `path` object is helpful to apply different templates base on the URL, it can be switched on and off by setting `true` or `false`.
-- The `content` subsetting takes and array of fields you'd like to include, e. g. `content: title, description, tags`.
-- The `files` object can be switched on and off by setting `true` or `false`. It also takes additional settings, see below.
-- The `files` object can be switched on and off by setting `true` or `false`. It also takes additional settings from the `pages` object, see below.
+-   The `title` object can be switched on and off by setting `true` or `false`.
+-   The `path` object is helpful to apply different templates base on the URL, it can be switched on and off by setting `true` or `false`.
+-   The `content` subsetting takes and array of fields you'd like to include, e. g. `content: title, description, tags`.
+-   The `files` object can be switched on and off by setting `true` or `false`. It also takes additional settings, see below.
+-   The `files` object can be switched on and off by setting `true` or `false`. It also takes additional settings from the `pages` object, see below.
 
 #### Additional field settings
 
@@ -162,9 +162,9 @@ to:
 
 ```yml
 content:
-  title: true
-  description: unformatted
-  tags: true
+    title: true
+    description: unformatted
+    tags: true
 ```
 
 #### Telephone field
@@ -183,17 +183,17 @@ The `files` object returns a collection of files grouped by file template:
 filename: true
 meta: description, credits, focus
 thumbs:
-  - width: 600
-    height: 400
-    crop: left
-  - width: 1200
-    crop: fields.focus
-  - width: 1800
+    - width: 600
+      height: 400
+      crop: left
+    - width: 1200
+      crop: fields.focus
+    - width: 1800
 ```
 
-- The `filename` can be switched on and off by setting `true` or `false`.
-- The `meta` object equals the `content` object of a page, see above.
-- The `thumbs` object lets you setup image thumbnails. It takes a list of thumbs with optional settings for `width`, `height` and `crop` position. If your crop position is stored in a field, you can reference it using the syntax `fields.fieldname`.
+-   The `filename` can be switched on and off by setting `true` or `false`.
+-   The `meta` object equals the `content` object of a page, see above.
+-   The `thumbs` object lets you setup image thumbnails. It takes a list of thumbs with optional settings for `width`, `height` and `crop` position. If your crop position is stored in a field, you can reference it using the syntax `fields.fieldname`.
 
 ### Extending Included Elements
 
@@ -213,23 +213,23 @@ extends: default
 filename: true
 meta: description, credits, focus
 thumbs:
-  - width: 600
-    height: 400
-    crop: left
-  - width: 1200
-    crop: fields.focus
-  - width: 1800
+    - width: 600
+      height: 400
+      crop: left
+    - width: 1200
+      crop: fields.focus
+    - width: 1800
 ```
 
 `/site/definitions/project.yml`
 
 ```yml
 page:
-  title: true
-  content: title, description, url, date, tags
-  files:
-    image:
-      extends: files/image
+    title: true
+    content: title, description, url, date, tags
+    files:
+        image:
+            extends: files/image
 ```
 
 #### Extending page definitions
@@ -245,7 +245,7 @@ path: true
 
 ```yml
 page:
-  extends: default
+    extends: default
 ```
 
 ### Helper Objects
@@ -372,7 +372,7 @@ If you use `doctype-system="about:legacy-compat"` as in the example above, the p
 
 The plugin is work in progress. We are extending it based on our own needs:
 
-- There is no support for multilingual setups yet.
-- Field support is limited to the core fields and a few additional fields we use ourselves.
+-   There is no support for multilingual setups yet.
+-   Field support is limited to the core fields and a few additional fields we use ourselves.
 
 Contributions are always welcome.
