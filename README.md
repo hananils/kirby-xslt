@@ -2,10 +2,12 @@
 
 This plugin enables XSLT templating in your Kirby install by generating XML for all front-end pages. You can setup custom nodes and specify included elements for each page.
 
--   [installation](#installation)
--   [settings up XML output](#data)
--   [creating templates](#templates)
--   [shortcomings](#shortcomings)
+### Overview
+
+-   [Installation](#installation)
+-   [Settings up XML output](#data)
+-   [Creating templates](#templates)
+-   [Shortcomings](#shortcomings)
 
 # Installation
 
