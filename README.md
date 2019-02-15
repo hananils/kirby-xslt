@@ -1,17 +1,21 @@
 # XSLT for Kirby 3
 
+We work as designers, and over the years we have been falling in love with XSLT for templating. XSLT allows you to transform XML to any other structure by applying templates and thus you can use it to generate HTML from structured data. The syntax looks like HTML and works like CSS conceptually.
+
 This plugin enables XSLT templating in your Kirby install by generating XML for all front-end pages. You can setup custom nodes and specify included elements for each page.
 
--   [installation](#installation)
--   [settings up XML output](#data)
--   [creating templates](#templates)
--   [shortcomings](#shortcomings)
+### Overview
+
+-   [Installation](#installation)
+-   [Settings up XML output](#data)
+-   [Creating templates](#templates)
+-   [Shortcomings](#shortcomings)
 
 # Installation
 
 ## Via Download
 
-Download the latest release from https://github.com/hananils/kirby-xslt/releases, unzip all files and copy them to folder `/site/plugins/xslt`.
+Download the latest release from https://github.com/hananils/kirby-xslt/releases, unzip all files and copy them to the plugin folder at `/site/plugins/xslt`.
 
 ## Via Git Submodule
 
