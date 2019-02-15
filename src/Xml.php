@@ -67,38 +67,50 @@ class Xml
                     break;
                 case 'Pages':
                     $node = new Pages($name);
-                    $node->setIncluded($included);
+                    if (!empty($included)) {
+                        $node->setIncluded($included);
+                    }
                     $node->import($object);
                     $content = $node->root();
                     break;
                 case 'Site':
                 case 'Page':
                     $node = new Page($name);
-                    $node->setIncluded($included);
+                    if (!empty($included)) {
+                        $node->setIncluded($included);
+                    }
                     $node->import($object);
                     $content = $node->root();
                     break;
                 case 'Files':
                     $node = new Files($name);
-                    $node->setIncluded($included);
+                    if (!empty($included)) {
+                        $node->setIncluded($included);
+                    }
                     $node->import($object);
                     $content = $node->root();
                     break;
                 case 'File':
                     $node = new File($name);
-                    $node->setIncluded($included);
+                    if (!empty($included)) {
+                        $node->setIncluded($included);
+                    }
                     $node->import($object);
                     $content = $node->root();
                     break;
                 case 'Users':
                     $node = new Users($name);
-                    $node->setIncluded($included);
+                    if (!empty($included)) {
+                        $node->setIncluded($included);
+                    }
                     $node->import($object);
                     $content = $node->root();
                     break;
                 case 'User':
                     $node = new User($name);
-                    $node->setIncluded($included);
+                    if (!empty($included)) {
+                        $node->setIncluded($included);
+                    }
                     $node->import($object);
                     $content = $node->root();
                     break;
