@@ -13,6 +13,8 @@ This plugin enables XSLT templating in your Kirby install by generating XML for 
 
 # Installation
 
+This plugin requires PHP's [LibXML module](https://secure.php.net/manual/en/book.libxml.php) with the [XSLT extension](https://secure.php.net/manual/en/book.xsl.php) enabled (`--with-xsl`) in order to work.
+
 ## Via Download
 
 Download the latest release from https://github.com/hananils/kirby-xslt/releases, unzip all files and copy them to the plugin folder at `/site/plugins/xslt`.
