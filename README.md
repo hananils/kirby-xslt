@@ -1,6 +1,6 @@
 # XSLT for Kirby 3
 
-We work as designers, and over the years we have been falling in love with XSLT for templating. XSLT allows you to transform XML to any other structure by applying templates and thus you can use it to generate HTML from structured data. The syntax looks like HTML and works like CSS conceptually.
+We work as designers, and over the years we have fallen in love with XSLT for templating. XSLT allows you to transform XML to any other structure by applying templates and thus you can use it to generate HTML from structured data. The syntax looks like HTML and works like CSS conceptually.
 
 This plugin enables XSLT templating in your Kirby install by generating XML for all front-end pages. You can setup custom nodes and specify included elements for each page.
 
@@ -314,6 +314,8 @@ return [
 ];
 ```
 
+If you are working on a multilingual site, all languages you've set up will be available.
+
 #### Assets
 
 This object return information about all files and folders inside the `/asset` folder:
@@ -333,13 +335,43 @@ This object return information about all files and folders inside the `/asset` f
 </assets>
 ```
 
-This information can be used to automatically generate links for scripts and styles. It's also possible to use the `modified` attribute to create timestamped links.
+This information can be used to automatically generate links for scripts and styles:
+
+```xslt
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+<xsl:template match="data">
+    <html>
+        <head>
+            <xsl:apply-templates select="assets/styles/file[@extension = 'css']" />
+        </head>
+        <body>
+            <h1>Hello!></h1>
+        </body>
+    </html>
+</xsl:template>
+
+<xsl:template match="assets/styles/file[@extension = 'css']">
+    <link rel="stylesheet" type="text/css" href="{$assets}/{@modified}/{name(..)}/{.}" />
+</xsl:template>
+
+</xsl:stylesheet>
+```
+
+It's also possible to use the `modified` attribute to create timestamped links:
+
+```ApacheConf
+# in your .htaccess
+RewriteRule ^assets/([0-9]+)/(.*)$ ./assets/$2 [L,NC]
+```
 
 # Templates
 
 Templates are defined in the default `templates` and `snippets` folders. If you are using the Kirby Starterkit or Plainkit, please remove the default PHP templates and add a new `default.xsl` file. This works well as a starting point:
 
-```xsl
+```xslt
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
