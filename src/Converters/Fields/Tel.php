@@ -16,7 +16,7 @@ class Tel extends Xml
             $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
 
             try {
-                $number = '+1234' . $field->toString();
+                $number = $field->toString();
                 $proto = $phoneUtil->parse($number);
 
                 $this->addAttribute('E164', $phoneUtil->format($proto, \libphonenumber\PhoneNumberFormat::E164));
