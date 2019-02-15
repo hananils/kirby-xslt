@@ -31,6 +31,6 @@ class Path extends Xml
             $this->addElement('param', $param, $attributes);
         }
 
-        $this->addAttribute('url', $url);
+        $this->addAttribute('url', kirby()->urls()->index() . $url);
     }
 }
