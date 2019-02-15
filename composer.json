@@ -1,20 +1,27 @@
 {
-    "name": "hananils/xslt",
-    "description": "XSLT for Kirby",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "hana+nils · Büro für Gestaltung",
-            "email": "buero@hananils.de"
-        }
-    ],
-    "autoload": {
-        "files": ["config.php"],
-        "psr-4": {
-            "Hananils\\": "src/"
-        }
-    },
-    "suggest": {
-        "giggsey/libphonenumber-for-php": "^8.10"
+  "name": "hananils/xslt",
+  "description": "XSLT for Kirby",
+  "type": "kirby-plugin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "hana+nils · Büro für Gestaltung",
+      "email": "buero@hananils.de"
     }
+  ],
+  "autoload": {
+    "files": ["config.php"],
+    "psr-4": {
+      "Hananils\\": "src/"
+    }
+  },
+  "require": {
+    "getkirby/composer-installer": "^1.1"
+  },
+  "suggest": {
+    "giggsey/libphonenumber-for-php": "^8.10"
+  },
+  "config": {
+    "optimize-autoloader": true
+  }
 }
