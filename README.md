@@ -57,6 +57,10 @@ By default, the plugin provides XML nodes for the `$kirby`, `$site`, `$pages` an
             <params/>
             <query/>
         </request>
+        <session>
+            <csrf>912ec803b2ce49e4a541068d495ab570912ec803b2ce49e4a541068d495ab570</csrf>
+            <user-id>dac9630a</user-id>
+        </session>
         <user id="dac9630a" language="de" role="admin">
             <username>Nils Hörrmann</username>
             <email alias="buero" domain="hananils.de" hash="9f8e362eca81e9723d9e699a45caf841">buero@hananils.de</email>
@@ -136,6 +140,14 @@ The different type have different subsettings:
 ### Kirby
 
 The `kirby` object can only be switched on and off by either setting it to `true` or `false`.
+If you are working on a multilingual install, language settings are available, too:
+
+```xml
+<languages>
+    <language code="de" direction="ltr" locale="de_DE.uft-8" url="http://localhost:8888/de" default="true" current="true">Deutsch</language>
+    <language code="en" direction="ltr" locale="en_US.uft-8" url="http://localhost:8888/en">Englisch</language>
+</languages>
+```
 
 ### Site and Page
 
@@ -145,6 +157,7 @@ The `page` objects know the following subsettings:
 page:
     title: true
     path: true
+    languages: true
     content: true
     files: true
     children: false
@@ -152,6 +165,7 @@ page:
 
 -   The `title` object can be switched on and off by setting `true` or `false`.
 -   The `path` object is helpful to apply different templates base on the URL, it can be switched on and off by setting `true` or `false`.
+-   The `languages` object is available in multilingual installs and offers link for all languages, it can be switched on and off by setting `true` or `false`.
 -   The `content` subsetting takes and array of fields you'd like to include, e. g. `content: title, description, tags`.
 -   The `files` object can be switched on and off by setting `true` or `false`. It also takes additional settings, see below.
 -   The `files` object can be switched on and off by setting `true` or `false`. It also takes additional settings from the `pages` object, see below.
@@ -410,7 +424,6 @@ If you use `doctype-system="about:legacy-compat"` as in the example above, the p
 
 The plugin is work in progress. We are extending it based on our own needs:
 
--   There is no support for multilingual setups yet.
 -   Field support is limited to the core fields and a few additional fields we use ourselves.
 
 Contributions are always welcome.
