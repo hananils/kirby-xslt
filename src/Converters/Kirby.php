@@ -20,6 +20,7 @@ class Kirby extends Xml
 
         $this->addNode('urls', $kirby);
         $this->addNode('request', $kirby);
+        $this->addNode('session', $kirby);
         $this->addNode('user', $kirby);
     }
 
@@ -86,6 +87,15 @@ class Kirby extends Xml
             }
 
             $this->addElement($name, $value, null, $element);
+        }
+    }
+
+    public function addSession($kirby)
+    {
+        $session = $this->addElement('session');
+
+        foreach ($kirby->session()->get() as $key => $value) {
+            $this->addElement($key, $value, null, $session);
         }
     }
 
