@@ -20,6 +20,7 @@ class Kirby extends Xml
 
         $this->addNode('urls', $kirby);
         $this->addNode('request', $kirby);
+        $this->addNode('languages', $kirby);
         $this->addNode('session', $kirby);
         $this->addNode('user', $kirby);
     }
@@ -87,6 +88,32 @@ class Kirby extends Xml
             }
 
             $this->addElement($name, $value, null, $element);
+        }
+    }
+
+    public function addLanguages($kirby)
+    {
+        if ($kirby->languages()->isEmpty()) {
+            return;
+        }
+
+        $languages = $this->addElement('languages');
+
+        foreach ($kirby->languages()->data() as $code => $language) {
+            $item = $this->addElement('language', $language->name(), [
+                'code' => $code,
+                'direction' => $language->direction(),
+                'locale' => $language->locale(),
+                'url' => $language->url()
+            ], $languages);
+
+            if ($language->isDefault()) {
+                $this->addAttribute('default', 'true', $item);
+            }
+
+            if ($code === $kirby->language()->code()) {
+                $this->addAttribute('current', 'true', $item);
+            }
         }
     }
 
