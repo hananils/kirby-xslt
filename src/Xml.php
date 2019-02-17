@@ -3,13 +3,7 @@
 namespace Hananils;
 
 use DomDocument;
-use Hananils\Converters\File;
-use Hananils\Converters\Files;
-use Hananils\Converters\Kirby;
 use Hananils\Converters\Page;
-use Hananils\Converters\Pages;
-use Hananils\Converters\User;
-use Hananils\Converters\Users;
 use Hananils\Definitions\Definitions;
 use Kirby\Toolkit\Str;
 
@@ -19,6 +13,7 @@ class Xml
     protected $root;
 
     public $included = true;
+    public $includedTrue = [];
 
     public function __construct($root = 'data', $version = '1.0', $encoding = 'utf-8')
     {
@@ -61,58 +56,26 @@ class Xml
 
             switch ($type) {
                 case 'App':
-                    $node = new Kirby($name);
-                    $node->import($object);
-                    $content = $node->root();
+                    $content = $this->getContent('Hananils\Converters\Kirby', $name, $included, $object);
                     break;
                 case 'Pages':
-                    $node = new Pages($name);
-                    if (!empty($included)) {
-                        $node->setIncluded($included);
-                    }
-                    $node->import($object);
-                    $content = $node->root();
+                    $content = $this->getContent('Hananils\Converters\Pages', $name, $included, $object);
                     break;
                 case 'Site':
                 case 'Page':
-                    $node = new Page($name);
-                    if (!empty($included)) {
-                        $node->setIncluded($included);
-                    }
-                    $node->import($object);
-                    $content = $node->root();
+                    $content = $this->getContent('Hananils\Converters\Page', $name, $included, $object);
                     break;
                 case 'Files':
-                    $node = new Files($name);
-                    if (!empty($included)) {
-                        $node->setIncluded($included);
-                    }
-                    $node->import($object);
-                    $content = $node->root();
+                    $content = $this->getContent('Hananils\Converters\Files', $name, $included, $object);
                     break;
                 case 'File':
-                    $node = new File($name);
-                    if (!empty($included)) {
-                        $node->setIncluded($included);
-                    }
-                    $node->import($object);
-                    $content = $node->root();
+                    $content = $this->getContent('Hananils\Converters\File', $name, $included, $object);
                     break;
                 case 'Users':
-                    $node = new Users($name);
-                    if (!empty($included)) {
-                        $node->setIncluded($included);
-                    }
-                    $node->import($object);
-                    $content = $node->root();
+                    $content = $this->getContent('Hananils\Converters\Users', $name, $included, $object);
                     break;
                 case 'User':
-                    $node = new User($name);
-                    if (!empty($included)) {
-                        $node->setIncluded($included);
-                    }
-                    $node->import($object);
-                    $content = $node->root();
+                    $content = $this->getContent('Hananils\Converters\User', $name, $included, $object);
                     break;
                 case 'Document':
                     $content = $object->documentElement;
@@ -126,6 +89,23 @@ class Xml
                 $this->addElement($name, $content);
             }
         }
+    }
+
+    private function getContent($class, $name, $included, $object)
+    {
+        $node = new $class($name);
+
+        if (!empty($included)) {
+            if ($included === true && !empty($node->includedTrue)) {
+                $node->setIncluded($node->includedTrue);
+            } else {
+                $node->setIncluded($included);
+            }
+        }
+
+        $node->import($object);
+
+        return $node->root();
     }
 
     public function addElement($name, $content = null, $attributes = null, $context = null)

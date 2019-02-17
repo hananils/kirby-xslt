@@ -7,6 +7,19 @@ use Hananils\Xml;
 
 class Pages extends Xml
 {
+    public $included = [
+        'title' => true,
+        'path' => false,
+        'languages' => false,
+        'content' => false,
+        'files' => false,
+        'children' => false
+    ];
+
+    public $includedTrue = [
+        'title' => true
+    ];
+
     public function import($pages)
     {
         if ($pages->isEmpty()) {

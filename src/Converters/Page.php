@@ -15,6 +15,17 @@ class Page extends Xml
         'files' => false
     ];
 
+    public $includedTrue = [
+        'title' => true,
+        'path' => true,
+        'languages' => false,
+        'content' => true,
+        'files' => true,
+        'children' => [
+            'title' => true
+        ]
+    ];
+
     public function import($page)
     {
         $this->addAttributes([
