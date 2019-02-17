@@ -11,6 +11,7 @@ class Page extends Xml
     public $included = [
         'title' => true,
         'path' => false,
+        'languages' => false,
         'content' => false,
         'files' => false
     ];
@@ -25,6 +26,15 @@ class Page extends Xml
             'title' => true
         ]
     ];
+
+    public function __construct($root = 'data', $version = '1.0', $encoding = 'utf-8')
+    {
+        parent::__construct($root, $version, $encoding);
+
+        if (kirby()->languages()->isNotEmpty()) {
+            $this->included['language'] = true;
+        }
+    }
 
     public function import($page)
     {
@@ -41,6 +51,7 @@ class Page extends Xml
 
         $this->addNode('title', $page);
         $this->addNode('path', $page);
+        $this->addNode('languages', $page);
         $this->addNode('content', $page);
         $this->addNode('children', $page);
         $this->addNode('files', $page);
@@ -58,6 +69,18 @@ class Page extends Xml
         $path->parse($page);
 
         $this->addElement('path', $path->root());
+    }
+
+    public function addLanguages($page)
+    {
+        $languages = $this->addElement('languages');
+
+        foreach (kirby()->languages() as $language) {
+            $item = $this->addElement('languages', $language->name(), [
+                'code' => $language->code(),
+                'url' => $page->urlForLanguage($language->code())
+            ], $languages);
+        }
     }
 
     public function addContent($page)
