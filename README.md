@@ -97,7 +97,7 @@ By default, the plugin provides XML nodes for the `$kirby`, `$site`, `$pages` an
 </data>
 ```
 
-Any object defined in a controller, will be added to the XML output as well, e. g.:
+Any object defined in a controller will be added to the XML output as well, e. g.:
 
 ```php
 <?php
