@@ -275,7 +275,9 @@
 
         <xsl:variable name="name" select="name()" />
         <xsl:if test="preceding-sibling::*[name() = $name] or following-sibling::*[name() = $name]">
+            <xsl:text>[</xsl:text>
             <xsl:value-of select="count(preceding-sibling::*[name() = $name]) + 1" />
+            <xsl:text>]</xsl:text>
         </xsl:if>
     </xsl:if>
 </xsl:template>
