@@ -113,8 +113,18 @@ class Xml
         if (is_a($content, 'DOMElement') || is_a($content, 'DOMNode')) {
             $element = $this->document->importNode($content, true);
         } else {
+            $namespace = null;
+            if (is_array($name)) {
+                list($namespace, $prefix, $name) = $name;
+            }
+
             $name = Str::slug($name);
-            $element = $this->document->createElement($name, $this->sanitize($content));
+
+            if ($namespace) {
+                $element = $this->document->createElementNS($namespace, $prefix . ':' . $name, $this->sanitize($content));
+            } else {
+                $element = $this->document->createElement($name, $this->sanitize($content));
+            }
         }
 
         $this->addAttributes($attributes, $element);
@@ -147,8 +157,19 @@ class Xml
             return;
         }
 
+        $namespace = null;
+        if (is_array($name)) {
+            list($namespace, $prefix, $name) = $name;
+        }
+
         $name = Str::slug($name);
-        $attribute = $this->document->createAttribute($name);
+
+        if ($namespace) {
+            $attribute = $this->document->createAttributeNS($namespace, $prefix . ':' . $name);
+        } else {
+            $attribute = $this->document->createAttribute($name);
+        }
+
         $attribute->value = $this->sanitize($value);
 
         if ($element === null) {
