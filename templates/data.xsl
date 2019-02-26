@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xlink="http://www.w3.org/1999/xlink">
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:hananils="https://hananils.de/kirby-xslt">
 
 <xsl:template match="data" mode="data">
     <html>
@@ -15,13 +16,40 @@
             <link rel="stylesheet" type="text/css" href="{$media}/plugins/hananils/xslt/styles/debug.css" />
         </head>
         <body id="app" lang="en">
+            <xsl:copy-of select="hananils:kirby-icons/*" />
             <main class="l-main">
+                <header class="l-header">
+                    <h1 class="m-site-title">
+                        <span aria-hidden="true" class="m-icon">
+                            <svg viewBox="0 0 16 16">
+                                <use xlink:href="#icon-page" />
+                            </svg>
+                        </span>
+
+                        <xsl:value-of select="$site" />
+                    </h1>
+                    <form class="m-search">
+                        <input type="hidden" name="data" />
+                        <input type="text" class="m-search-field" name="xpath" placeholder="{@hananils:find-by-xpath}" value="{kirby/request/query/xpath}" />
+                        <button class="m-search-button">
+                            <span aria-hidden="true" class="m-icon">
+                                <svg viewBox="0 0 16 16">
+                                    <use xlink:href="#icon-search" />
+                                </svg>
+                            </span>
+                            <span class="is-hidden">
+                                <xsl:value-of select="@hananils:search" />
+                            </span>
+                        </button>
+                    </form>
+                </header>
                 <div class="l-secondary">
                     <header class="m-header">
                         <h1 class="m-header-title">
-                            <a href="{page/path/@url}/?data">
-                                <xsl:text>Data: </xsl:text>
-                                <xsl:value-of select="page/title" />
+                            <a href="{$page}/?data">
+                                <xsl:value-of select="@hananils:data" />
+                                <xsl:text>: </xsl:text>
+                                <xsl:value-of select="$title" />
                             </a>
                         </h1>
                         <nav class="m-header-nav">
@@ -31,7 +59,9 @@
                                         <use xlink:href="{$media}/plugins/hananils/xslt/images/icons.svg#icon-open" />
                                     </svg>
                                 </i>
-                                <span class="m-icon-label">Open</span>
+                                <span class="m-icon-label">
+                                    <xsl:value-of select="@hananils:open" />
+                                </span>
                             </a>
                             <a class="m-header-nav-item has-icon" href="{kirby/urls/panel}" target="_blank">
                                 <i aria-hidden="true" class="m-icon">
@@ -43,15 +73,26 @@
                             </a>
                         </nav>
                     </header>
-                    <nav id="index" class="m-index">
+                    <section id="index" class="m-index">
+                        <h2 class="m-index-title">
+                            <xsl:value-of select="@hananils:overview" />
+                        </h2>
                         <xsl:apply-templates select="." mode="index" />
-                    </nav>
+                        <p>
+                            <xsl:value-of select="@hananils:execution" />
+                            <xsl:text>: </xsl:text>
+                            <xsl:value-of select="sum(//@hananils:execution-time)" />
+                            <xsl:text>ms</xsl:text>
+                        </p>
+                    </section>
                 </div>
                 <div class="l-primary">
                     <pre id="xml"><code><xsl:apply-templates select="." mode="xml" /></code></pre>
-                    <ol class="m-errors">
-                        <xsl:apply-templates select="//errors[data]" mode="error" />
-                    </ol>
+                    <xsl:if test="//error[@type = 'invalid']">
+                        <ol class="m-errors">
+                            <xsl:apply-templates select="//error[@type = 'invalid']" mode="error" />
+                        </ol>
+                    </xsl:if>
                 </div>
             </main>
             <script type="text/javascript" src="{$media}/plugins/hananils/xslt/scripts/app.register.js"></script>
@@ -67,78 +108,104 @@
 -->
 
 <xsl:template match="data" mode="index">
-    <ul class="m-index-list">
+    <ul class="m-index-nodes">
         <xsl:apply-templates select="child::*" mode="index-node" />
     </ul>
 </xsl:template>
 
+<xsl:template match="hananils:*" mode="index-node">
+    <!-- Ignore hananils namespace -->
+</xsl:template>
+
 <xsl:template match="*" mode="index-node">
-    <li class="m-index-item">
+    <li class="m-index-node">
         <xsl:apply-templates select="." mode="index-link" />
         <xsl:apply-templates select="." mode="secondary-index" />
     </li>
 </xsl:template>
 
 <xsl:template match="kirby" mode="secondary-index">
-    <ul class="m-index-list-secondary">
+    <ul class="m-index-subnodes">
         <xsl:apply-templates select="urls | request | user" mode="secondary-index-node" />
     </ul>
 </xsl:template>
 
 <xsl:template match="*" mode="secondary-index">
-    <ul class="m-index-list-secondary">
-        <xsl:apply-templates select="child::path | child::content | child::children | child::files" mode="index-node" />
+    <ul class="m-index-subnodes">
+        <xsl:apply-templates select="child::path | child::content | child::children | child::files" mode="secondary-index-node" />
     </ul>
 </xsl:template>
 
 <xsl:template match="*" mode="secondary-index-node">
-    <li class="m-index-item">
-        <xsl:apply-templates select="." mode="index-link" />
+    <li class="m-index-subnode">
+        <xsl:apply-templates select="." mode="index-link">
+            <xsl:with-param name="icon" select="true()" />
+        </xsl:apply-templates>
     </li>
 </xsl:template>
 
 <xsl:template match="*" mode="index-link">
+    <xsl:param name="icon" select="false()" />
+
     <xsl:variable name="anchor">
         <xsl:apply-templates select="ancestor-or-self::*" mode="path" />
     </xsl:variable>
 
     <div class="m-index-actions">
+        <xsl:if test="$icon = true()">
+            <span class="m-icon">
+                <svg viewBox="0 0 16 16">
+                    <use xlink:href="#icon-code" />
+                </svg>
+            </span>
+        </xsl:if>
+
         <a class="m-index-link" href="#{$anchor}">
             <xsl:value-of select="name()" />
+            <xsl:apply-templates select="@hananils:execution-time" />
         </a>
         <button class="m-index-switch">
-            <i aria-hidden="true" class="m-icon">
+            <span class="m-icon">
                 <svg viewBox="0 0 16 16">
-                    <use xlink:href="{$media}/plugins/hananils/xslt/images/icons.svg#icon-toggle-on" />
+                    <use xlink:href="#icon-circle" />
                 </svg>
-            </i>
+            </span>
         </button>
     </div>
+</xsl:template>
+
+<xsl:template match="@hananils:execution-time">
+    <em class="m-execution-time">
+        <xsl:value-of select="." />
+        <xsl:text>ms</xsl:text>
+    </em>
 </xsl:template>
 
 <!--
     Errors
 -->
 
-<xsl:template match="errors" mode="error">
+<xsl:template match="error[@type = 'invalid']" mode="error">
     <xsl:variable name="path">
         <xsl:apply-templates select="ancestor-or-self::*" mode="path" />
     </xsl:variable>
 
     <li class="m-errors-entry">
         <a href="#{$path}">
-            <xsl:choose>
+            <xsl:text>Invalid markup in </xsl:text>
+<!--             <xsl:choose>
                 <xsl:when test="count(error) != 1">
                     <xsl:value-of select="concat(count(error), ' errors in ')" />
                 </xsl:when>
                 <xsl:otherwise>1 error in </xsl:otherwise>
-            </xsl:choose>
+            </xsl:choose> -->
             <code>
                 <xsl:for-each select="ancestor::*">
                     <xsl:text>/</xsl:text>
                     <xsl:value-of select="name()" />
                 </xsl:for-each>
             </code>
+            <xsl:text>.</xsl:text>
         </a>
     </li>
 </xsl:template>
@@ -156,13 +223,23 @@
 
 <!-- Nodes -->
 
+<xsl:template match="hananils:*" mode="node">
+    <!-- Ignore hananils namespace -->
+</xsl:template>
+
 <xsl:template match="*" mode="node">
     <a>
         <xsl:attribute name="id">
             <xsl:apply-templates select="ancestor-or-self::*" mode="path" />
         </xsl:attribute>
     </a>
-    <div class="node" data-depth="{count(ancestor::*)}">
+    <div data-depth="{count(ancestor::*)}">
+        <xsl:attribute name="class">
+            <xsl:text>node</xsl:text>
+            <xsl:if test="name(.) = 'error'"> has-errored</xsl:if>
+            <xsl:if test="@hananils:xpath-matched"> is-matching</xsl:if>
+        </xsl:attribute>
+
         <xsl:apply-templates select="." mode="lines" />
     </div>
 </xsl:template>
@@ -248,6 +325,10 @@
 <!--
     Attributes
 -->
+
+<xsl:template match="@hananils:*" mode="attribute">
+    <!-- Remove helper attribute -->
+</xsl:template>
 
 <xsl:template match="@*" mode="attribute">
     <xsl:text> </xsl:text>

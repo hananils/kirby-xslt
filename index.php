@@ -14,5 +14,23 @@ Kirby::plugin('hananils/xslt', [
     'collections' => [
         'assets' => require 'collections/assets.php',
         'datetime' => require 'collections/datetime.php'
+    ],
+    'translations' => [
+        'en' => [
+            'search' => 'Search',
+            'xpath' => 'find by XPath …',
+            'open' => 'Open',
+            'data' => 'Data',
+            'overview' => 'Overview',
+            'execution' => 'XML generation time'
+        ],
+        'de' => [
+            'search' => 'Suche',
+            'xpath' => 'mit XPath finden …',
+            'open' => 'Öffnen',
+            'data' => 'Daten',
+            'overview' => 'Übersicht',
+            'execution' => 'XML-Generierungszeit'
+        ]
     ]
 ]);
