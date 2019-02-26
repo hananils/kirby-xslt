@@ -82,9 +82,9 @@ class Kirby extends Xml
             $name = Str::slug($key);
 
             if (is_array($value)) {
-                $value = htmlspecialchars(implode(',', urlencode($value)));
+                $value = htmlspecialchars(implode(',', urldecode($value)));
             } else {
-                $value = htmlspecialchars(urlencode($value));
+                $value = htmlspecialchars(urldecode($value));
             }
 
             $this->addElement($name, $value, null, $element);
