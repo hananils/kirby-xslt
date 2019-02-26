@@ -17,6 +17,7 @@ class Xml
 
     public function __construct($root = 'data', $version = '1.0', $encoding = 'utf-8')
     {
+        $this->time = microtime(true);
         $this->document = new DOMDocument($version, $encoding);
         $this->root = $this->document->createElement($root);
         $this->document->appendChild($this->root);
@@ -32,7 +33,7 @@ class Xml
         return $this->root;
     }
 
-    public function addData($data)
+    public function addData($data, $measure = false)
     {
         unset($data['errorCode']);
         unset($data['errorMessage']);
@@ -44,6 +45,7 @@ class Xml
         $definitions = new Definitions($template);
 
         foreach ($data as $name => $object) {
+            $start = microtime(true);
             $included = $definitions->get($name);
             $content = null;
 
@@ -86,12 +88,17 @@ class Xml
             }
 
             if ($content) {
-                $this->addElement($name, $content);
+                $element = $this->addElement($name, $content);
+
+                if ($measure === true) {
+                    $end = microtime(true);
+                    $this->addAttribute(['https://hananils.de/kirby-xslt', 'hananils', 'execution-time'], round(($end - $start) * 1000, 2), $element);
+                }
             }
         }
     }
 
-    private function getContent($class, $name, $included, $object)
+    public function getContent($class, $name, $included, $object)
     {
         $node = new $class($name);
 
@@ -206,4 +213,4 @@ class Xml
     {
         return $this->document->saveXml();
     }
-}
+};
