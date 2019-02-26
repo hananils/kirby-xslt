@@ -9,8 +9,12 @@ var App = App || {};
     'use strict';
 
     var init = function() {
-        App.Components.get('index').addEventListener('click', handleClick);
         App.Components.get('xml').addEventListener('click', handleHighlight);
+
+        var switches = document.querySelectorAll('.m-index-switch');
+        switches.forEach(function(status) {
+            status.addEventListener('click', handleClick);
+        });
 
         restore();
     };
@@ -22,11 +26,13 @@ var App = App || {};
     var handleClick = function(event) {
         var target = event.target;
 
-        if (target.matches('.m-index-switch')) {
-            var name = target.previousSibling.href.split('#').pop();
-
-            toggle(name);
+        if (target.matches('use')) {
+            target = target.parentNode.parentNode.parentNode;
         }
+
+        var name = target.previousSibling.href.split('#').pop();
+
+        toggle(name);
     };
 
     var handleHighlight = function(event) {
