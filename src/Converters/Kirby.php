@@ -14,7 +14,7 @@ class Kirby extends Xml
         $this->addAttributes([
             'content-extension' => $kirby->contentExtension(),
             'language' => $kirby->language(),
-            'multilang' => $kirby->multilang(),
+            'multilang' => $kirby->multilang() ? 'true' : 'false',
             'version' => $kirby->version()
         ]);
 
