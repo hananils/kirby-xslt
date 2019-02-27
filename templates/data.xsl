@@ -232,8 +232,17 @@
 </xsl:template>
 
 <xsl:template match="@hananils:execution-time">
+    <xsl:variable name="language">
+        <xsl:choose>
+            <xsl:when test="$plugin/kirby/@language != ''">
+                <xsl:value-of select="$plugin/kirby/@language" />
+            </xsl:when>
+            <xsl:otherwise>en</xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+
     <em class="m-execution-time">
-        <xsl:value-of select="format-number(., '#,##0.00', $plugin/kirby/@language)" />
+        <xsl:value-of select="format-number(., '#,##0.00', $language)" />
         <xsl:text>ms</xsl:text>
     </em>
 </xsl:template>
