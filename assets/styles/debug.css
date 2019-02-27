@@ -307,6 +307,8 @@ p {
     float: right;
     padding-top: 0.2rem;
     transition: color 0.25s ease-in;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
+        monospace;
 }
 
 .m-execution-time:hover {
