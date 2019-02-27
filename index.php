@@ -17,20 +17,28 @@ Kirby::plugin('hananils/xslt', [
     ],
     'translations' => [
         'en' => [
-            'search' => 'Search',
-            'xpath' => 'find by XPath …',
-            'open' => 'Open',
             'data' => 'Data',
+            'error' => 'Processing Error',
+            'errors' => 'Processing Errors',
+            'execution' => 'XML generation time',
+            'open' => 'Open',
             'overview' => 'Overview',
-            'execution' => 'XML generation time'
+            'panel' => 'Panel',
+            'result' => 'Result',
+            'search' => 'Search',
+            'xpath' => 'find by XPath …'
         ],
         'de' => [
-            'search' => 'Suche',
-            'xpath' => 'mit XPath finden …',
-            'open' => 'Öffnen',
             'data' => 'Daten',
+            'error' => 'Verarbeitungsfehler',
+            'errors' => 'Verarbeitungsfehler',
+            'execution' => 'XML-Generierungszeit',
+            'open' => 'Öffnen',
             'overview' => 'Übersicht',
-            'execution' => 'XML-Generierungszeit'
+            'panel' => 'Panel',
+            'result' => 'Ergebnis',
+            'search' => 'Suche',
+            'xpath' => 'mit XPath finden …'
         ]
     ]
 ]);
