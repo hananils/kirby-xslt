@@ -317,6 +317,14 @@ p {
  * Errors
  */
 
+.m-error-title {
+    padding-left: 2.4rem;
+    padding-right: 2.4rem;
+    margin-top: 0;
+    line-height: 4rem;
+    color: #16171a;
+}
+
 .m-errors {
     position: -webkit-sticky;
     position: sticky;
@@ -329,8 +337,12 @@ p {
     box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
 }
 
+.m-errors:empty {
+    display: none;
+}
+
 .m-errors::after {
-    content: "";
+    content: '';
     height: 6rem;
     background-image: linear-gradient(
         to top,
@@ -384,7 +396,7 @@ pre.is-invalid {
 
 pre,
 code {
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
         monospace;
     font-weight: 400;
     font-size: 1.2rem;
@@ -410,7 +422,8 @@ a[id] {
 }
 
 a:target + .node .line,
-a:target + .node .line > * {
+a:target + .node .line > *,
+.node:target .line {
     background-color: #191b20;
 }
 
@@ -420,13 +433,19 @@ a:target + .node.is-matching .line > * {
 }
 
 .is-matching .line,
-.is-matching .line > * {
+.is-matching .line > *,
+.node.is-source:target .line,
+.node.has-errored-sequentially:target .line {
+    color: #fff;
     background-color: #4271ae;
 }
 
 .is-matching .line,
 .has-errored .line,
-.is-source .line {
+.is-source .line,
+.node.is-source:target .line,
+.node.has-errored-sequentially:target .line,
+.node:target .line {
     background-image: repeating-linear-gradient(
         to right,
         rgba(255, 255, 255, 0.1) 0,
@@ -443,7 +462,7 @@ a:target + .node.is-matching .line > * {
 }
 
 .node.is-collapsed > .line::after {
-    content: "…</" attr(data-name) ">";
+    content: '…</' attr(data-name) '>';
     color: #8a8e94;
 }
 
@@ -467,69 +486,69 @@ a:target + .node.is-matching .line > * {
     background-size: 1.8rem 100%;
 }
 
-.node[data-depth="1"] .line {
+.node[data-depth='1'] .line {
     top: 1.8rem;
     z-index: 10000;
     padding-left: calc(4.5rem + 1.8rem);
 }
 
-.node[data-depth="2"] .line {
+.node[data-depth='2'] .line {
     top: calc(1.8rem * 2);
     z-index: 9000;
     padding-left: calc(4.5rem + 1.8rem * 2);
     background-size: calc(1.8rem * 2) 100%;
 }
 
-.node[data-depth="3"] .line {
+.node[data-depth='3'] .line {
     top: calc(1.8rem * 3);
     z-index: 8000;
     padding-left: calc(4.5rem + 1.8rem * 3);
     background-size: calc(1.8rem * 3) 100%;
 }
 
-.node[data-depth="4"] .line {
+.node[data-depth='4'] .line {
     top: calc(1.8rem * 4);
     z-index: 7000;
     padding-left: calc(4.5rem + 1.8rem * 4);
     background-size: calc(1.8rem * 4) 100%;
 }
 
-.node[data-depth="5"] .line {
+.node[data-depth='5'] .line {
     top: calc(1.8rem * 5);
     z-index: 6000;
     padding-left: calc(4.5rem + 1.8rem * 5);
     background-size: calc(1.8rem * 5) 100%;
 }
 
-.node[data-depth="6"] .line {
+.node[data-depth='6'] .line {
     top: calc(1.8rem * 6);
     z-index: 5000;
     padding-left: calc(4.5rem + 1.8rem * 6);
     background-size: calc(1.8rem * 6) 100%;
 }
 
-.node[data-depth="7"] .line {
+.node[data-depth='7'] .line {
     top: calc(1.8rem * 7);
     z-index: 5000;
     padding-left: calc(4.5rem + 1.8rem * 7);
     background-size: calc(1.8rem * 7) 100%;
 }
 
-.node[data-depth="8"] .line {
+.node[data-depth='8'] .line {
     top: calc(1.8rem * 8);
     z-index: 5000;
     padding-left: calc(4.5rem + 1.8rem * 8);
     background-size: calc(1.8rem * 8) 100%;
 }
 
-.node[data-depth="9"] .line {
+.node[data-depth='9'] .line {
     top: calc(1.8rem * 9);
     z-index: 5000;
     padding-left: calc(4.5rem + 1.8rem * 9);
     background-size: calc(1.8rem * 9) 100%;
 }
 
-.node[data-depth="10"] .line {
+.node[data-depth='10'] .line {
     top: calc(1.8rem * 10);
     z-index: 5000;
     padding-left: calc(4.5rem + 1.8rem * 10);
@@ -563,12 +582,13 @@ a:target + .node.is-matching .line > * {
 .has-errored *,
 .line.has-errored,
 .is-source * {
-    color: #fff;
-    background-color: #b294bb !important;
+    color: #16171a;
+    background-color: #b294bb;
 }
 
-.is-source .line {
-    background-color: #cc6666 !important;
+.has-errored-sequentially .line {
+    color: #fff;
+    background-color: rgba(178, 148, 187, 0.2);
 }
 
 .has-errored .tag,

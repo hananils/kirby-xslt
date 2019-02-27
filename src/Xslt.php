@@ -5,6 +5,8 @@ namespace Hananils;
 use DOMDocument;
 use DOMXPath;
 use Exception;
+use Hananils\Converters\Kirby;
+use Hananils\Converters\Page;
 use Hananils\Xml;
 use Kirby\Cms\App;
 use Kirby\Cms\Template;
@@ -55,30 +57,13 @@ class Xslt extends Template
 
     public function renderData()
     {
-        if (get('xpath')) {
-            $this->setMatches();
-        }
-
-        $this->setContext([
-            'index' => kirby()->url('index'),
-            'media' => kirby()->url('media'),
-            'page' => preg_replace('/\/?\?.*/', '', kirby()->request()->url()),
-            'site' => site()->title(),
-            'title' => page()->title(),
-            'find-by-xpath' => t('xpath', 'find by XPath'),
-            'search' => t('search', 'search'),
-            'open' => t('open', 'open'),
-            'data' => t('data', 'data'),
-            'overview' => t('overview', 'Overview'),
-            'execution' => t('execution', 'General execution time')
-        ]);
-
         if (get('data') === 'raw') {
             kirby()->response()->type('xml');
             $result = $this->xml->document()->saveXML();
         } else {
-            $this->addIcons();
-            $result = $this->transform($this->xml, App::instance()->root('plugins') . '/xslt/templates/debug.xsl');
+            $this->setMatches();
+            $this->addPluginElement();
+            $result = $this->transform($this->xml, App::instance()->root('plugins') . '/xslt/templates/data.xsl');
         }
 
         return $result;
@@ -86,13 +71,12 @@ class Xslt extends Template
 
     public function renderErrors()
     {
-        $data = new Xml();
-        $errors = $data->addElement('errors');
+        $errors = $this->xml->addElement(['https://hananils.de/kirby-xslt', 'hananils', 'kirby-xslt-errors']);
 
         foreach ($this->errors as $error) {
             preg_match('/line (\d+)/', $error->message, $ref);
 
-            $data->addElement('error', $error->message, [
+            $this->xml->addElement('error', $error->message, [
                 'level' => $error->level,
                 'code' => $error->code,
                 'column' => $error->column,
@@ -104,20 +88,21 @@ class Xslt extends Template
 
         $source = fopen($this->errors[1]->file, "r");
         if ($source) {
-            $file = $data->addElement('file');
+            $file = $this->xml->addElement('file', null, null, $errors);
 
             $index = 1;
             while (($line = fgets($source)) !== false) {
-                $data->addElement('line', $line, null, $file);
+                $this->xml->addElement('line', $line, null, $file);
                 $index++;
             }
 
             fclose($source);
         }
 
-        $data->addAttribute(['https://hananils.de/kirby-xslt', 'hananils', 'media'], kirby()->url('media'));
+        $this->addPluginElement();
+        $result = $this->transform($this->xml, App::instance()->root('plugins') . '/xslt/templates/data.xsl');
 
-        return $this->transform($data, App::instance()->root('plugins') . '/xslt/templates/debug.xsl');
+        return $result;
     }
 
     public function transform($xml, $xsl)
@@ -141,22 +126,55 @@ class Xslt extends Template
 
                 return $this->renderErrors();
             } else {
-                return ':(';
+                require_once kirby()->root('kirby') . '/views/fatal.php';
+                die();
             }
         }
 
         return $result;
     }
 
-    private function setContext($data)
+    private function addPluginElement()
     {
-        foreach ($data as $key => $value) {
-            $this->xml->addAttribute(['https://hananils.de/kirby-xslt', 'hananils', $key], $value);
+        $plugin = $this->xml->addElement(['https://hananils.de/kirby-xslt', 'hananils', 'kirby-xslt']);
+
+        /* Add kirby node */
+        $kirby = new Kirby('kirby');
+        $kirby->import(kirby());
+        $this->xml->addElement('kirby', $kirby->root(), null, $plugin);
+
+        /* Add site node */
+        $page = new Page('site');
+        $page->import(site());
+        $this->xml->addElement('site', $page->root(), null, $plugin);
+
+        /* Add current page node */
+        $page = new Page('page');
+        $page->import(page());
+        $this->xml->addElement('page', $page->root(), null, $plugin);
+
+        /* Add dictionary */
+        $dictionary = $this->xml->addElement('dictionary', null, null, $plugin);
+        $language = kirby()->language()->code();
+        $translations = kirby()->plugin('hananils/xslt')->extends()['translations'][$language];
+        foreach ($translations as $key => $translation) {
+            $this->xml->addElement($key, $translation, null, $dictionary);
         }
+
+        /* Add icons */
+        $icons = $this->xml->addElement('icons', null, null, $plugin);
+        $svg = new Xml('svg');
+        $svg->document()->load(kirby()->root('kirby') . '/panel/public/img/icons.svg');
+        $this->xml->addElement('svg', $svg->document()->documentElement, null, $icons);
+
     }
 
     private function setMatches()
     {
+        if (!get('xpath')) {
+            return;
+        }
+
         $handling = libxml_use_internal_errors(true);
 
         $xpath = new DOMXPath($this->xml->document());
@@ -169,14 +187,6 @@ class Xslt extends Template
                 $this->xml->addAttribute(['https://hananils.de/kirby-xslt', 'hananils', 'xpath-matched'], 'true', $match);
             }
         }
-    }
-
-    private function addIcons()
-    {
-        $svg = new Xml('svg');
-        $svg->document()->load(kirby()->root('kirby') . '/panel/public/img/icons.svg');
-        $icons = $this->xml->addElement(['https://hananils.de/kirby-xslt', 'hananils', 'kirby-icons']);
-        $this->xml->addElement('svg', $svg->document()->documentElement, null, $icons);
     }
 
 }
