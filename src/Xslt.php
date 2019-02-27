@@ -3,6 +3,10 @@
 namespace Hananils;
 
 use DOMDocument;
+use DOMXPath;
+use Exception;
+use Hananils\Converters\Kirby;
+use Hananils\Converters\Page;
 use Hananils\Xml;
 use Kirby\Cms\App;
 use Kirby\Cms\Template;
@@ -10,9 +14,22 @@ use XSLTProcessor;
 
 class Xslt extends Template
 {
+    private $xml;
+    private $errors;
+
     public function extension(): string
     {
         return 'xsl';
+    }
+
+    public function measure()
+    {
+        return get('data') !== null;
+    }
+
+    public function displayData()
+    {
+        return get('data') !== null && kirby()->user();
     }
 
     public function render(array $data = []): string
@@ -22,15 +39,70 @@ class Xslt extends Template
         }
 
         // Convert data
-        $xml = new Xml();
-        $xml->addData($data);
+        $this->xml = new Xml();
+        $this->xml->addData($data, $this->measure());
 
         // Render
-        if (isset($_GET['data']) && kirby()->user()) {
-            return $this->transform($xml, App::instance()->root('plugins') . '/xslt/templates/debug.xsl');
+        if ($this->displayData()) {
+            return $this->renderData();
         } else {
-            return $this->transform($xml, $this->file());
+            return $this->renderTemplate();
         }
+    }
+
+    public function renderTemplate()
+    {
+        return $this->transform($this->xml, $this->file());
+    }
+
+    public function renderData()
+    {
+        if (get('data') === 'raw') {
+            kirby()->response()->type('xml');
+            $result = $this->xml->document()->saveXML();
+        } else {
+            $this->setMatches();
+            $this->addPluginElement();
+            $result = $this->transform($this->xml, App::instance()->root('plugins') . '/xslt/templates/data.xsl');
+        }
+
+        return $result;
+    }
+
+    public function renderErrors()
+    {
+        $errors = $this->xml->addElement(['https://hananils.de/kirby-xslt', 'hananils', 'kirby-xslt-errors']);
+
+        foreach ($this->errors as $error) {
+            preg_match('/line (\d+)/', $error->message, $ref);
+
+            $this->xml->addElement('error', $error->message, [
+                'level' => $error->level,
+                'code' => $error->code,
+                'column' => $error->column,
+                'file' => $error->file,
+                'line' => $error->line,
+                'referenced-line' => isset($ref[1]) ? $ref[1] : ''
+            ], $errors);
+        }
+
+        $source = fopen($this->errors[1]->file, "r");
+        if ($source) {
+            $file = $this->xml->addElement('file', null, null, $errors);
+
+            $index = 1;
+            while (($line = fgets($source)) !== false) {
+                $this->xml->addElement('line', $line, null, $file);
+                $index++;
+            }
+
+            fclose($source);
+        }
+
+        $this->addPluginElement();
+        $result = $this->transform($this->xml, App::instance()->root('plugins') . '/xslt/templates/data.xsl');
+
+        return $result;
     }
 
     public function transform($xml, $xsl)
@@ -38,15 +110,86 @@ class Xslt extends Template
         libxml_disable_entity_loader(false);
         libxml_use_internal_errors(true);
 
-        $stylesheet = new DOMDocument();
-        $stylesheet->load($xsl);
+        try {
+            $stylesheet = new DOMDocument();
+            $stylesheet->load($xsl);
 
-        $xslt = new XSLTProcessor();
-        $xslt->importStylesheet($stylesheet);
+            $xslt = new XSLTProcessor();
+            $xslt->importStylesheet($stylesheet);
 
-        $result = $xslt->transformToXML($xml->document());
-        $result = str_replace('<!DOCTYPE html SYSTEM "about:legacy-compat">', '<!DOCTYPE html>', $result);
+            $result = $xslt->transformToXML($xml->document());
+            $result = str_replace('<!DOCTYPE html SYSTEM "about:legacy-compat">', '<!DOCTYPE html>', $result);
+        } catch (Exception $e) {
+            if (!$this->errors && kirby()->user()) {
+                $this->errors = libxml_get_errors();
+                libxml_clear_errors();
+
+                return $this->renderErrors();
+            } else {
+                require_once kirby()->root('kirby') . '/views/fatal.php';
+                die();
+            }
+        }
 
         return $result;
     }
+
+    private function addPluginElement()
+    {
+        $plugin = $this->xml->addElement(['https://hananils.de/kirby-xslt', 'hananils', 'kirby-xslt']);
+
+        /* Add kirby node */
+        $kirby = new Kirby('kirby');
+        $kirby->import(kirby());
+        $this->xml->addElement('kirby', $kirby->root(), null, $plugin);
+
+        /* Add site node */
+        $page = new Page('site');
+        $page->import(site());
+        $this->xml->addElement('site', $page->root(), null, $plugin);
+
+        /* Add current page node */
+        $page = new Page('page');
+        $page->import(page());
+        $this->xml->addElement('page', $page->root(), null, $plugin);
+
+        /* Add dictionary */
+        $dictionary = $this->xml->addElement('dictionary', null, null, $plugin);
+        $language = 'en';
+        if (kirby()->languages()->count()) {
+            $language = kirby()->language()->code();
+        }
+        $translations = kirby()->plugin('hananils/xslt')->extends()['translations'][$language];
+        foreach ($translations as $key => $translation) {
+            $this->xml->addElement($key, $translation, null, $dictionary);
+        }
+
+        /* Add icons */
+        $icons = $this->xml->addElement('icons', null, null, $plugin);
+        $svg = new Xml('svg');
+        $svg->document()->load(kirby()->root('kirby') . '/panel/public/img/icons.svg');
+        $this->xml->addElement('svg', $svg->document()->documentElement, null, $icons);
+
+    }
+
+    private function setMatches()
+    {
+        if (!get('xpath')) {
+            return;
+        }
+
+        $handling = libxml_use_internal_errors(true);
+
+        $xpath = new DOMXPath($this->xml->document());
+        $matches = $xpath->query(get('xpath'));
+
+        libxml_use_internal_errors($handling);
+
+        if ($matches) {
+            foreach ($matches as $match) {
+                $this->xml->addAttribute(['https://hananils.de/kirby-xslt', 'hananils', 'xpath-matched'], 'true', $match);
+            }
+        }
+    }
+
 }
