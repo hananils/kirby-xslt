@@ -14,7 +14,7 @@ class Choices extends Xml
             return;
         }
 
-        $options = $this->getOptions($blueprint);
+        $options = $this->getOptions($field, $blueprint);
 
         foreach ($field->toData() as $value) {
             $slug = Str::slug($value);
@@ -29,25 +29,28 @@ class Choices extends Xml
         }
     }
 
-    private function getOptions($blueprint)
+    private function getOptions($field, $blueprint)
     {
         $options = null;
+        $references = null;
 
         if (array_key_exists('options', $blueprint)) {
             $options = $blueprint['options'];
         }
 
         if ($options === 'query') {
-            $references = Options::query($blueprint['query']);
+            $references = Options::query($blueprint['query'], $field->parent());
+        } elseif ($options === 'api') {
+            $references = Options::api($blueprint['api'], $field->parent());
+        }
 
-            if (is_array($references)) {
-                $options = [];
-                foreach ($references as $reference) {
-                    $options[Str::slug($reference['value'])] = $reference['text'];
-                }
+        if (is_array($references)) {
+            $options = [];
+            foreach ($references as $reference) {
+                $options[Str::slug($reference['value'])] = $reference['text'];
             }
         }
 
         return $options;
     }
-}
+};
