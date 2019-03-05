@@ -212,6 +212,10 @@ p {
  * Index
  */
 
+.m-index {
+    padding-bottom: 4vh;
+}
+
 .m-index-title {
     font-size: 1.6rem;
     font-weight: 600;
@@ -309,6 +313,10 @@ p {
     transition: color 0.25s ease-in;
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
         monospace;
+}
+
+.m-execution-time.is-high {
+    color: #c82829;
 }
 
 .m-execution-time:hover {

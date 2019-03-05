@@ -242,6 +242,11 @@
     </xsl:variable>
 
     <em class="m-execution-time">
+        <xsl:attribute name="class">
+            <xsl:text>m-execution-time</xsl:text>
+            <xsl:if test=". &gt; 100"> is-high</xsl:if>
+        </xsl:attribute>
+
         <xsl:value-of select="format-number(., '#,##0.00', $language)" />
         <xsl:text>ms</xsl:text>
     </em>
