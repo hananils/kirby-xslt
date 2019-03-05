@@ -2,6 +2,7 @@
 
 namespace Hananils\Converters\Fields;
 
+use Hananils\Cache;
 use Hananils\Converters\Page;
 use Hananils\Xml;
 
@@ -18,6 +19,8 @@ class Pages extends Xml
             $page->import($child);
 
             $this->addElement('page', $page->root());
+
+            Cache::setAssociation($child, $field->parent());
         }
     }
 }

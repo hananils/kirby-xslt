@@ -2,6 +2,7 @@
 
 namespace Hananils\Converters;
 
+use Hananils\Cache;
 use Hananils\Converters\Content;
 use Hananils\Converters\Utilities\Path;
 use Hananils\Xml;
@@ -38,23 +39,29 @@ class Page extends Xml
 
     public function import($page)
     {
-        $this->addAttributes([
-            'id' => $page->id(),
-            'num' => $page->num(),
-            'parent' => $page->parent(),
-            'slug' => $page->slug(),
-            'status' => $page->status(),
-            'template' => $page->template(),
-            'uid' => $page->uid(),
-            'url' => $page->url()
-        ]);
+        if ($cache = Cache::get($page, $this->included)) {
+            $this->root = $cache;
+        } else {
+            $this->addAttributes([
+                'id' => $page->id(),
+                'num' => $page->num(),
+                'parent' => $page->parent(),
+                'slug' => $page->slug(),
+                'status' => $page->status(),
+                'template' => $page->template(),
+                'uid' => $page->uid(),
+                'url' => $page->url()
+            ]);
 
-        $this->addNode('title', $page);
-        $this->addNode('path', $page);
-        $this->addNode('languages', $page);
-        $this->addNode('content', $page);
-        $this->addNode('children', $page);
-        $this->addNode('files', $page);
+            $this->addNode('title', $page);
+            $this->addNode('path', $page);
+            $this->addNode('languages', $page);
+            $this->addNode('content', $page);
+            $this->addNode('children', $page);
+            $this->addNode('files', $page);
+
+            Cache::set($page, $this->included, $this->generate());
+        }
     }
 
     public function addTitle($page)

@@ -2,6 +2,7 @@
 
 namespace Hananils\Converters\Fields;
 
+use Hananils\Cache;
 use Hananils\Converters\User;
 use Hananils\Xml;
 
@@ -18,6 +19,8 @@ class Users extends Xml
             $user->import($child);
 
             $this->addElement('user', $user->root());
+
+            Cache::setAssociation($child, $field->parent());
         }
     }
 }

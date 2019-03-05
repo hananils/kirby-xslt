@@ -5,6 +5,7 @@ namespace Hananils;
 use DOMDocument;
 use DOMXPath;
 use Exception;
+use Hananils\Cache;
 use Hananils\Converters\Kirby;
 use Hananils\Converters\Page;
 use Hananils\Xml;
@@ -36,6 +37,11 @@ class Xslt extends Template
     {
         if ($this->exists() === false) {
             throw new Exception($this->missingViewMessage());
+        }
+
+        // Clear cache
+        if (get('data') === 'clear' && kirby()->user()) {
+            Cache::clear();
         }
 
         // Convert data
