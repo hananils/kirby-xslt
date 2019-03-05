@@ -8,6 +8,24 @@ use Kirby\Toolkit\Str;
 
 class Choices extends Xml
 {
+    static $cache = [];
+
+    public static function setCache($key, $value)
+    {
+        if (!empty($key) && !empty($value)) {
+            self::$cache[$key] = $value;
+        }
+    }
+
+    public static function getCache($key)
+    {
+        if (isset(self::$cache[$key])) {
+            return self::$cache[$key];
+        }
+
+        return null;
+    }
+
     public function parse($field, $blueprint)
     {
         if ($field->isEmpty()) {
@@ -39,9 +57,9 @@ class Choices extends Xml
         }
 
         if ($options === 'query') {
-            $references = Options::query($blueprint['query'], $field->parent());
+            $references = $this->getByQuery($blueprint, $field);
         } elseif ($options === 'api') {
-            $references = Options::api($blueprint['api'], $field->parent());
+            $references = $this->getByApi($blueprint, $field);
         }
 
         if (is_array($references)) {
@@ -53,4 +71,35 @@ class Choices extends Xml
 
         return $options;
     }
+
+    private function getByQuery($blueprint, $field)
+    {
+        $id = $blueprint['query']['fetch'];
+        $id = preg_replace('/^page.siblings/', $field->parent()->parent()->id(), $id);
+        $id = preg_replace('/^page/', $field->parent()->parent(), $id);
+        $id = Str::slug($id);
+
+        $references = self::getCache($id);
+
+        if (!$references) {
+            $references = Options::query($blueprint['query'], $field->parent());
+            self::setCache($id, $references);
+        }
+
+        return $references;
+    }
+
+    private function getByApi($blueprint, $field)
+    {
+        $id = Str::slug('api_' . $blueprint['api']['url']);
+        $references = self::getCache($id);
+
+        if (!$references) {
+            $references = Options::api($blueprint['api'], $field->parent());
+            self::setCache($id, $references);
+        }
+
+        return $references;
+    }
+
 };
