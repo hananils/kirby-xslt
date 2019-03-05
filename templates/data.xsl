@@ -20,6 +20,17 @@
 <xsl:variable name="media" select="/data/hananils:kirby-xslt/kirby/urls/media" />
 <xsl:variable name="plugin" select="/data/hananils:kirby-xslt" />
 <xsl:variable name="errors" select="/data/hananils:kirby-xslt-errors" />
+<xsl:variable name="language">
+    <xsl:choose>
+        <xsl:when test="$plugin/kirby/@language != ''">
+            <xsl:value-of select="$plugin/kirby/@language" />
+        </xsl:when>
+        <xsl:when test="$plugin/kirby/user/@language != ''">
+            <xsl:value-of select="$plugin/kirby/user/@language" />
+        </xsl:when>
+        <xsl:otherwise>en</xsl:otherwise>
+    </xsl:choose>
+</xsl:variable>
 
 <xsl:template match="data">
     <html>
@@ -116,11 +127,11 @@
                             <xsl:value-of select="$plugin/dictionary/overview" />
                         </h2>
                         <xsl:apply-templates select="." mode="index" />
-                        <xsl:if test="@hananils:execution-time">
+                        <xsl:if test="//@hananils:execution-time">
                             <p>
                                 <xsl:value-of select="$plugin/dictionary/execution" />
                                 <xsl:text>: </xsl:text>
-                                <xsl:value-of select="format-number(sum(//@hananils:execution-time), '#,##0.00', $plugin/kirby/@language)" />
+                                <xsl:value-of select="format-number(sum(//@hananils:execution-time), '#,##0.00', $language)" />
                                 <xsl:text>ms</xsl:text>
                             </p>
                         </xsl:if>
@@ -232,15 +243,6 @@
 </xsl:template>
 
 <xsl:template match="@hananils:execution-time">
-    <xsl:variable name="language">
-        <xsl:choose>
-            <xsl:when test="$plugin/kirby/@language != ''">
-                <xsl:value-of select="$plugin/kirby/@language" />
-            </xsl:when>
-            <xsl:otherwise>en</xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
-
     <em class="m-execution-time">
         <xsl:attribute name="class">
             <xsl:text>m-execution-time</xsl:text>
