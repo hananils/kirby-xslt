@@ -36,6 +36,11 @@ class Textarea extends Xml
             $html = $field->kirbytext();
         }
 
+        // Clean-up
+        $html = str_replace('allowfullscreen', 'allowfullscreen="true"', $html);
+        $html = str_replace('class="video"', 'class="m-video"', $html);
+        $html = str_replace('src="./', 'src="', $html);
+
         $handling = libxml_use_internal_errors(true);
 
         $tag = $this->root->tagName;
