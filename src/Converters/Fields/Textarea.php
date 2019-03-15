@@ -22,8 +22,14 @@ class Textarea extends Xml
 
     public function addUnformatted($field)
     {
+        $value = $field->toString();
+
+        if (option('hananils.xslt.smartypants')) {
+            $value = smartypants($value);
+        }
+
         $this->addAttribute('format', 'unformatted');
-        $cdata = $this->document->createCDATASection($field->toString());
+        $cdata = $this->document->createCDATASection($value);
         $this->root->appendChild($cdata);
     }
 
@@ -34,6 +40,10 @@ class Textarea extends Xml
         } else {
             $format = 'kirbytext';
             $html = $field->kirbytext();
+        }
+
+        if (option('hananils.xslt.smartypants')) {
+            $html = smartypants($html);
         }
 
         // Clean-up
