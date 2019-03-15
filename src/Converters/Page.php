@@ -98,7 +98,7 @@ class Page extends Xml
     {
         $content = new Content('content');
         $content->setIncluded($this->included['content']);
-        $content->parse($page->content(), $page->blueprint()->fields());
+        $content->parse($page->content(), $page->blueprint()->fields(), $page->errors());
 
         $this->addElement('content', $content->root());
     }

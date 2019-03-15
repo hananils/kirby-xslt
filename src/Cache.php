@@ -8,6 +8,11 @@ class Cache
 {
     public static function get($page, $name, $included = null)
     {
+        if (!empty($page->errors())) {
+            self::clear($page);
+            return null;
+        }
+
         $id = self::generatePageId($page, $included);
         $key = self::generateKey($name, $included);
         $cache = kirby()->cache('hananils.xslt')->get($id);
@@ -28,6 +33,10 @@ class Cache
 
     public static function set($page, $name, $included, $xml)
     {
+        if (!empty($page->errors())) {
+            return;
+        }
+
         $id = self::generatePageId($page);
         $cache = kirby()->cache('hananils.xslt')->get($id);
 
