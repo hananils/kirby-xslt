@@ -73,6 +73,7 @@ class Cache
             kirby()->cache('hananils.xslt')->remove(self::generateAssociationId($page));
         } else {
             kirby()->cache('hananils.xslt')->flush();
+            kirby()->cache('pages')->flush();
         }
     }
 
