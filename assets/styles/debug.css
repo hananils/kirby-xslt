@@ -29,6 +29,12 @@ body {
     color: #efefef;
 }
 
+svg.k-icons {
+    position: absolute;
+    top: -100%;
+    left: -100%;
+}
+
 p {
     font-size: 1.4rem;
     color: #b1b1b1;
