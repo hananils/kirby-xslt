@@ -6,10 +6,10 @@ use DomDocument;
 
 class Cache
 {
-    public static function get($page, $included = null)
+    public static function get($page, $name, $included = null)
     {
         $id = self::generatePageId($page, $included);
-        $key = md5(json_encode($included));
+        $key = self::generateKey($name, $included);
         $cache = kirby()->cache('hananils.xslt')->get($id);
 
         if ($cache) {
@@ -26,13 +26,14 @@ class Cache
         return null;
     }
 
-    public static function set($page, $included, $xml)
+    public static function set($page, $name, $included, $xml)
     {
-        $id = self::generatePageId($page, $included);
+        $id = self::generatePageId($page);
         $cache = kirby()->cache('hananils.xslt')->get($id);
 
-        $key = md5(json_encode($included));
+        $key = self::generateKey($name, $included);
         $cache[$key] = [
+            'name' => $name,
             'included' => $included,
             'xml' => $xml
         ];
@@ -89,6 +90,11 @@ class Cache
         }
 
         kirby()->cache('hananils.xslt')->remove(self::generateAssociationId($page));
+    }
+
+    public static function generateKey($name = 'page', $included = [])
+    {
+        return md5($name . json_encode($included));
     }
 
     public static function generatePageId($page)

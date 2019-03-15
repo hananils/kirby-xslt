@@ -9,7 +9,7 @@ use Hananils\Xml;
 
 class Page extends Xml
 {
-    private $isCacheable = true;
+    public $name;
 
     public $included = [
         'title' => true,
@@ -34,9 +34,7 @@ class Page extends Xml
     {
         parent::__construct($root, $version, $encoding);
 
-        if ($root !== 'page') {
-            $this->isCacheable = false;
-        }
+        $this->name = $root;
 
         if (kirby()->languages()->isNotEmpty()) {
             $this->included['language'] = true;
@@ -45,7 +43,7 @@ class Page extends Xml
 
     public function import($page)
     {
-        if ($this->isCacheable && $cache = Cache::get($page, $this->included)) {
+        if ($cache = Cache::get($page, $this->name, $this->included)) {
             $this->root = $cache;
         } else {
             $this->addAttributes([
@@ -66,9 +64,7 @@ class Page extends Xml
             $this->addNode('children', $page);
             $this->addNode('files', $page);
 
-            if ($this->isCacheable === true) {
-                Cache::set($page, $this->included, $this->generate());
-            }
+            Cache::set($page, $this->name, $this->included, $this->generate());
         }
     }
 
