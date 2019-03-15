@@ -46,6 +46,13 @@ class Kirby extends Xml
 
         $this->addPath($kirby, $element);
         $this->addParams($kirby, $element);
+        $this->addGet($kirby, $element);
+        $this->addPost($kirby, $element);
+
+        /**
+         * The query node is deprecated and will be removed in 2.0.0.
+         * Please use the get node instead.
+         */
         $this->addQuery($kirby, $element);
     }
 
@@ -70,9 +77,16 @@ class Kirby extends Xml
         }
     }
 
+    /**
+     * The query node is deprecated and will be removed in 2.0.0.
+     * Please use the get node instead.
+     */
     public function addQuery($kirby, $parent)
     {
-        $element = $this->addElement('query', null, null, $parent);
+        $element = $this->addElement('query', null, [
+            'warning' => 'deprecated',
+            'use' => '/data/kirby/request/get'
+        ], $parent);
 
         foreach (get() as $key => $value) {
             if ($key === 'data') {
@@ -82,13 +96,29 @@ class Kirby extends Xml
             $name = Str::slug($key);
 
             if (is_array($value)) {
-                $value = htmlspecialchars(implode(',', urldecode($value)));
+                $value = htmlspecialchars(urldecode(implode(', ', $value)));
             } else {
                 $value = htmlspecialchars(urldecode($value));
             }
 
             $this->addElement($name, $value, null, $element);
         }
+    }
+
+    public function addGet($kirby, $parent)
+    {
+        $values = new RecursiveArray('get');
+        $values->read($_GET);
+
+        $this->addElement('get', $values->root(), null, $parent);
+    }
+
+    public function addPost($kirby, $parent)
+    {
+        $values = new RecursiveArray('post');
+        $values->read($_POST);
+
+        $this->addElement('post', $values->root(), null, $parent);
     }
 
     public function addLanguages($kirby)
@@ -135,5 +165,9 @@ class Kirby extends Xml
 
             $this->addElement('user', $user->root());
         }
+    }
+
+    private function parseObject()
+    {
     }
 }

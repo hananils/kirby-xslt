@@ -160,7 +160,7 @@ class Xml
 
     public function addAttribute($name, $value, $element = null, $force = false)
     {
-        if (!$force && empty(trim($value))) {
+        if (!$force && empty(trim($value)) && $value !== 0) {
             return;
         }
 
