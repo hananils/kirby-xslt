@@ -74,6 +74,10 @@ class Choices extends Xml
 
     private function getByQuery($blueprint, $field)
     {
+        if (!isset($blueprint['query']['fetch'])) {
+            return [];
+        }
+
         $id = $blueprint['query']['fetch'];
         $id = preg_replace('/^page.siblings/', $field->parent()->parent()->id(), $id);
         $id = preg_replace('/^page/', $field->parent()->parent(), $id);
