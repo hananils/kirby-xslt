@@ -50,7 +50,7 @@ class User extends Xml
     public function addContent($user)
     {
         $content = new Content('content');
-        $content->parse($user->content(), $user->blueprint()->fields(), $user->errors());
+        $content->parse($user->content(), $user->blueprint()->fields());
 
         $this->addElement('content', $content->root());
     }
