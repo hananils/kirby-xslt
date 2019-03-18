@@ -52,7 +52,7 @@ class Page extends Xml
                 'parent' => $page->parent(),
                 'slug' => $page->slug(),
                 'status' => $page->status(),
-                'template' => $page->template(),
+                'template' => $page->intendedTemplate(),
                 'uid' => $page->uid(),
                 'url' => $page->url()
             ]);
