@@ -64,7 +64,9 @@ class Page extends Xml
             $this->addNode('children', $page);
             $this->addNode('files', $page);
 
-            Cache::set($page, $this->name, $this->included, $this->generate());
+            if (option('hananils.xslt.cache') === true) {
+                Cache::set($page, $this->name, $this->included, $this->generate());
+            }
         }
     }
 
