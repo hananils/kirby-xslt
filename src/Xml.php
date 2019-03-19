@@ -17,7 +17,6 @@ class Xml
 
     public function __construct($root = 'data', $version = '1.0', $encoding = 'utf-8')
     {
-        $this->time = microtime(true);
         $this->document = new DOMDocument($version, $encoding);
         $this->root = $this->document->createElement($root);
         $this->document->appendChild($this->root);

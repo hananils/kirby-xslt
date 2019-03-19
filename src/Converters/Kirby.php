@@ -166,8 +166,4 @@ class Kirby extends Xml
             $this->addElement('user', $user->root());
         }
     }
-
-    private function parseObject()
-    {
-    }
 }
