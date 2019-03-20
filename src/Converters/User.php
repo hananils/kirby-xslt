@@ -9,19 +9,24 @@ use Hananils\Xml;
 class User extends Xml
 {
     public $included = [
+        'attributes' => ['id'],
         'username' => true,
         'email' => false,
         'avatar' => false,
         'content' => false
     ];
 
+    public $includedTrue = [
+        'attributes' => ['id', 'language', 'role'],
+        'username' => true,
+        'email' => true,
+        'avatar' => true,
+        'content' => true
+    ];
+
     public function import($user)
     {
-        $this->addAttributes([
-            'id' => $user->id(),
-            'language' => $user->language(),
-            'role' => $user->role()
-        ]);
+        $this->addNodeAttributes($user);
 
         $this->addNode('username', $user);
         $this->addNode('email', $user);

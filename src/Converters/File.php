@@ -6,16 +6,23 @@ use Hananils\Xml;
 
 class File extends Xml
 {
+    public $included = [
+        'attributes' => ['type', 'url'],
+        'filename' => true,
+        'meta' => false,
+        'thumbs' => false
+    ];
+
+    public $includedTrue = [
+        'attributes' => ['type', 'url'],
+        'filename' => true,
+        'meta' => true,
+        'thumbs' => true
+    ];
+
     public function import($file)
     {
-        $this->addAttributes([
-            'size' => $file->size(),
-            'nice-size' => $file->niceSize(),
-            'type' => $file->type(),
-            'mime' => $file->mime(),
-            'extension' => $file->extension(),
-            'url' => $file->url()
-        ]);
+        $this->addNodeAttributes($file);
 
         $this->addNode('filename', $file);
         $this->addNode('meta', $file);

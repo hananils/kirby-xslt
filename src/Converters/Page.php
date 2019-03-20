@@ -12,6 +12,7 @@ class Page extends Xml
     public $name;
 
     public $included = [
+        'attributes' => ['id', 'url'],
         'title' => true,
         'path' => false,
         'languages' => false,
@@ -20,6 +21,7 @@ class Page extends Xml
     ];
 
     public $includedTrue = [
+        'attributes' => ['id', 'num', 'parent', 'slug', 'status', 'intended-template', 'uid', 'url'],
         'title' => true,
         'path' => true,
         'languages' => false,
@@ -48,16 +50,7 @@ class Page extends Xml
         if ($caching && $cache = Cache::get($page, $this->name, $this->included)) {
             $this->root = $cache;
         } else {
-            $this->addAttributes([
-                'id' => $page->id(),
-                'num' => $page->num(),
-                'parent' => $page->parent(),
-                'slug' => $page->slug(),
-                'status' => $page->status(),
-                'template' => $page->intendedTemplate(),
-                'uid' => $page->uid(),
-                'url' => $page->url()
-            ]);
+            $this->addNodeAttributes($page);
 
             $this->addNode('title', $page);
             $this->addNode('path', $page);

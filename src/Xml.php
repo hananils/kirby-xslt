@@ -207,6 +207,36 @@ class Xml
         }
     }
 
+    public function addNodeAttributes($context = null)
+    {
+        if (!isset($this->included['attributes']) || !$context) {
+            return;
+        }
+
+        $names = $this->included['attributes'];
+
+        foreach ($names as $name) {
+            $slug = Str::slug($name);
+            $name = str_replace('-', '', ucwords($slug, '-'));
+
+            if (method_exists($context, $name)) {
+                $value = $context->$name();
+
+                if (is_bool($value)) {
+                    if ($value === true) {
+                        $value = 'true';
+                    } else {
+                        $value = 'false';
+                    }
+                } elseif (is_array($value)) {
+                    $value = implode(',', $value);
+                }
+
+                $this->addAttribute($slug, $value);
+            }
+        }
+    }
+
     public function sanitize($string)
     {
         return htmlspecialchars($string, ENT_COMPAT, 'UTF-8', false);
@@ -216,4 +246,5 @@ class Xml
     {
         return $this->document->saveXml();
     }
-};
+
+}
