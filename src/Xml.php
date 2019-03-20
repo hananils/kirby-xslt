@@ -204,7 +204,7 @@ class Xml
         }
     }
 
-    public function addNode($name, $context)
+    public function addNode($name, $context = null)
     {
         $handler = 'add' . Str::ucfirst($name);
 

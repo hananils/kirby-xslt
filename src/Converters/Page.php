@@ -9,8 +9,6 @@ use Hananils\Xml;
 
 class Page extends Xml
 {
-    public $name;
-
     public $included = [
         'attributes' => ['id', 'url'],
         'title' => true,
