@@ -29,7 +29,7 @@ class Kirby extends Xml
 
     public function import($kirby)
     {
-        $this->addNodeAttributes();
+        $this->addNodeAttributes($kirby);
         $this->addNode('urls', $kirby);
         $this->addNode('request', $kirby);
         $this->addNode('languages', $kirby);

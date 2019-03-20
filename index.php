@@ -42,27 +42,39 @@ Kirby::plugin('hananils/xslt', [
     ],
     'translations' => [
         'en' => [
+            'cache-off' => 'XML cache is off',
+            'cache-on' => 'XML cache is on',
+            'cache-switch' => 'You can change this in your configuration file.',
             'data' => 'Data',
             'error' => 'Processing Error',
             'errors' => 'Processing Errors',
-            'execution' => 'XML generation time',
+            'execution' => 'XML generation',
             'open' => 'Open',
             'overview' => 'Overview',
             'panel' => 'Panel',
+            'rendering' => 'Approximate rendering time',
             'result' => 'Result',
             'search' => 'Search',
+            'stats' => 'Statistic',
+            'transformation' => 'XSLT transformation',
             'xpath' => 'find by XPath …'
         ],
         'de' => [
+            'cache-off' => 'XML-Cache ist deaktiviert',
+            'cache-on' => 'XML-Cache ist aktiviert',
+            'cache-switch' => 'Du kannst diese Einstellung in deiner Konfiguration ändern.',
             'data' => 'Daten',
             'error' => 'Verarbeitungsfehler',
             'errors' => 'Verarbeitungsfehler',
-            'execution' => 'XML-Generierungszeit',
+            'execution' => 'XML-Generierung',
             'open' => 'Öffnen',
             'overview' => 'Übersicht',
             'panel' => 'Panel',
+            'rendering' => 'Ungefähre Ausführungszeit',
             'result' => 'Ergebnis',
             'search' => 'Suche',
+            'stats' => 'Statistik',
+            'transformation' => 'XSLT-Transformation',
             'xpath' => 'mit XPath finden …'
         ]
     ]

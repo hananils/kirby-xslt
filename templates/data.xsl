@@ -127,14 +127,76 @@
                             <xsl:value-of select="$plugin/dictionary/overview" />
                         </h2>
                         <xsl:apply-templates select="." mode="index" />
-                        <xsl:if test="//@hananils:execution-time">
-                            <p>
-                                <xsl:value-of select="$plugin/dictionary/execution" />
-                                <xsl:text>: </xsl:text>
-                                <xsl:value-of select="format-number(sum(//@hananils:execution-time), '#,##0.00', $language)" />
-                                <xsl:text>ms</xsl:text>
-                            </p>
-                        </xsl:if>
+                        <form method="post">
+                            <div class="m-cache">
+                                <xsl:choose>
+                                    <xsl:when test="hananils:kirby-xslt/@cache = 'true'">
+                                        <svg class="m-cache-state">
+                                            <use xlink:href="#icon-toggle-on" />
+                                        </svg>
+                                        <p class="m-cache-summary" title="{$plugin/dictionary/cache-switch}">
+                                            <xsl:value-of select="$plugin/dictionary/cache-on" />
+                                        </p>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <svg class="m-cache-state">
+                                            <use xlink:href="#icon-toggle-off" />
+                                        </svg>
+                                        <p class="m-cache-summary" title="{$plugin/dictionary/cache-switch}">
+                                            <xsl:value-of select="$plugin/dictionary/cache-off" />
+                                        </p>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+
+                                <button class="m-cache-delete" name="clear" value="cache">
+                                    <svg>
+                                        <use xlink:href="#icon-trash" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                        <h2 class="m-index-title">
+                            <xsl:value-of select="$plugin/dictionary/stats" />
+                        </h2>
+                        <table class="m-stats">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <xsl:value-of select="$plugin/dictionary/execution" />
+                                    </td>
+                                    <td>
+                                        <time>
+                                            <xsl:value-of select="format-number(sum(//@hananils:execution-time), '#,##0.00', $language)" />
+                                            <xsl:text>ms</xsl:text>
+                                        </time>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <xsl:value-of select="$plugin/dictionary/transformation" />
+                                    </td>
+                                    <td>
+                                        <time>
+                                            <xsl:value-of select="format-number(hananils:kirby-xslt/@transformation-time, '#,##0.00', $language)" />
+                                            <xsl:text>ms</xsl:text>
+                                        </time>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>
+                                        <xsl:value-of select="$plugin/dictionary/rendering" />
+                                    </td>
+                                    <td>
+                                        <time>
+                                            <xsl:value-of select="format-number(sum(//@hananils:execution-time) + hananils:kirby-xslt/@transformation-time, '#,##0.00', $language)" />
+                                            <xsl:text>ms</xsl:text>
+                                        </time>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </section>
                 </div>
                 <div class="l-primary">

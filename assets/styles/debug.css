@@ -329,6 +329,91 @@ p {
     color: #efefef;
 }
 
+/* Cache */
+
+.m-cache {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3.2rem;
+    align-items: center;
+}
+
+.m-cache svg {
+    height: 1.6rem;
+    fill: #fff;
+    width: 1.6rem;
+}
+
+.m-cache-state {
+    flex-grow: 0;
+    margin-right: 0.8rem;
+    margin-top: 0.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.m-cache-summary {
+    flex-grow: 1;
+    margin-top: 0;
+}
+
+.m-cache-delete {
+    width: 3.8rem;
+    height: 3.8rem;
+    background: none;
+    border: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    flex-grow: 0;
+    padding: 0;
+    text-align: right;
+}
+
+.m-cache-delete svg {
+    fill: #b1b1b1;
+}
+
+.m-cache-delete:hover svg {
+    fill: #fff;
+    cursor: pointer;
+}
+
+/* Stats */
+
+.m-stats {
+    border: none;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 1.4rem;
+    color: #b1b1b1;
+    line-height: 2rem;
+    width: 100%;
+}
+
+.m-stats td {
+    padding-bottom: 0.4rem;
+}
+
+.m-stats td:last-child {
+    text-align: right;
+}
+
+.m-stats tbody tr:last-child td {
+    padding-bottom: 0.8rem;
+}
+
+.m-stats tfoot td {
+    border-top: 0.1rem solid #5d6163;
+    padding-top: 0.8rem;
+}
+
+.m-stats time {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
+        monospace;
+}
+
 /**
  * Errors
  */
