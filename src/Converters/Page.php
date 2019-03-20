@@ -43,7 +43,9 @@ class Page extends Xml
 
     public function import($page)
     {
-        if ($cache = Cache::get($page, $this->name, $this->included)) {
+        $caching = option('hananils.xslt.cache');
+
+        if ($caching && $cache = Cache::get($page, $this->name, $this->included)) {
             $this->root = $cache;
         } else {
             $this->addAttributes([
@@ -64,7 +66,7 @@ class Page extends Xml
             $this->addNode('children', $page);
             $this->addNode('files', $page);
 
-            if (option('hananils.xslt.cache') === true) {
+            if ($caching) {
                 Cache::set($page, $this->name, $this->included, $this->generate());
             }
         }
