@@ -16,7 +16,7 @@ class Path extends Xml
         $path = array_filter(explode('/', $url));
         $step = '';
 
-        foreach ($path as $index => $param) {
+        foreach ($path as $param) {
             $step .= '/' . $param;
             $relative = kirby()->page(substr($step, 1));
             $attributes = null;
@@ -31,6 +31,9 @@ class Path extends Xml
             $this->addElement('param', $param, $attributes);
         }
 
-        $this->addAttribute('url', kirby()->urls()->index() . $url);
+        $this->addAttribute(
+            'url',
+            kirby()->urls()->index() . $step
+        );
     }
 }
