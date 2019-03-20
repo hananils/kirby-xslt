@@ -27,7 +27,7 @@ class Pages extends Xml
         }
 
         $context = $pages->pagination();
-        if ($context) {
+        if ($context && $context->hasPages()) {
             $pagination = $this->addElement('pagination', null, [
                 'limit' => $context->limit(),
                 'offset' => $context->offset(),
