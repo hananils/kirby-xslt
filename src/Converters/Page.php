@@ -2,7 +2,7 @@
 
 namespace Hananils\Converters;
 
-use Hananils\Cache;
+use Hananils\CacheAssociative;
 use Hananils\Converters\Content;
 use Hananils\Converters\Utilities\Path;
 use Hananils\Xml;
@@ -24,7 +24,7 @@ class Page extends Xml
         'attributes' => ['id', 'num', 'parent', 'slug', 'status', 'intended-template', 'uid', 'url'],
         'title' => true,
         'path' => true,
-        'languages' => false,
+        'languages' => true,
         'content' => true,
         'files' => true,
         'children' => [
@@ -32,22 +32,9 @@ class Page extends Xml
         ]
     ];
 
-    public function __construct($root = 'page', $version = '1.0', $encoding = 'utf-8')
-    {
-        parent::__construct($root, $version, $encoding);
-
-        $this->name = $root;
-
-        if (kirby()->languages()->isNotEmpty()) {
-            $this->included['language'] = true;
-        }
-    }
-
     public function import($page)
     {
-        $caching = option('hananils.xslt.cache');
-
-        if ($caching && $cache = Cache::get($page, $this->name, $this->included)) {
+        if ($this->caching && $cache = CacheAssociative::get($page, $this->name, $this->included)) {
             $this->root = $cache;
         } else {
             $this->addNodeAttributes($page);
@@ -59,8 +46,8 @@ class Page extends Xml
             $this->addNode('children', $page);
             $this->addNode('files', $page);
 
-            if ($caching) {
-                Cache::set($page, $this->name, $this->included, $this->generate());
+            if ($this->caching) {
+                CacheAssociative::set($page, $this->generate(), $this->name, $this->included);
             }
         }
     }

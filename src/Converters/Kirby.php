@@ -2,22 +2,34 @@
 
 namespace Hananils\Converters;
 
+use Hananils\Cache;
 use Hananils\Converters\User;
 use Hananils\Converters\Utilities\Path;
 use Hananils\Xml;
-use Kirby\Toolkit\Str;
 
 class Kirby extends Xml
 {
+    public $included = [
+        'attributes' => ['content-extension', 'language', 'multilang', 'version'],
+        'urls' => true,
+        'request' => true,
+        'languages' => false,
+        'session' => false,
+        'user' => false
+    ];
+
+    public $includedTrue = [
+        'attributes' => ['content-extension', 'language', 'multilang', 'version'],
+        'urls' => true,
+        'request' => true,
+        'languages' => true,
+        'session' => true,
+        'user' => true
+    ];
+
     public function import($kirby)
     {
-        $this->addAttributes([
-            'content-extension' => $kirby->contentExtension(),
-            'language' => $kirby->language(),
-            'multilang' => $kirby->multilang() ? 'true' : 'false',
-            'version' => $kirby->version()
-        ]);
-
+        $this->addNodeAttributes();
         $this->addNode('urls', $kirby);
         $this->addNode('request', $kirby);
         $this->addNode('languages', $kirby);
@@ -27,16 +39,26 @@ class Kirby extends Xml
 
     public function addUrls($kirby)
     {
-        $element = $this->addElement('urls');
+        if ($this->caching && $cache = Cache::get('kirby', 'urls')) {
+            $this->addElement('urls', $cache->firstChild);
+        } else {
+            $element = $this->addElement('urls');
 
-        foreach ($kirby->urls()->toArray() as $name => $url) {
-            $attributes = [];
+            foreach ($kirby->urls()->toArray() as $name => $url) {
+                $attributes = [];
 
-            if ($url) {
-                $attributes = parse_url($url);
+                if ($url) {
+                    $attributes = parse_url($url);
+                }
+
+                $this->addElement($name, $url, $attributes, $element);
             }
 
-            $this->addElement($name, $url, $attributes, $element);
+            if ($this->caching) {
+                $cache = new XML('cache');
+                $cache->addElement('urls', $element);
+                Cache::set($cache->generate(), 'kirby', 'urls');
+            }
         }
     }
 
@@ -48,12 +70,6 @@ class Kirby extends Xml
         $this->addParams($kirby, $element);
         $this->addGet($kirby, $element);
         $this->addPost($kirby, $element);
-
-        /**
-         * The query node is deprecated and will be removed in 2.0.0.
-         * Please use the get node instead.
-         */
-        $this->addQuery($kirby, $element);
     }
 
     public function addPath($kirby, $parent)
@@ -77,34 +93,6 @@ class Kirby extends Xml
         }
     }
 
-    /**
-     * The query node is deprecated and will be removed in 2.0.0.
-     * Please use the get node instead.
-     */
-    public function addQuery($kirby, $parent)
-    {
-        $element = $this->addElement('query', null, [
-            'warning' => 'deprecated',
-            'use' => '/data/kirby/request/get'
-        ], $parent);
-
-        foreach (get() as $key => $value) {
-            if ($key === 'data') {
-                continue;
-            }
-
-            $name = Str::slug($key);
-
-            if (is_array($value)) {
-                $value = htmlspecialchars(urldecode(implode(', ', $value)));
-            } else {
-                $value = htmlspecialchars(urldecode($value));
-            }
-
-            $this->addElement($name, $value, null, $element);
-        }
-    }
-
     public function addGet($kirby, $parent)
     {
         $values = new RecursiveArray('get');
@@ -123,11 +111,11 @@ class Kirby extends Xml
 
     public function addLanguages($kirby)
     {
+        $languages = $this->addElement('languages');
+
         if ($kirby->languages()->isEmpty()) {
             return;
         }
-
-        $languages = $this->addElement('languages');
 
         foreach ($kirby->languages()->data() as $code => $language) {
             $item = $this->addElement('language', $language->name(), [

@@ -11,15 +11,21 @@ class Xml
 {
     protected $document;
     protected $root;
+    protected $name;
 
     public $included = true;
     public $includedTrue = [];
+
+    public $caching = true;
 
     public function __construct($root = 'data', $version = '1.0', $encoding = 'utf-8')
     {
         $this->document = new DOMDocument($version, $encoding);
         $this->root = $this->document->createElement($root);
         $this->document->appendChild($this->root);
+        $this->name = $root;
+
+        $this->caching = option('hananils.xslt.cache');
     }
 
     public function document()
