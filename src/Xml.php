@@ -100,15 +100,7 @@ class Xml
     public function getContent($class, $name, $included, $object)
     {
         $node = new $class($name);
-
-        if (!empty($included)) {
-            if ($included === true && !empty($node->includedTrue)) {
-                $node->setIncluded($node->includedTrue);
-            } else {
-                $node->setIncluded($included);
-            }
-        }
-
+        $node->setIncluded($included);
         $node->import($object);
 
         return $node->root();
@@ -187,10 +179,22 @@ class Xml
 
     public function setIncluded($included)
     {
-        if (is_array($this->included) && is_array($included)) {
-            $this->included = array_replace_recursive($this->included, $included);
-        } else {
-            $this->included = $included;
+        if (empty($included)) {
+            return;
+        }
+
+        if ($included === true) {
+            if (!empty($this->includedTrue)) {
+                $included = $this->includedTrue;
+            }
+        }
+
+        if (is_array($included)) {
+            if (is_array($this->included)) {
+                $this->included = array_replace_recursive($this->included, $included);
+            } else {
+                $this->included = $included;
+            }
         }
     }
 
