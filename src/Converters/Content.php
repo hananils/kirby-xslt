@@ -25,8 +25,27 @@ class Content extends Xml
 {
     protected $ignored = ['headline', 'info', 'line'];
 
-    public function parse($content, $fields)
+    public function parse($content, $fields, $errors = [])
     {
+        // Errors
+        if (!empty($errors)) {
+            $validation = $this->addElement('errors', null, [
+                'type' => 'validation'
+            ]);
+
+            foreach ($errors as $field => $error) {
+                $item = $this->addElement($field, null, [
+                    'label' => $error['label'],
+                    'type' => 'invalid'
+                ], $validation);
+
+                foreach ($error['message'] as $type => $message) {
+                    $this->addElement($type, $message, null, $item);
+                }
+            }
+        }
+
+        // Content
         foreach ($fields as $name => $blueprint) {
             $input = null;
 

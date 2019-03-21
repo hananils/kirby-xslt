@@ -210,7 +210,7 @@
                     </xsl:choose>
 
                     <ol class="m-errors">
-                        <xsl:apply-templates select="//error[@type = 'invalid']" mode="error" />
+                        <xsl:apply-templates select="//*[@type = 'invalid']" mode="error" />
                         <xsl:apply-templates select="//hananils:kirby-xslt-errors/error" mode="error" />
                     </ol>
                 </div>
@@ -345,6 +345,32 @@
                 </xsl:for-each>
             </code>
             <xsl:text>.</xsl:text>
+        </a>
+    </li>
+</xsl:template>
+
+<xsl:template match="errors/*[@type = 'invalid']" mode="error">
+    <xsl:variable name="path">
+        <xsl:apply-templates select="ancestor-or-self::*" mode="path" />
+    </xsl:variable>
+
+    <li class="m-errors-entry">
+        <a >
+            <xsl:attribute name="href">
+                <xsl:value-of select="$plugin/page/@url" />
+                <xsl:text>?data</xsl:text>
+                <xsl:if test="$plugin/kirby/request/query/xpath != ''">
+                    <xsl:value-of select="concat('&amp;xpath=', $plugin/kirby/request/query/xpath)" />
+                </xsl:if>
+                <xsl:text>#</xsl:text>
+                <xsl:value-of select="$path" />
+            </xsl:attribute>
+
+            <xsl:value-of select="ancestor::page/title" />
+            <xsl:text> – </xsl:text>
+            <xsl:value-of select="@label" />
+            <xsl:text>: </xsl:text>
+            <xsl:value-of select="." />
         </a>
     </li>
 </xsl:template>
