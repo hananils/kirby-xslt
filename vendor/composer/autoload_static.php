@@ -29,6 +29,8 @@ class ComposerStaticInit24004f89c05eedbc926d6d41a9ecbd68
     );
 
     public static $classMap = array (
+        'Hananils\\Cache' => __DIR__ . '/../..' . '/src/Cache.php',
+        'Hananils\\CacheAssociative' => __DIR__ . '/../..' . '/src/CacheAssociative.php',
         'Hananils\\Converters\\Content' => __DIR__ . '/../..' . '/src/Converters/Content.php',
         'Hananils\\Converters\\Dates' => __DIR__ . '/../..' . '/src/Converters/Dates.php',
         'Hananils\\Converters\\Directory' => __DIR__ . '/../..' . '/src/Converters/Directory.php',
@@ -54,6 +56,7 @@ class ComposerStaticInit24004f89c05eedbc926d6d41a9ecbd68
         'Hananils\\Converters\\Kirby' => __DIR__ . '/../..' . '/src/Converters/Kirby.php',
         'Hananils\\Converters\\Page' => __DIR__ . '/../..' . '/src/Converters/Page.php',
         'Hananils\\Converters\\Pages' => __DIR__ . '/../..' . '/src/Converters/Pages.php',
+        'Hananils\\Converters\\RecursiveArray' => __DIR__ . '/../..' . '/src/Converters/RecursiveArray.php',
         'Hananils\\Converters\\SimpleArray' => __DIR__ . '/../..' . '/src/Converters/SimpleArray.php',
         'Hananils\\Converters\\User' => __DIR__ . '/../..' . '/src/Converters/User.php',
         'Hananils\\Converters\\Users' => __DIR__ . '/../..' . '/src/Converters/Users.php',

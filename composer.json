@@ -2,6 +2,7 @@
     "name": "hananils/xslt",
     "description": "XSLT for Kirby",
     "type": "kirby-plugin",
+    "version": "2.0.0",
     "license": "MIT",
     "authors": [
         {
@@ -9,6 +10,9 @@
             "email": "buero@hananils.de"
         }
     ],
+    "support": {
+        "issues": "https://github.com/hananils/kirby-xslt/issues/"
+    },
     "autoload": {
         "psr-4": {
             "Hananils\\": "src/"

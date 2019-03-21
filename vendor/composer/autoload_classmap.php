@@ -6,6 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Hananils\\Cache' => $baseDir . '/src/Cache.php',
+    'Hananils\\CacheAssociative' => $baseDir . '/src/CacheAssociative.php',
     'Hananils\\Converters\\Content' => $baseDir . '/src/Converters/Content.php',
     'Hananils\\Converters\\Dates' => $baseDir . '/src/Converters/Dates.php',
     'Hananils\\Converters\\Directory' => $baseDir . '/src/Converters/Directory.php',
@@ -31,6 +33,7 @@ return array(
     'Hananils\\Converters\\Kirby' => $baseDir . '/src/Converters/Kirby.php',
     'Hananils\\Converters\\Page' => $baseDir . '/src/Converters/Page.php',
     'Hananils\\Converters\\Pages' => $baseDir . '/src/Converters/Pages.php',
+    'Hananils\\Converters\\RecursiveArray' => $baseDir . '/src/Converters/RecursiveArray.php',
     'Hananils\\Converters\\SimpleArray' => $baseDir . '/src/Converters/SimpleArray.php',
     'Hananils\\Converters\\User' => $baseDir . '/src/Converters/User.php',
     'Hananils\\Converters\\Users' => $baseDir . '/src/Converters/Users.php',
