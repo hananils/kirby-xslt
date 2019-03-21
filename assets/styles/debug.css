@@ -22,11 +22,11 @@ html {
 }
 
 body {
+    color: #efefef;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica,
         Arial, sans-serif;
-    -webkit-overflow-scrolling: touch;
     background-color: #181b21;
-    color: #efefef;
+    -webkit-overflow-scrolling: touch;
 }
 
 svg.k-icons {
@@ -36,9 +36,9 @@ svg.k-icons {
 }
 
 p {
-    font-size: 1.4rem;
-    color: #b1b1b1;
     margin-top: 1.6rem;
+    color: #b1b1b1;
+    font-size: 1.4rem;
 }
 
 /**
@@ -51,13 +51,13 @@ p {
 }
 
 .l-header {
-    height: 4rem;
-    background-color: #efefef;
-    grid-column-start: 1;
-    grid-column-end: 3;
-    color: #16171a;
     display: grid;
+    grid-column-end: 3;
+    grid-column-start: 1;
     grid-template-columns: 32rem auto;
+    height: 4rem;
+    color: #16171a;
+    background-color: #efefef;
 }
 
 .is-error .l-main,
@@ -66,17 +66,17 @@ p {
 }
 
 .l-secondary {
-    grid-column-start: 1;
     grid-column-end: 2;
+    grid-column-start: 1;
     overflow: auto;
     height: calc(100vh - 4rem);
-    padding-left: 2.4rem;
     padding-right: 2.4rem;
+    padding-left: 2.4rem;
 }
 
 .l-primary {
-    grid-column-start: 2;
     grid-column-end: 3;
+    grid-column-start: 2;
     overflow: auto;
     height: calc(100vh - 4rem);
     background-color: #282c34;
@@ -103,9 +103,9 @@ p {
 }
 
 .m-icon {
+    display: inline-block;
     margin-right: 1.4rem;
     transform: translateY(0.2rem);
-    display: inline-block;
 }
 
 .m-icon svg {
@@ -126,15 +126,15 @@ p {
  */
 
 .m-site-title {
-    font-weight: normal;
-    font-size: 1.4rem;
-    padding-left: 2.4rem;
-    padding-right: 2.4rem;
-    line-height: 4rem;
-    border-right: 0.1rem solid rgba(0, 0, 0, 0.1);
-    white-space: nowrap;
     overflow: hidden;
+    padding-right: 2.4rem;
+    padding-left: 2.4rem;
+    font-size: 1.4rem;
+    font-weight: normal;
+    line-height: 4rem;
+    white-space: nowrap;
     text-overflow: ellipsis;
+    border-right: 0.1rem solid rgba(0, 0, 0, 0.1);
 }
 
 /**
@@ -142,10 +142,10 @@ p {
  */
 
 .m-search {
-    padding-left: 2.4rem;
-    padding-right: 2.4rem;
     display: flex;
     flex-direction: row-reverse;
+    padding-right: 2.4rem;
+    padding-left: 2.4rem;
 }
 
 .m-search-button {
@@ -156,13 +156,13 @@ p {
 }
 
 .m-search-field {
+    flex-grow: 1;
     height: 4rem;
+    padding: 0 1.6rem 0 0;
+    color: #f5871f;
+    font-size: 1.4rem;
     border: none;
     background-color: #efefef;
-    font-size: 1.4rem;
-    color: #f5871f;
-    flex-grow: 1;
-    padding: 0 1.6rem 0 0;
 }
 
 .m-search-field::placeholder {
@@ -174,36 +174,36 @@ p {
  */
 
 .m-header {
-    border-bottom: 0.1rem solid hsla(180, 2%, 55%, 0.6);
     margin-bottom: 3.2rem;
+    border-bottom: 0.1rem solid hsla(180, 2%, 55%, 0.6);
 }
 
 .m-header-title {
+    margin-top: 4vh;
+    margin-bottom: 0.8rem;
     font-size: 2.8rem;
     font-weight: 500;
     line-height: 1.15em;
-    margin-bottom: 0.8rem;
-    margin-top: 4vh;
 }
 
 .m-header-title a {
     color: inherit;
-    text-decoration: none;
     font-weight: 500;
+    text-decoration: none;
 }
 
 .m-header-nav {
     display: flex;
     justify-content: flex-start;
-    padding: 1.6rem 0;
     min-height: 3.8rem;
+    padding: 1.6rem 0;
 }
 
 .m-header-nav-item {
-    font-size: 1.4rem;
     color: #b1b1b1;
-    transform: color 0.25s ease-in;
+    font-size: 1.4rem;
     text-decoration: none;
+    transform: color 0.25s ease-in;
 }
 
 .m-header-nav-item:hover {
@@ -223,9 +223,9 @@ p {
 }
 
 .m-index-title {
+    margin-bottom: 1.2rem;
     font-size: 1.6rem;
     font-weight: 600;
-    margin-bottom: 1.2rem;
 }
 
 .m-index-nodes,
@@ -234,15 +234,15 @@ p {
 }
 
 .m-index-nodes .m-icon {
-    width: 3.8rem;
-    height: 3.8rem;
     display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    transform: none;
-    flex-shrink: 0;
-    flex-grow: 0;
+    width: 3.8rem;
+    height: 3.8rem;
     margin: 0;
+    transform: none;
 }
 
 .m-index-nodes .m-icon svg {
@@ -251,9 +251,9 @@ p {
 }
 
 .m-index-node {
-    background-color: #111317;
     border-top: 0.1rem solid #181b21;
     border-bottom: 0.1rem solid #181b21;
+    background-color: #111317;
 }
 
 .m-index-subnode {
@@ -265,14 +265,14 @@ p {
 }
 
 .m-index-link {
-    color: #efefef;
-    text-decoration: none;
-    padding: 1rem 0 0.8rem;
     display: block;
-    font-size: 1.4rem;
-    min-height: 3.8rem;
     width: 100%;
+    min-height: 3.8rem;
+    padding: 1rem 0 0.8rem;
     padding-left: 1.2rem;
+    color: #efefef;
+    font-size: 1.4rem;
+    text-decoration: none;
 }
 
 .m-index-subnode .m-index-link {
@@ -280,10 +280,10 @@ p {
 }
 
 .m-index-switch {
-    border: none;
-    background: none;
     width: 3.8rem;
     height: 3.8rem;
+    border: none;
+    background: none;
     cursor: pointer;
 }
 
@@ -311,14 +311,14 @@ p {
 /* Execution time */
 
 .m-execution-time {
-    color: #666;
-    font-style: normal;
-    font-size: 1.2rem;
     float: right;
     padding-top: 0.2rem;
-    transition: color 0.25s ease-in;
+    color: #666;
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
         monospace;
+    font-size: 1.2rem;
+    font-style: normal;
+    transition: color 0.25s ease-in;
 }
 
 .m-execution-time.is-high {
@@ -333,24 +333,24 @@ p {
 
 .m-cache {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     margin-bottom: 3.2rem;
-    align-items: center;
 }
 
 .m-cache svg {
+    width: 1.6rem;
     height: 1.6rem;
     fill: #fff;
-    width: 1.6rem;
 }
 
 .m-cache-state {
-    flex-grow: 0;
-    margin-right: 0.8rem;
-    margin-top: 0.1rem;
     display: flex;
-    justify-content: center;
+    flex-grow: 0;
     align-items: center;
+    justify-content: center;
+    margin-top: 0.1rem;
+    margin-right: 0.8rem;
 }
 
 .m-cache-summary {
@@ -359,16 +359,16 @@ p {
 }
 
 .m-cache-delete {
-    width: 3.8rem;
-    height: 3.8rem;
-    background: none;
-    border: none;
+    flex-grow: 0;
     -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;
-    flex-grow: 0;
+    width: 3.8rem;
+    height: 3.8rem;
     padding: 0;
     text-align: right;
+    border: none;
+    background: none;
 }
 
 .m-cache-delete svg {
@@ -376,20 +376,20 @@ p {
 }
 
 .m-cache-delete:hover svg {
-    fill: #fff;
     cursor: pointer;
+    fill: #fff;
 }
 
 /* Stats */
 
 .m-stats {
-    border: none;
-    border-collapse: collapse;
-    border-spacing: 0;
-    font-size: 1.4rem;
-    color: #b1b1b1;
-    line-height: 2rem;
     width: 100%;
+    color: #b1b1b1;
+    font-size: 1.4rem;
+    line-height: 2rem;
+    border: none;
+    border-spacing: 0;
+    border-collapse: collapse;
 }
 
 .m-stats td {
@@ -405,8 +405,8 @@ p {
 }
 
 .m-stats tfoot td {
-    border-top: 0.1rem solid #5d6163;
     padding-top: 0.8rem;
+    border-top: 0.1rem solid #5d6163;
 }
 
 .m-stats time {
@@ -419,23 +419,23 @@ p {
  */
 
 .m-error-title {
-    padding-left: 2.4rem;
-    padding-right: 2.4rem;
     margin-top: 0;
-    line-height: 4rem;
+    padding-right: 2.4rem;
+    padding-left: 2.4rem;
     color: #16171a;
+    line-height: 4rem;
 }
 
 .m-errors {
     position: -webkit-sticky;
     position: sticky;
     bottom: 0;
+    overflow: scroll;
+    max-height: 13rem;
     font-size: 1.4rem;
     background-color: #cc6666;
-    z-index: 20000;
-    max-height: 13rem;
-    overflow: scroll;
     box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
+    z-index: 20000;
 }
 
 .m-errors:empty {
@@ -444,17 +444,17 @@ p {
 
 .m-errors::after {
     content: '';
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
     height: 6rem;
+    pointer-events: none;
     background-image: linear-gradient(
         to top,
         rgba(204, 102, 102, 1) 0,
         rgba(204, 102, 102, 0) 100%
     );
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    pointer-events: none;
 }
 
 .m-errors-entry + .m-errors-entry {
@@ -467,20 +467,20 @@ p {
 }
 
 .m-errors a {
-    color: #fff;
-    padding: 0 2.4rem;
-    text-decoration: none;
     display: block;
-    font-size: 1.4rem;
     min-height: 3.8rem;
+    padding: 0 2.4rem;
     padding: 1rem 2.4rem 0.8rem;
+    color: #fff;
+    font-size: 1.4rem;
+    text-decoration: none;
 }
 
 .m-errors code {
-    font-size: 1.4rem;
     display: inline-block;
-    border: none;
     padding: 0;
+    font-size: 1.4rem;
+    border: none;
 }
 
 /**
@@ -497,29 +497,29 @@ pre.is-invalid {
 
 pre,
 code {
+    display: block;
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
         monospace;
-    font-weight: 400;
     font-size: 1.2rem;
+    font-weight: 400;
     text-align: left;
     white-space: pre-wrap;
-    display: block;
 }
 
 code {
-    padding: 1.2rem 0;
-    z-index: 1000;
     position: relative;
-    counter-reset: linenumber;
+    padding: 1.2rem 0;
     border-left: 0.1rem solid #282c34;
+    z-index: 1000;
+    counter-reset: linenumber;
 }
 
 /* Nodes */
 
 a[id] {
+    display: block;
     height: 0;
     transform: translateY(calc(-1.8rem * 5));
-    display: block;
 }
 
 a:target + .node .line,
@@ -568,14 +568,13 @@ a:target + .node.is-matching .line > * {
 }
 
 .line {
-    padding: 0.1rem 1.2rem 0 4.5rem;
-    border-bottom: 0.1rem solid transparent;
     position: -webkit-sticky;
     position: sticky;
     top: 0;
+    padding: 0.1rem 1.2rem 0 4.5rem;
     line-height: 1.6rem;
+    border-bottom: 0.1rem solid transparent;
     background-color: #282c34;
-    z-index: 11000;
     background-image: repeating-linear-gradient(
         to right,
         hsl(222, 9%, 22%) 0,
@@ -583,102 +582,103 @@ a:target + .node.is-matching .line > * {
         transparent 0.1rem,
         transparent 1.8rem
     );
-    background-position: 4.5rem 0;
     background-repeat: no-repeat;
+    background-position: 4.5rem 0;
     background-size: 1.8rem 100%;
+    z-index: 11000;
 }
 
 .node[data-depth='1'] .line {
     top: 1.8rem;
-    z-index: 10000;
     padding-left: calc(4.5rem + 1.8rem);
+    z-index: 10000;
 }
 
 .node[data-depth='2'] .line {
     top: calc(1.8rem * 2);
-    z-index: 9000;
     padding-left: calc(4.5rem + 1.8rem * 2);
     background-size: calc(1.8rem * 2) 100%;
+    z-index: 9000;
 }
 
 .node[data-depth='3'] .line {
     top: calc(1.8rem * 3);
-    z-index: 8000;
     padding-left: calc(4.5rem + 1.8rem * 3);
     background-size: calc(1.8rem * 3) 100%;
+    z-index: 8000;
 }
 
 .node[data-depth='4'] .line {
     top: calc(1.8rem * 4);
-    z-index: 7000;
     padding-left: calc(4.5rem + 1.8rem * 4);
     background-size: calc(1.8rem * 4) 100%;
+    z-index: 7000;
 }
 
 .node[data-depth='5'] .line {
     top: calc(1.8rem * 5);
-    z-index: 6000;
     padding-left: calc(4.5rem + 1.8rem * 5);
     background-size: calc(1.8rem * 5) 100%;
+    z-index: 6000;
 }
 
 .node[data-depth='6'] .line {
     top: calc(1.8rem * 6);
-    z-index: 5000;
     padding-left: calc(4.5rem + 1.8rem * 6);
     background-size: calc(1.8rem * 6) 100%;
+    z-index: 5000;
 }
 
 .node[data-depth='7'] .line {
     top: calc(1.8rem * 7);
-    z-index: 5000;
     padding-left: calc(4.5rem + 1.8rem * 7);
     background-size: calc(1.8rem * 7) 100%;
+    z-index: 5000;
 }
 
 .node[data-depth='8'] .line {
     top: calc(1.8rem * 8);
-    z-index: 5000;
     padding-left: calc(4.5rem + 1.8rem * 8);
     background-size: calc(1.8rem * 8) 100%;
+    z-index: 5000;
 }
 
 .node[data-depth='9'] .line {
     top: calc(1.8rem * 9);
-    z-index: 5000;
     padding-left: calc(4.5rem + 1.8rem * 9);
     background-size: calc(1.8rem * 9) 100%;
+    z-index: 5000;
 }
 
 .node[data-depth='10'] .line {
     top: calc(1.8rem * 10);
-    z-index: 5000;
     padding-left: calc(4.5rem + 1.8rem * 10);
     background-size: calc(1.8rem * 10) 100%;
+    z-index: 5000;
 }
 
 .line::before {
     content: counter(linenumber);
-    counter-increment: linenumber;
-    color: rgba(255, 255, 255, 0.4);
     display: block;
-    padding-right: 0.8rem;
-    text-align: right;
     position: absolute;
     left: 0;
     width: 4.2rem;
+    padding-right: 0.8rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-align: right;
+    counter-increment: linenumber;
 }
 
 .line > * {
-    padding: 0.1rem 0;
     display: inline-block;
+    padding: 0.1rem 0;
     text-decoration: none;
     background-color: #282c34;
 }
 
 .line.is-ref {
-    background-color: #cc6666;
     color: #fff;
+    background-color: #cc6666;
 }
 
 .has-errored *,
@@ -745,9 +745,9 @@ a:target + .node.is-matching .line > * {
 
 .linenumber::before {
     content: counter(linenumber);
-    counter-increment: linenumber;
-    color: #8a8e94;
     display: block;
     padding-right: 0.8rem;
+    color: #8a8e94;
     text-align: right;
+    counter-increment: linenumber;
 }
