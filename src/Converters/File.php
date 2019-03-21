@@ -38,7 +38,7 @@ class File extends Xml
     {
         $meta = new Content('meta');
         $meta->setIncluded($this->included['meta']);
-        $meta->parse($file->meta(), $file->blueprint()->fields(), $file->errors());
+        $meta->parse($file->meta(), $file->blueprint()->fields(), $file);
 
         $this->addElement('meta', $meta->root());
     }

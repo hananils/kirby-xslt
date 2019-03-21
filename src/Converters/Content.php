@@ -25,12 +25,16 @@ class Content extends Xml
 {
     protected $ignored = ['headline', 'info', 'line'];
 
-    public function parse($content, $fields, $errors = [])
+    public function parse($content, $fields, $context)
     {
         // Errors
-        if (!empty($errors)) {
+        if (isset($this->included['errors']) && $this->included['errors'] === true) {
+            $errors = $context->errors();
+
             $validation = $this->addElement('errors', null, [
-                'type' => 'validation'
+                'type' => 'validation',
+                'count' => count($errors),
+                'note' => 'Please note that validation is done on request which will decrease performance on large collections.'
             ]);
 
             foreach ($errors as $field => $error) {
