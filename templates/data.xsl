@@ -75,7 +75,7 @@
                         <xsl:otherwise>
                             <form class="m-search">
                                 <input type="hidden" name="data" />
-                                <input type="text" class="m-search-field" name="xpath" placeholder="{$plugin/dictionary/xpath}" value="{$plugin/kirby/request/query/xpath}" />
+                                <input type="text" class="m-search-field" name="xpath" placeholder="{$plugin/dictionary/xpath}" value="{$plugin/kirby/request/get/xpath}" />
                                 <button class="m-search-button">
                                     <span aria-hidden="true" class="m-icon">
                                         <svg viewBox="0 0 16 16">
@@ -127,7 +127,7 @@
                             <xsl:value-of select="$plugin/dictionary/overview" />
                         </h2>
                         <xsl:apply-templates select="." mode="index" />
-                        <form method="post">
+                        <form method="get">
                             <div class="m-cache">
                                 <xsl:choose>
                                     <xsl:when test="hananils:kirby-xslt/@cache = 'true'">
@@ -148,7 +148,7 @@
                                     </xsl:otherwise>
                                 </xsl:choose>
 
-                                <button class="m-cache-delete" name="clear" value="cache">
+                                <button class="m-cache-delete" name="data" value="clear">
                                     <svg>
                                         <use xlink:href="#icon-trash" />
                                     </svg>
@@ -284,8 +284,8 @@
             <xsl:attribute name="href">
                 <xsl:value-of select="$plugin/page/@url" />
                 <xsl:text>?data</xsl:text>
-                <xsl:if test="$plugin/kirby/request/query/xpath != ''">
-                    <xsl:value-of select="concat('&amp;xpath=', $plugin/kirby/request/query/xpath)" />
+                <xsl:if test="$plugin/kirby/request/get/xpath != ''">
+                    <xsl:value-of select="concat('&amp;xpath=', $plugin/kirby/request/get/xpath)" />
                 </xsl:if>
                 <xsl:text>#</xsl:text>
                 <xsl:value-of select="$anchor" />
@@ -330,8 +330,8 @@
             <xsl:attribute name="href">
                 <xsl:value-of select="$plugin/page/@url" />
                 <xsl:text>?data</xsl:text>
-                <xsl:if test="$plugin/kirby/request/query/xpath != ''">
-                    <xsl:value-of select="concat('&amp;xpath=', $plugin/kirby/request/query/xpath)" />
+                <xsl:if test="$plugin/kirby/request/get/xpath != ''">
+                    <xsl:value-of select="concat('&amp;xpath=', $plugin/kirby/request/get/xpath)" />
                 </xsl:if>
                 <xsl:text>#</xsl:text>
                 <xsl:value-of select="$path" />
