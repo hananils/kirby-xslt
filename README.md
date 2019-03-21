@@ -73,7 +73,7 @@ By default, the plugin provides XML nodes for the `$kirby`, `$site`, `$pages` an
         <title>Home</title>
     </page>
     <pages>
-        <page id="error" slug="error" status="unlisted" template="default" uid="error" url="http://localhost:8888/error">
+        <page id="error" url="http://localhost:8888/error">
             <title>Error</title>
             <path url="error">
                 <param template="default" title="Error">error</param>
@@ -82,7 +82,7 @@ By default, the plugin provides XML nodes for the `$kirby`, `$site`, `$pages` an
                 <text/>
             </content>
         </page>
-        <page id="home" slug="home" status="unlisted" template="default" uid="home" url="http://localhost:8888">
+        <page id="home" url="http://localhost:8888">
             <title>Home</title>
             <path url="home">
                 <param template="default" title="Home">home</param>
