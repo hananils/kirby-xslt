@@ -570,6 +570,7 @@ a:target + .node.is-matching .line > * {
 .line {
     padding: 0.1rem 1.2rem 0 4.5rem;
     border-bottom: 0.1rem solid transparent;
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     line-height: 1.6rem;
