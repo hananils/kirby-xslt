@@ -51,7 +51,7 @@ var App = App || {};
 
     var toggle = function(name) {
         var button = App.Components.get('index').querySelector(
-            'a[href="#' + name + '"] + .m-index-switch'
+            'a[href$="#' + name + '"] + .m-index-switch'
         );
         var node = App.Components.get('app').querySelector(
             'a[id="' + name + '"] + .node'
