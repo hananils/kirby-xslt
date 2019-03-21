@@ -2,6 +2,7 @@
 
 @include_once __DIR__ . '/vendor/autoload.php';
 
+use Hananils\Cache;
 use Hananils\Xslt;
 use Kirby\Cms\App;
 
@@ -39,6 +40,19 @@ Kirby::plugin('hananils/xslt', [
         'user.changeRole:after' => require __DIR__ . '/hooks/clear-by-user.php',
         'user.update:after' => require __DIR__ . '/hooks/clear-by-user.php',
         'user.delete:after' => require __DIR__ . '/hooks/clear-by-user-delete.php'
+    ],
+    'routes' => [
+        [
+            'pattern' => '(:all)',
+            'action' => function ($path) {
+                if (get('data') === 'clear') {
+                    Cache::clear();
+                    go($path . '?data');
+                }
+
+                $this->next();
+            }
+        ]
     ],
     'translations' => [
         'en' => [
