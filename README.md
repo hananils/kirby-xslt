@@ -42,7 +42,7 @@ By default, the plugin provides XML nodes for the `$kirby`, `$site`, `$pages` an
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <data>
-    <kirby content-extension="txt" version="3.0.1">
+    <kirby content-extension="txt" version="3.1.0">
         <urls>
             <index host="localhost" path="" port="8888" scheme="http">http://localhost:8888</index>
             <base host="localhost" path="" port="8888" scheme="http">http://localhost:8888</base>
@@ -55,7 +55,8 @@ By default, the plugin provides XML nodes for the `$kirby`, `$site`, `$pages` an
         <request>
             <path/>
             <params/>
-            <query/>
+            <get/>
+            <post/>
         </request>
         <session>
             <csrf>912ec803b2ce49e4a541068d495ab570912ec803b2ce49e4a541068d495ab570</csrf>
