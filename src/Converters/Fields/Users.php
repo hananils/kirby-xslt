@@ -2,7 +2,7 @@
 
 namespace Hananils\Converters\Fields;
 
-use Hananils\Cache;
+use Hananils\CacheAssociative as Cache;
 use Hananils\Converters\User;
 use Hananils\Xml;
 

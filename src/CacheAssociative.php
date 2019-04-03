@@ -40,6 +40,10 @@ class CacheAssociative
             'xml' => $xml
         ];
 
+        if (kirby()->multilang()) {
+            $cache[$key]['language'] = kirby()->language()->code();
+        }
+
         kirby()->cache('hananils.xslt')->set($id, $cache, self::$duration);
 
         self::setAssociation($context, $context);
@@ -96,6 +100,10 @@ class CacheAssociative
 
     public static function generateKey($name = 'page', $options = [])
     {
+        if (kirby()->multilang()) {
+            $options['language'] = kirby()->language()->code();
+        }
+
         return md5($name . json_encode($options));
     }
 
