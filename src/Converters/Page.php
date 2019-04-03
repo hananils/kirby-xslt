@@ -90,7 +90,12 @@ class Page extends Xml
         if ($page->hasChildren()) {
             $children = new Pages('children');
             $children->setIncluded($this->included['children']);
-            $children->import($page->children());
+
+            if (isset($this->included['children']['drafts']) && $this->included['children']['drafts'] === true) {
+                $children->import($page->childrenAndDrafts());
+            } else {
+                $children->import($page->children());
+            }
 
             $this->addElement('children', $children->root());
         }
