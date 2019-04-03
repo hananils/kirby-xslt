@@ -246,13 +246,13 @@
 
 <xsl:template match="kirby" mode="secondary-index">
     <ul class="m-index-subnodes">
-        <xsl:apply-templates select="urls | request | user" mode="secondary-index-node" />
+        <xsl:apply-templates select="urls | request | user | languages | session" mode="secondary-index-node" />
     </ul>
 </xsl:template>
 
 <xsl:template match="*" mode="secondary-index">
     <ul class="m-index-subnodes">
-        <xsl:apply-templates select="child::path | child::content | child::children | child::files" mode="secondary-index-node" />
+        <xsl:apply-templates select="child::path | child::languages | child::content | child::children | child::files" mode="secondary-index-node" />
     </ul>
 </xsl:template>
 
