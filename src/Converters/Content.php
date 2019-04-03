@@ -25,10 +25,10 @@ class Content extends Xml
 {
     protected $ignored = ['headline', 'info', 'line'];
 
-    public function parse($content, $fields, $context)
+    public function parse($content, $fields, $context = null)
     {
         // Errors
-        if (isset($this->included['errors']) && $this->included['errors'] === true) {
+        if ($context && isset($this->included['errors']) && $this->included['errors'] === true) {
             $errors = $context->errors();
 
             $validation = $this->addElement('errors', null, [
