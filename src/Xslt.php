@@ -86,17 +86,19 @@ class Xslt extends Template
             ], $errors);
         }
 
-        $source = fopen($this->errors[1]->file, "r");
-        if ($source) {
-            $file = $this->xml->addElement('file', null, null, $errors);
+        if (isset($this->errors[0]->file) && !empty($this->errors[0]->file)) {
+            $source = fopen($this->errors[0]->file, "r");
+            if ($source) {
+                $file = $this->xml->addElement('file', null, null, $errors);
 
-            $index = 1;
-            while (($line = fgets($source)) !== false) {
-                $this->xml->addElement('line', $line, null, $file);
-                $index++;
+                $index = 1;
+                while (($line = fgets($source)) !== false) {
+                    $this->xml->addElement('line', $line, null, $file);
+                    $index++;
+                }
+
+                fclose($source);
             }
-
-            fclose($source);
         }
 
         $this->addPluginElement();
