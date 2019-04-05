@@ -2,6 +2,7 @@
 
 namespace Hananils\Converters;
 
+use Hananils\Converters\Fields\Builder;
 use Hananils\Converters\Fields\Choices;
 use Hananils\Converters\Fields\ColorPalette;
 use Hananils\Converters\Fields\CropSelect;
@@ -111,6 +112,9 @@ class Content extends Xml
                     break;
                 case 'cropselect':
                     $input = new CropSelect($name);
+                    break;
+                case 'builder':
+                    $input = new Builder($name);
                     break;
                 default:
                     $input = new Unknown($name);
