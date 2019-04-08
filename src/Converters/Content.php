@@ -9,6 +9,7 @@ use Hananils\Converters\Fields\CropSelect;
 use Hananils\Converters\Fields\Date;
 use Hananils\Converters\Fields\Email;
 use Hananils\Converters\Fields\Files;
+use Hananils\Converters\Fields\Focus;
 use Hananils\Converters\Fields\Pages;
 use Hananils\Converters\Fields\Range;
 use Hananils\Converters\Fields\Structure;
@@ -115,6 +116,9 @@ class Content extends Xml
                     break;
                 case 'builder':
                     $input = new Builder($name);
+                    break;
+                case 'focus':
+                    $input = new Focus($name);
                     break;
                 default:
                     $input = new Unknown($name);
