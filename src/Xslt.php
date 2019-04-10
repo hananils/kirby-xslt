@@ -86,8 +86,15 @@ class Xslt extends Template
             ], $errors);
         }
 
-        if (isset($this->errors[0]->file) && !empty($this->errors[0]->file)) {
-            $source = fopen($this->errors[0]->file, "r");
+        $file = null;
+        if (!empty($this->errors[0]->file)) {
+            $file = $this->errors[0]->file;
+        } elseif (preg_match('/file (.*) line/', $this->errors[0]->message, $matches)) {
+            $file = $matches[1];
+        }
+
+        if ($file) {
+            $source = fopen($file, "r");
             if ($source) {
                 $file = $this->xml->addElement('file', null, null, $errors);
 
@@ -102,6 +109,7 @@ class Xslt extends Template
         }
 
         $this->addPluginElement();
+
         $result = $this->transform($this->xml, App::instance()->root('plugins') . '/xslt/templates/data.xsl');
 
         return $result;
