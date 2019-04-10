@@ -174,10 +174,12 @@ class Xslt extends Template
         $this->xml->addElement('svg', $svg->document()->documentElement, null, $icons);
 
         /* Add XSLT processing time of frontend template */
-        $start = microtime(true);
-        $this->renderTemplate();
-        $end = microtime(true);
-        $this->xml->addAttribute('transformation-time', round(($end - $start) * 1000, 2), $plugin);
+        if (!$this->errors) {
+            $start = microtime(true);
+            $this->renderTemplate();
+            $end = microtime(true);
+            $this->xml->addAttribute('transformation-time', round(($end - $start) * 1000, 2), $plugin);
+        }
     }
 
     private function setMatches()
