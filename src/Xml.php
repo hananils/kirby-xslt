@@ -157,6 +157,10 @@ class Xml
 
     public function addAttribute($name, $value, $element = null, $force = false)
     {
+        if (is_array($value)) {
+            $value = implode(', ', $value);
+        }
+
         if (!$force && empty(trim($value)) && $value !== 0) {
             return;
         }
