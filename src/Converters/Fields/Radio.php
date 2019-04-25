@@ -47,7 +47,7 @@ class Radio extends Xml
             }
         }
 
-        $this->addAttribute('key', $slug);
+        $this->addAttribute('slug', $slug);
         $this->root->nodeValue = $this->sanitize($value);
     }
 
