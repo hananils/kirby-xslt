@@ -11,6 +11,7 @@ use Hananils\Converters\Fields\Email;
 use Hananils\Converters\Fields\Files;
 use Hananils\Converters\Fields\Focus;
 use Hananils\Converters\Fields\Pages;
+use Hananils\Converters\Fields\Radio;
 use Hananils\Converters\Fields\Range;
 use Hananils\Converters\Fields\Structure;
 use Hananils\Converters\Fields\Tel;
@@ -70,10 +71,13 @@ class Content extends Xml
                     break;
                 case 'checkboxes':
                 case 'multiselect':
-                case 'radio':
                 case 'select':
                 case 'tags':
                     $input = new Choices($name);
+                    break;
+                case 'radio':
+                case 'imageradio':
+                    $input = new Radio($name);
                     break;
                 case 'toggle':
                     $input = new Toggle($name);
