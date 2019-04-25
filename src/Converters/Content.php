@@ -4,6 +4,7 @@ namespace Hananils\Converters;
 
 use Hananils\Converters\Fields\Builder;
 use Hananils\Converters\Fields\Choices;
+use Hananils\Converters\Fields\Color;
 use Hananils\Converters\Fields\ColorPalette;
 use Hananils\Converters\Fields\CropSelect;
 use Hananils\Converters\Fields\Date;
@@ -123,6 +124,10 @@ class Content extends Xml
                     break;
                 case 'focus':
                     $input = new Focus($name);
+                    break;
+                case 'color';
+                case 'contrast-color':
+                    $input = new Color($name);
                     break;
                 default:
                     $input = new Unknown($name);
