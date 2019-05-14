@@ -136,12 +136,29 @@ pages: false
 
 The key equals the object name, let this be the default `$kirby`, `$site`, `$pages` or `$page` objects or a custom controller returning a `project` object. Setting an object to `true` will show the full content, setting an object to `false` will exclude its content.
 
-The different type have different subsettings:
+The different type have different options:
 
 ### Kirby
 
-The `kirby` object can only be switched on and off by either setting it to `true` or `false`.
-If you are working on a multilingual install, language settings are available, too:
+The `kirby` object has the following options that either switch a node on or off:
+
+```yml
+kirby:
+		attributes:
+				- content-extension
+				- language
+				- multilang
+				- version'
+		urls: true
+		request: true
+		languages: false
+		session: true
+		user: true
+```
+
+The `attributes` object allows to creation of node attributes from kirby methods. The name of the attribute has to match the method’s name, see [the Kirby docs](https://getkirby.com/docs/reference/objects/kirby).
+
+If you are working on a multilingual install, language settings are available:
 
 ```xml
 <languages>
@@ -152,10 +169,13 @@ If you are working on a multilingual install, language settings are available, t
 
 ### Site and Page
 
-The `page` objects know the following subsettings:
+The `page` objects have the following options:
 
 ```yml
 page:
+		attributes:
+			- id
+			- url
     title: true
     path: true
     languages: true
@@ -164,12 +184,13 @@ page:
     children: false
 ```
 
+-   The `attributes` object allows to creation of node attributes from page methods. The name of the attribute has to match the method’s name, see [the Kirby docs](https://getkirby.com/docs/reference/objects/page).
 -   The `title` object can be switched on and off by setting `true` or `false`.
 -   The `path` object is helpful to apply different templates base on the URL, it can be switched on and off by setting `true` or `false`.
 -   The `languages` object is available in multilingual installs and offers link for all languages, it can be switched on and off by setting `true` or `false`.
 -   The `content` subsetting takes and array of fields you'd like to include, e. g. `content: title, description, tags`.
 -   The `files` object can be switched on and off by setting `true` or `false`. It also takes additional settings, see below.
--   The `files` object can be switched on and off by setting `true` or `false`. It also takes additional settings from the `pages` object, see below.
+-   The `children` object can be switched on and off by setting `true` or `false`. It also takes additional settings from the `pages` object, see below.
 
 #### Additional field settings
 
@@ -187,6 +208,16 @@ content:
     description: unformatted
     tags: true
 ```
+
+You can enable Smartypants in the configuration:
+
+```php
+<?php
+
+return [
+		'hananils.xslt.smartypants' => true
+];
+``` 
 
 #### Telephone field
 
@@ -218,7 +249,7 @@ thumbs:
 
 ### Extending Included Elements
 
-You can create subfolders for files and pages, `/site/definitions/files` and `/site/definitions/pages` to create subsets for settings you'd like to reuse across defintions files. This works like in blueprints.
+You can create subfolders for files and pages, `/site/definitions/files` and `/site/definitions/pages` to create subsets for settings you'd like to reuse across definitions files. This works like in blueprints.
 
 #### Extending the default definitions:
 
@@ -330,6 +361,14 @@ return [
 ```
 
 If you are working on a multilingual site, all languages you've set up will be available.
+
+It’s possible to set the included node in the definition files:
+
+```yml
+datetime:
+    today: true
+    languages: false
+```
 
 #### Assets
 
