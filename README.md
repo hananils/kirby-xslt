@@ -105,7 +105,7 @@ Any object defined in a controller will be added to the XML output as well, e. g
 
 return function ($kirby) {
   return [
-  'projects' => $kirby->collection('projects')
+    'projects' => $kirby->collection('projects')
   ];
 };
 ```
