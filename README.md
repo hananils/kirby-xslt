@@ -239,13 +239,13 @@ thumbs:
       height: 400
       crop: left
     - width: 1200
-      crop: fields.focus
+      crop: file.focus
     - width: 1800
 ```
 
 -   The `filename` can be switched on and off by setting `true` or `false`.
 -   The `meta` object equals the `content` object of a page, see above.
--   The `thumbs` object lets you setup image thumbnails. It takes a list of thumbs with optional settings for `width`, `height` and `crop` position. If your crop position is stored in a field, you can reference it using the syntax `fields.fieldname`.
+-   The `thumbs` object lets you setup image thumbnails. It takes a list of thumbs with optional settings for `width`, `height` and `crop` position. If your crop position is stored in a field, you can reference it using the syntax `file.fieldname`.
 
 ### Extending Included Elements
 

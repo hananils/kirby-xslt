@@ -3,6 +3,7 @@
 namespace Hananils\Converters;
 
 use Hananils\Xml;
+use Kirby\Toolkit\Str;
 
 class File extends Xml
 {
@@ -47,19 +48,48 @@ class File extends Xml
     {
         $thumbs = $this->addElement('thumbs');
 
-        foreach ($this->included['thumbs'] as $attributes) {
-            if (array_key_exists('crop', $attributes) && strpos($attributes['crop'], 'fields.') === 0) {
-                $field = explode('.', $attributes['crop'])[1];
-                $crop = $file->content()->get($field)->toString();
+        if (is_string($this->included['thumbs'])) {
+            // Get attributes from preset
+        }
 
-                if ($crop) {
-                    $attributes['crop'] = $crop;
+        foreach ($this->included['thumbs'] as $options) {
+            $type = null;
+
+            if (isset($options['crop']) && strpos($options['crop'], '.') > 0) {
+                $positions = [
+                    "top left", "top", "top right", "left", "center", "right", "bottom left", "bottom", "bottom right"
+                ];
+
+                $name = explode('.', $options['crop'])[1];
+                $field = $file->content()->get($name);
+                $type = $file->blueprint()->field($name)['type'];
+
+                if ($type !== 'focus' && in_array($value, $positions)) {
+                    $options['crop'] = $crop;
                 } else {
-                    $attributes['crop'] = 'center';
+                    $options['crop'] = 'center';
                 }
             }
 
-            $this->addElement('url', $file->thumb($attributes)->url(), $attributes, $thumbs);
+            if ($type === 'focus') {
+                $width = isset($options['width']) ? $options['width'] : null;
+                $height = isset($options['height']) ? $options['height'] : null;
+                $thumb = $file->focusCrop($width, $height, $options);
+            } else {
+                $thumb = $file->thumb($options);
+            }
+
+            $attributes = [];
+            foreach ($thumb->modifications() as $key => $value) {
+                $key = Str::kebab($key);
+                if (is_bool($value)) {
+                    $attributes[$key] = ($value === true ? 'true' : 'false');
+                } else {
+                    $attributes[$key] = $value;
+                }
+            }
+
+            $this->addElement('url', $thumb->url(), $attributes, $thumbs);
         }
     }
 
