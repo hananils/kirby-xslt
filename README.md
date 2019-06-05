@@ -192,15 +192,15 @@ page:
 -   The `files` object can be switched on and off by setting `true` or `false`. It also takes additional settings, see below.
 -   The `children` object can be switched on and off by setting `true` or `false`. It also takes additional settings from the `pages` object, see below.
 
-#### Additional field settings
+#### Textarea field
 
-There is one field with additional settings: the textarea field accepts format settings `unformatted`, `markdown` or `kirbytext`. The default is `kirbytext`. If you'd like to change the default, the `content` object needs to be changed from:
+The textarea field offers additional settings to define formatters to be applied to the field content. By default, Kirbytext is applied to all textarea:
 
 ```yml
 content: title, description, tags
 ```
 
-to:
+To get unformatted source text, the field has to be set to `unformatted` in the page definitions:
 
 ```yml
 content:
@@ -209,14 +209,35 @@ content:
     tags: true
 ```
 
-You can enable Smartypants in the configuration:
+To get formatted output, the field has to be set to either `markdown` or `kirbytext`:
 
-```php
-<?php
+```yml
+content:
+    title: true
+    description: markdown
+    tags: true
+```
 
-return [
-  'hananils.xslt.smartypants' => true
-];
+To apply multiple formatters – like Kirbytext and SmartyPants –, the field also accepts a list of method:
+
+```yml
+content:
+    title: true
+    description: 
+        - kirbytext
+        - smartypants
+    tags: true
+```
+
+Methods are applied from top to bottom. Any existing field method can be used so it's also possible to apply the `lower` method:
+
+```yml
+content:
+    title: true
+    description: 
+        - kirbytext
+        - lower
+    tags: true
 ```
 
 #### Telephone field
