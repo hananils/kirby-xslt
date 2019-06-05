@@ -194,7 +194,7 @@ page:
 
 #### Textarea field
 
-The textarea field offers additional settings to define formatters to be applied to the field content. By default, Kirbytext is applied to all textarea:
+The textarea field offers additional settings to define formatters to be applied to the field content. By default, Kirbytext is applied to all textareas:
 
 ```yml
 content: title, description, tags
@@ -229,7 +229,7 @@ content:
     tags: true
 ```
 
-Methods are applied from top to bottom. Any existing field method can be used so it's also possible to apply the `lower` method:
+Methods are applied from top to bottom. [Any existing field method](https://getkirby.com/docs/reference/templates/field-methods) can be used so it's also possible to apply the `lower` method for example:
 
 ```yml
 content:
