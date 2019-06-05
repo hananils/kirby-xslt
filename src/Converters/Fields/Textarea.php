@@ -33,20 +33,31 @@ class Textarea extends Xml
         $this->root->appendChild($cdata);
     }
 
-    public function addFormatted($field, $format)
+    public function addFormatted($field, $formatters)
     {
-        if ($format === 'markdown') {
-            $html = $field->markdown();
+        if (is_array($formatters)) {
+            $format = implode(', ', $formatters);
+
+            foreach ($formatters as $formatter) {
+                if (method_exists($field, $formatter)) {
+                    $field = $field->$formatter();
+                }
+            }
+        } elseif ($formatters === 'markdown') {
+            $format = 'markdown';
+            $field = $field->markdown();
         } else {
             $format = 'kirbytext';
-            $html = $field->kirbytext();
+            $field = $field->kirbytext();
         }
 
+        // This option is deprecated, use formatter array instead
         if (option('hananils.xslt.smartypants')) {
-            $html = smartypants($html);
+            $field = $field->smartypants();
         }
 
         // Clean-up
+        $html = $field->toString();
         $html = str_replace('allowfullscreen', 'allowfullscreen="true"', $html);
         $html = str_replace('class="video"', 'class="m-video"', $html);
         $html = str_replace('src="./', 'src="', $html);
