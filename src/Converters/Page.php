@@ -69,7 +69,8 @@ class Page extends Xml
         $languages = $this->addElement('languages');
 
         foreach (kirby()->languages() as $language) {
-            $item = $this->addElement('language', $language->name(), [
+            $content = $page->translation($language->code())->content();
+            $item = $this->addElement('language', $content['title'], [
                 'code' => $language->code(),
                 'url' => $page->urlForLanguage($language->code())
             ], $languages);
