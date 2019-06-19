@@ -38,7 +38,12 @@ class Dates extends Xml
     {
         $codes = [];
         if (kirby()->languages()->count()) {
-            $codes = kirby()->languages()->codes();
+            $codes = [];
+
+            foreach (kirby()->languages()->codes() as $code) {
+                $locale = kirby()->languages()->get($code)->locale(LC_TIME);
+                $codes[] = explode('.', $locale)[0];
+            }
         } else {
             $codes[] = kirby()->option('locale');
         }
@@ -76,10 +81,9 @@ class Dates extends Xml
 
             // Language strings
             $format = new IntlDateFormatter($code, IntlDateFormatter::FULL, IntlDateFormatter::FULL);
-            $locale = explode('.', strtolower($code));
             $language = $this->addElement('language', null, [
                 'id' => $format->getLocale(),
-                'locale' => $locale[0]
+                'locale' => $code
             ]);
 
             // Generate months
