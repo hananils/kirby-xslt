@@ -8,11 +8,20 @@ use IntlDateFormatter;
 
 class Dates extends Xml
 {
+    public $included = [
+        'today' => true,
+        'languages' => true
+    ];
+
     public function parse($datetime = 'now')
     {
-        $date = new DateTime($datetime);
+        $this->addNode('today', $datetime);
+        $this->addNode('languages');
+    }
 
-        // Today
+    public function addToday($datetime = 'now')
+    {
+        $date = new DateTime($datetime);
         $this->addElement('today', $date->format('Y-m-d'), [
             'iso' => $date->format('c'),
             'year' => $date->format('Y'),
@@ -23,11 +32,18 @@ class Dates extends Xml
             'weekday' => $date->format('N'),
             'offset' => $date->format('O')
         ]);
+    }
 
-        // Language codes
+    public function addLanguages()
+    {
         $codes = [];
         if (kirby()->languages()->count()) {
-            $codes = kirby()->languages()->codes();
+            $codes = [];
+
+            foreach (kirby()->languages()->codes() as $code) {
+                $locale = kirby()->languages()->get($code)->locale(LC_TIME);
+                $codes[] = explode('.', $locale)[0];
+            }
         } else {
             $codes[] = kirby()->option('locale');
         }
@@ -65,10 +81,9 @@ class Dates extends Xml
 
             // Language strings
             $format = new IntlDateFormatter($code, IntlDateFormatter::FULL, IntlDateFormatter::FULL);
-            $locale = explode('.', strtolower($code));
             $language = $this->addElement('language', null, [
                 'id' => $format->getLocale(),
-                'locale' => $locale[0]
+                'locale' => $code
             ]);
 
             // Generate months

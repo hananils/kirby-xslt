@@ -2,6 +2,7 @@
 
 namespace Hananils\Converters;
 
+use Hananils\CacheAssociative;
 use Hananils\Converters\Content;
 use Hananils\Converters\Utilities\Path;
 use Hananils\Xml;
@@ -9,6 +10,7 @@ use Hananils\Xml;
 class Page extends Xml
 {
     public $included = [
+        'attributes' => ['id', 'url'],
         'title' => true,
         'path' => false,
         'languages' => false,
@@ -17,9 +19,10 @@ class Page extends Xml
     ];
 
     public $includedTrue = [
+        'attributes' => ['id', 'num', 'parent', 'slug', 'status', 'intended-template', 'uid', 'url'],
         'title' => true,
         'path' => true,
-        'languages' => false,
+        'languages' => true,
         'content' => true,
         'files' => true,
         'children' => [
@@ -27,34 +30,24 @@ class Page extends Xml
         ]
     ];
 
-    public function __construct($root = 'data', $version = '1.0', $encoding = 'utf-8')
-    {
-        parent::__construct($root, $version, $encoding);
-
-        if (kirby()->languages()->isNotEmpty()) {
-            $this->included['language'] = true;
-        }
-    }
-
     public function import($page)
     {
-        $this->addAttributes([
-            'id' => $page->id(),
-            'num' => $page->num(),
-            'parent' => $page->parent(),
-            'slug' => $page->slug(),
-            'status' => $page->status(),
-            'template' => $page->template(),
-            'uid' => $page->uid(),
-            'url' => $page->url()
-        ]);
+        if ($this->caching && $cache = CacheAssociative::get($page, $this->name, $this->included)) {
+            $this->root = $cache;
+        } else {
+            $this->addNodeAttributes($page);
 
-        $this->addNode('title', $page);
-        $this->addNode('path', $page);
-        $this->addNode('languages', $page);
-        $this->addNode('content', $page);
-        $this->addNode('children', $page);
-        $this->addNode('files', $page);
+            $this->addNode('title', $page);
+            $this->addNode('path', $page);
+            $this->addNode('languages', $page);
+            $this->addNode('content', $page);
+            $this->addNode('children', $page);
+            $this->addNode('files', $page);
+
+            if ($this->caching) {
+                CacheAssociative::set($page, $this->generate(), $this->name, $this->included);
+            }
+        }
     }
 
     public function addTitle($page)
@@ -76,7 +69,8 @@ class Page extends Xml
         $languages = $this->addElement('languages');
 
         foreach (kirby()->languages() as $language) {
-            $item = $this->addElement('languages', $language->name(), [
+            $content = $page->translation($language->code())->content();
+            $item = $this->addElement('language', $content['title'], [
                 'code' => $language->code(),
                 'url' => $page->urlForLanguage($language->code())
             ], $languages);
@@ -87,7 +81,7 @@ class Page extends Xml
     {
         $content = new Content('content');
         $content->setIncluded($this->included['content']);
-        $content->parse($page->content(), $page->blueprint()->fields());
+        $content->parse($page->content(), $page->blueprint()->fields(), $page);
 
         $this->addElement('content', $content->root());
     }
@@ -97,7 +91,12 @@ class Page extends Xml
         if ($page->hasChildren()) {
             $children = new Pages('children');
             $children->setIncluded($this->included['children']);
-            $children->import($page->children());
+
+            if (isset($this->included['children']['drafts']) && $this->included['children']['drafts'] === true) {
+                $children->import($page->childrenAndDrafts());
+            } else {
+                $children->import($page->children());
+            }
 
             $this->addElement('children', $children->root());
         }

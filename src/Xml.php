@@ -11,16 +11,21 @@ class Xml
 {
     protected $document;
     protected $root;
+    protected $name;
 
     public $included = true;
     public $includedTrue = [];
 
+    public $caching = true;
+
     public function __construct($root = 'data', $version = '1.0', $encoding = 'utf-8')
     {
-        $this->time = microtime(true);
         $this->document = new DOMDocument($version, $encoding);
         $this->root = $this->document->createElement($root);
         $this->document->appendChild($this->root);
+        $this->name = $root;
+
+        $this->caching = option('hananils.xslt.cache');
     }
 
     public function document()
@@ -101,15 +106,7 @@ class Xml
     public function getContent($class, $name, $included, $object)
     {
         $node = new $class($name);
-
-        if (!empty($included)) {
-            if ($included === true && !empty($node->includedTrue)) {
-                $node->setIncluded($node->includedTrue);
-            } else {
-                $node->setIncluded($included);
-            }
-        }
-
+        $node->setIncluded($included);
         $node->import($object);
 
         return $node->root();
@@ -160,7 +157,11 @@ class Xml
 
     public function addAttribute($name, $value, $element = null, $force = false)
     {
-        if (!$force && empty(trim($value))) {
+        if (is_array($value)) {
+            $value = implode(', ', $value);
+        }
+
+        if (!$force && empty(trim($value)) && $value !== 0) {
             return;
         }
 
@@ -188,19 +189,61 @@ class Xml
 
     public function setIncluded($included)
     {
-        if (is_array($this->included) && is_array($included)) {
-            $this->included = array_replace_recursive($this->included, $included);
-        } else {
-            $this->included = $included;
+        if (empty($included)) {
+            return;
+        }
+
+        if ($included === true) {
+            if (!empty($this->includedTrue)) {
+                $included = $this->includedTrue;
+            }
+        }
+
+        if (is_array($included)) {
+            if (is_array($this->included)) {
+                $this->included = array_replace_recursive($this->included, $included);
+            } else {
+                $this->included = $included;
+            }
         }
     }
 
-    public function addNode($name, $context)
+    public function addNode($name, $context = null)
     {
         $handler = 'add' . Str::ucfirst($name);
 
         if ($this->included === true || (isset($this->included[$name]) && ($this->included[$name] === true || is_array($this->included[$name])))) {
             $this->$handler($context);
+        }
+    }
+
+    public function addNodeAttributes($context = null)
+    {
+        if (!isset($this->included['attributes']) || !$context) {
+            return;
+        }
+
+        $names = $this->included['attributes'];
+
+        foreach ($names as $name) {
+            $slug = Str::slug($name);
+            $name = str_replace('-', '', ucwords($slug, '-'));
+
+            if (method_exists($context, $name)) {
+                $value = $context->$name();
+
+                if (is_bool($value)) {
+                    if ($value === true) {
+                        $value = 'true';
+                    } else {
+                        $value = 'false';
+                    }
+                } elseif (is_array($value)) {
+                    $value = implode(',', $value);
+                }
+
+                $this->addAttribute($slug, $value);
+            }
         }
     }
 
@@ -213,4 +256,5 @@ class Xml
     {
         return $this->document->saveXml();
     }
-};
+
+}

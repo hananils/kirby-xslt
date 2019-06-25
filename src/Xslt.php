@@ -86,20 +86,30 @@ class Xslt extends Template
             ], $errors);
         }
 
-        $source = fopen($this->errors[1]->file, "r");
-        if ($source) {
-            $file = $this->xml->addElement('file', null, null, $errors);
+        $file = null;
+        if (!empty($this->errors[0]->file)) {
+            $file = $this->errors[0]->file;
+        } elseif (preg_match('/file (.*) line/', $this->errors[0]->message, $matches)) {
+            $file = $matches[1];
+        }
 
-            $index = 1;
-            while (($line = fgets($source)) !== false) {
-                $this->xml->addElement('line', $line, null, $file);
-                $index++;
+        if ($file) {
+            $source = fopen($file, "r");
+            if ($source) {
+                $file = $this->xml->addElement('file', null, null, $errors);
+
+                $index = 1;
+                while (($line = fgets($source)) !== false) {
+                    $this->xml->addElement('line', $line, null, $file);
+                    $index++;
+                }
+
+                fclose($source);
             }
-
-            fclose($source);
         }
 
         $this->addPluginElement();
+
         $result = $this->transform($this->xml, App::instance()->root('plugins') . '/xslt/templates/data.xsl');
 
         return $result;
@@ -137,6 +147,7 @@ class Xslt extends Template
     private function addPluginElement()
     {
         $plugin = $this->xml->addElement(['https://hananils.de/kirby-xslt', 'hananils', 'kirby-xslt']);
+        $this->xml->addAttribute('cache', option('hananils.xslt.cache') === true ? 'true' : 'false', $plugin);
 
         /* Add kirby node */
         $kirby = new Kirby('kirby');
@@ -170,6 +181,13 @@ class Xslt extends Template
         $svg->document()->load(kirby()->root('kirby') . '/panel/public/img/icons.svg');
         $this->xml->addElement('svg', $svg->document()->documentElement, null, $icons);
 
+        /* Add XSLT processing time of frontend template */
+        if (!$this->errors) {
+            $start = microtime(true);
+            $this->renderTemplate();
+            $end = microtime(true);
+            $this->xml->addAttribute('transformation-time', round(($end - $start) * 1000, 2), $plugin);
+        }
     }
 
     private function setMatches()

@@ -22,19 +22,45 @@ class Textarea extends Xml
 
     public function addUnformatted($field)
     {
+        $value = $field->toString();
+
+        if (option('hananils.xslt.smartypants')) {
+            $value = smartypants($value);
+        }
+
         $this->addAttribute('format', 'unformatted');
-        $cdata = $this->document->createCDATASection($field->toString());
+        $cdata = $this->document->createCDATASection($value);
         $this->root->appendChild($cdata);
     }
 
-    public function addFormatted($field, $format)
+    public function addFormatted($field, $formatters)
     {
-        if ($format === 'markdown') {
-            $html = $field->markdown();
+        if (is_array($formatters)) {
+            $format = implode(', ', $formatters);
+
+            foreach ($formatters as $formatter) {
+                if (method_exists($field, $formatter)) {
+                    $field = $field->$formatter();
+                }
+            }
+        } elseif ($formatters === 'markdown') {
+            $format = 'markdown';
+            $field = $field->markdown();
         } else {
             $format = 'kirbytext';
-            $html = $field->kirbytext();
+            $field = $field->kirbytext();
         }
+
+        // This option is deprecated, use formatter array instead
+        if (option('hananils.xslt.smartypants')) {
+            $field = $field->smartypants();
+        }
+
+        // Clean-up
+        $html = $field->toString();
+        $html = str_replace('allowfullscreen', 'allowfullscreen="true"', $html);
+        $html = str_replace('class="video"', 'class="m-video"', $html);
+        $html = str_replace('src="./', 'src="', $html);
 
         $handling = libxml_use_internal_errors(true);
 

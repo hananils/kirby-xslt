@@ -6,7 +6,7 @@ use Hananils\Xml;
 use Kirby\Form\Options;
 use Kirby\Toolkit\Str;
 
-class Choices extends Xml
+class Radio extends Xml
 {
     static $cache = [];
 
@@ -32,31 +32,23 @@ class Choices extends Xml
             return;
         }
 
+        $slug = $field->toString();
         $options = $this->getOptions($field, $blueprint);
 
-        foreach ($field->toData() as $value) {
-            $slug = Str::slug($value);
-
-            if (is_array($options) && array_key_exists($slug, $options)) {
-                $value = $options[$slug];
-            }
-
-            if (is_array($value)) {
-                $language = kirby()->languageCode();
-
-                if (isset($value['text'])) {
-                    $value = $value['text'];
-                } elseif (isset($value[$language])) {
-                    $value = $value[$language];
-                } else {
-                    $value = implode(', ', $value);
-                }
-            }
-
-            $this->addElement('item', $value, [
-                'slug' => $slug
-            ]);
+        if (is_array($options) && array_key_exists($slug, $options)) {
+            $value = $options[$slug];
         }
+
+        if (is_array($value)) {
+            if (isset($value['text'])) {
+                $value = $value['text'];
+            } else {
+                $value = implode(', ', $value);
+            }
+        }
+
+        $this->addAttribute('slug', $slug);
+        $this->root->nodeValue = $this->sanitize($value);
     }
 
     private function getOptions($field, $blueprint)

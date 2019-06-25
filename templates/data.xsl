@@ -20,6 +20,17 @@
 <xsl:variable name="media" select="/data/hananils:kirby-xslt/kirby/urls/media" />
 <xsl:variable name="plugin" select="/data/hananils:kirby-xslt" />
 <xsl:variable name="errors" select="/data/hananils:kirby-xslt-errors" />
+<xsl:variable name="language">
+    <xsl:choose>
+        <xsl:when test="$plugin/kirby/@language != ''">
+            <xsl:value-of select="$plugin/kirby/@language" />
+        </xsl:when>
+        <xsl:when test="$plugin/kirby/user/@language != ''">
+            <xsl:value-of select="$plugin/kirby/user/@language" />
+        </xsl:when>
+        <xsl:otherwise>en</xsl:otherwise>
+    </xsl:choose>
+</xsl:variable>
 
 <xsl:template match="data">
     <html>
@@ -64,7 +75,7 @@
                         <xsl:otherwise>
                             <form class="m-search">
                                 <input type="hidden" name="data" />
-                                <input type="text" class="m-search-field" name="xpath" placeholder="{$plugin/dictionary/xpath}" value="{$plugin/kirby/request/query/xpath}" />
+                                <input type="text" class="m-search-field" name="xpath" placeholder="{$plugin/dictionary/xpath}" value="{$plugin/kirby/request/get/xpath}" />
                                 <button class="m-search-button">
                                     <span aria-hidden="true" class="m-icon">
                                         <svg viewBox="0 0 16 16">
@@ -116,14 +127,76 @@
                             <xsl:value-of select="$plugin/dictionary/overview" />
                         </h2>
                         <xsl:apply-templates select="." mode="index" />
-                        <xsl:if test="@hananils:execution-time">
-                            <p>
-                                <xsl:value-of select="$plugin/dictionary/execution" />
-                                <xsl:text>: </xsl:text>
-                                <xsl:value-of select="format-number(sum(//@hananils:execution-time), '#,##0.00', $plugin/kirby/@language)" />
-                                <xsl:text>ms</xsl:text>
-                            </p>
-                        </xsl:if>
+                        <form method="get">
+                            <div class="m-cache">
+                                <xsl:choose>
+                                    <xsl:when test="hananils:kirby-xslt/@cache = 'true'">
+                                        <svg class="m-cache-state">
+                                            <use xlink:href="#icon-toggle-on" />
+                                        </svg>
+                                        <p class="m-cache-summary" title="{$plugin/dictionary/cache-switch}">
+                                            <xsl:value-of select="$plugin/dictionary/cache-on" />
+                                        </p>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <svg class="m-cache-state">
+                                            <use xlink:href="#icon-toggle-off" />
+                                        </svg>
+                                        <p class="m-cache-summary" title="{$plugin/dictionary/cache-switch}">
+                                            <xsl:value-of select="$plugin/dictionary/cache-off" />
+                                        </p>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+
+                                <button class="m-cache-delete" name="data" value="clear">
+                                    <svg>
+                                        <use xlink:href="#icon-trash" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                        <h2 class="m-index-title">
+                            <xsl:value-of select="$plugin/dictionary/stats" />
+                        </h2>
+                        <table class="m-stats">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <xsl:value-of select="$plugin/dictionary/execution" />
+                                    </td>
+                                    <td>
+                                        <time>
+                                            <xsl:value-of select="format-number(sum(//@hananils:execution-time), '#,##0.00', $language)" />
+                                            <xsl:text>ms</xsl:text>
+                                        </time>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <xsl:value-of select="$plugin/dictionary/transformation" />
+                                    </td>
+                                    <td>
+                                        <time>
+                                            <xsl:value-of select="format-number(hananils:kirby-xslt/@transformation-time, '#,##0.00', $language)" />
+                                            <xsl:text>ms</xsl:text>
+                                        </time>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>
+                                        <xsl:value-of select="$plugin/dictionary/rendering" />
+                                    </td>
+                                    <td>
+                                        <time>
+                                            <xsl:value-of select="format-number(sum(//@hananils:execution-time) + hananils:kirby-xslt/@transformation-time, '#,##0.00', $language)" />
+                                            <xsl:text>ms</xsl:text>
+                                        </time>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </section>
                 </div>
                 <div class="l-primary">
@@ -137,7 +210,7 @@
                     </xsl:choose>
 
                     <ol class="m-errors">
-                        <xsl:apply-templates select="//error[@type = 'invalid']" mode="error" />
+                        <xsl:apply-templates select="//*[@type = 'invalid']" mode="error" />
                         <xsl:apply-templates select="//hananils:kirby-xslt-errors/error" mode="error" />
                     </ol>
                 </div>
@@ -173,13 +246,13 @@
 
 <xsl:template match="kirby" mode="secondary-index">
     <ul class="m-index-subnodes">
-        <xsl:apply-templates select="urls | request | user" mode="secondary-index-node" />
+        <xsl:apply-templates select="urls | request | user | languages | session" mode="secondary-index-node" />
     </ul>
 </xsl:template>
 
 <xsl:template match="*" mode="secondary-index">
     <ul class="m-index-subnodes">
-        <xsl:apply-templates select="child::path | child::content | child::children | child::files" mode="secondary-index-node" />
+        <xsl:apply-templates select="child::path | child::languages | child::content | child::children | child::files" mode="secondary-index-node" />
     </ul>
 </xsl:template>
 
@@ -211,8 +284,8 @@
             <xsl:attribute name="href">
                 <xsl:value-of select="$plugin/page/@url" />
                 <xsl:text>?data</xsl:text>
-                <xsl:if test="$plugin/kirby/request/query/xpath != ''">
-                    <xsl:value-of select="concat('&amp;xpath=', $plugin/kirby/request/query/xpath)" />
+                <xsl:if test="$plugin/kirby/request/get/xpath != ''">
+                    <xsl:value-of select="concat('&amp;xpath=', $plugin/kirby/request/get/xpath)" />
                 </xsl:if>
                 <xsl:text>#</xsl:text>
                 <xsl:value-of select="$anchor" />
@@ -232,16 +305,12 @@
 </xsl:template>
 
 <xsl:template match="@hananils:execution-time">
-    <xsl:variable name="language">
-        <xsl:choose>
-            <xsl:when test="$plugin/kirby/@language != ''">
-                <xsl:value-of select="$plugin/kirby/@language" />
-            </xsl:when>
-            <xsl:otherwise>en</xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
-
     <em class="m-execution-time">
+        <xsl:attribute name="class">
+            <xsl:text>m-execution-time</xsl:text>
+            <xsl:if test=". &gt; 100"> is-high</xsl:if>
+        </xsl:attribute>
+
         <xsl:value-of select="format-number(., '#,##0.00', $language)" />
         <xsl:text>ms</xsl:text>
     </em>
@@ -261,8 +330,8 @@
             <xsl:attribute name="href">
                 <xsl:value-of select="$plugin/page/@url" />
                 <xsl:text>?data</xsl:text>
-                <xsl:if test="$plugin/kirby/request/query/xpath != ''">
-                    <xsl:value-of select="concat('&amp;xpath=', $plugin/kirby/request/query/xpath)" />
+                <xsl:if test="$plugin/kirby/request/get/xpath != ''">
+                    <xsl:value-of select="concat('&amp;xpath=', $plugin/kirby/request/get/xpath)" />
                 </xsl:if>
                 <xsl:text>#</xsl:text>
                 <xsl:value-of select="$path" />
@@ -276,6 +345,32 @@
                 </xsl:for-each>
             </code>
             <xsl:text>.</xsl:text>
+        </a>
+    </li>
+</xsl:template>
+
+<xsl:template match="errors/*[@type = 'invalid']" mode="error">
+    <xsl:variable name="path">
+        <xsl:apply-templates select="ancestor-or-self::*" mode="path" />
+    </xsl:variable>
+
+    <li class="m-errors-entry">
+        <a >
+            <xsl:attribute name="href">
+                <xsl:value-of select="$plugin/page/@url" />
+                <xsl:text>?data</xsl:text>
+                <xsl:if test="$plugin/kirby/request/query/xpath != ''">
+                    <xsl:value-of select="concat('&amp;xpath=', $plugin/kirby/request/query/xpath)" />
+                </xsl:if>
+                <xsl:text>#</xsl:text>
+                <xsl:value-of select="$path" />
+            </xsl:attribute>
+
+            <xsl:value-of select="ancestor::page/title" />
+            <xsl:text> – </xsl:text>
+            <xsl:value-of select="@label" />
+            <xsl:text>: </xsl:text>
+            <xsl:value-of select="." />
         </a>
     </li>
 </xsl:template>
