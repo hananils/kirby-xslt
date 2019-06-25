@@ -42,8 +42,12 @@ class Choices extends Xml
             }
 
             if (is_array($value)) {
+                $language = kirby()->languageCode();
+
                 if (isset($value['text'])) {
                     $value = $value['text'];
+                } elseif (isset($value[$language])) {
+                    $value = $value[$language];
                 } else {
                     $value = implode(', ', $value);
                 }
