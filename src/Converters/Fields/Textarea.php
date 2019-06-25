@@ -39,9 +39,7 @@ class Textarea extends Xml
             $format = implode(', ', $formatters);
 
             foreach ($formatters as $formatter) {
-                if (method_exists($field, $formatter)) {
-                    $field = $field->$formatter();
-                }
+                $field = $field->__call($formatter);
             }
         } elseif ($formatters === 'markdown') {
             $format = 'markdown';
