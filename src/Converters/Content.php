@@ -6,6 +6,7 @@ use Hananils\Converters\Fields\Builder;
 use Hananils\Converters\Fields\Choices;
 use Hananils\Converters\Fields\Color;
 use Hananils\Converters\Fields\ColorPalette;
+use Hananils\Converters\Fields\Colors;
 use Hananils\Converters\Fields\CropSelect;
 use Hananils\Converters\Fields\Date;
 use Hananils\Converters\Fields\Email;
@@ -128,6 +129,9 @@ class Content extends Xml
                 case 'color';
                 case 'contrast-color':
                     $input = new Color($name);
+                    break;
+                case 'colors':
+                    $input = new Colors($name);
                     break;
                 default:
                     $input = new Unknown($name);
