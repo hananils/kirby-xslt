@@ -192,6 +192,14 @@ page:
 -   The `files` object can be switched on and off by setting `true` or `false`. It also takes additional settings, see below.
 -   The `children` object can be switched on and off by setting `true` or `false`. It also takes additional settings from the `pages` object, see below.
 
+If you'd like to pass options to a specific fields, you can still include all other field by using a wildcard:
+
+```yml
+content:
+    *: true
+    description: markdown
+```
+
 #### Textarea field
 
 The textarea field offers additional settings to define formatters to be applied to the field content. By default, Kirbytext is applied to all textareas:
@@ -223,7 +231,7 @@ To apply multiple formatters – like Kirbytext and SmartyPants –, the field a
 ```yml
 content:
     title: true
-    description: 
+    description:
         - kirbytext
         - smartypants
     tags: true
@@ -234,7 +242,7 @@ Methods are applied from top to bottom. [Any existing field method](https://getk
 ```yml
 content:
     title: true
-    description: 
+    description:
         - kirbytext
         - lower
     tags: true
@@ -490,3 +498,4 @@ The plugin is work in progress. We are extending it based on our own needs:
 -   Field support is limited to the core fields and a few additional fields we use ourselves.
 
 Contributions are always welcome.
+
