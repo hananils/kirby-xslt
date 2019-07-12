@@ -15,6 +15,7 @@ class Xml
 
     public $included = true;
     public $includedTrue = [];
+    public $format;
 
     public $caching = true;
 
@@ -247,9 +248,36 @@ class Xml
         }
     }
 
+    public function applyMethods($field, $methods)
+    {
+        if (!is_array($methods)) {
+            return $field;
+        }
+
+        $this->format = '';
+        $format = [];
+
+        foreach ($methods as $options) {
+            if (is_array($options)) {
+                $method = array_keys($options)[0];
+                $arguments = $options[$method];
+            } else {
+                $method = $options;
+                $arguments = [];
+            }
+
+            $format[] = $method;
+            $field = $field->$method(...$arguments);
+        }
+
+        $this->format = implode(', ', $format);
+
+        return $field;
+    }
+
     public function sanitize($string)
     {
-        return htmlspecialchars($string, ENT_COMPAT, 'UTF-8', false);
+        return htmlspecialchars(html_entity_decode($string), ENT_COMPAT, 'UTF-8', false);
     }
 
     public function generate()

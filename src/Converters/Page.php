@@ -52,8 +52,15 @@ class Page extends Xml
 
     public function addTitle($page)
     {
-        $title = htmlspecialchars($page->title()->toString());
-        $this->addElement('title', $title);
+        $title = $this->applyMethods($page->title(), $this->included['title']);
+        $title = $title->value();
+
+        $attributes = [];
+        if ($this->format) {
+            $attributes['format'] = $this->format;
+        }
+
+        $this->addElement('title', $title, $attributes);
     }
 
     public function addPath($page)

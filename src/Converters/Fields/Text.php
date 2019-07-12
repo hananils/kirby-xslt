@@ -12,6 +12,8 @@ class Text extends Xml
             return;
         }
 
+        $field = $this->applyMethods($field, $this->included);
+
         $this->addAttribute('slug', $field->slug());
         $this->root->nodeValue = $this->sanitize($field->toString());
     }
