@@ -12,7 +12,7 @@ class Colors extends Xml
             return;
         }
 
-        $this->addAttribute('readable', $field->toReadableColor());
+        $this->addAttribute('readable', $field->toMostReadable());
         $this->root->nodeValue = $this->sanitize($field->toColor());
     }
 }
