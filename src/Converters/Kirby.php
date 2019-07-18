@@ -3,6 +3,7 @@
 namespace Hananils\Converters;
 
 use Hananils\Cache;
+use Hananils\Converters\RecursiveArray;
 use Hananils\Converters\User;
 use Hananils\Converters\Utilities\Path;
 use Hananils\Xml;
