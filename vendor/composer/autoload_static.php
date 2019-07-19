@@ -38,6 +38,7 @@ class ComposerStaticInit24004f89c05eedbc926d6d41a9ecbd68
         'Hananils\\Converters\\Fields\\Choices' => __DIR__ . '/../..' . '/src/Converters/Fields/Choices.php',
         'Hananils\\Converters\\Fields\\Color' => __DIR__ . '/../..' . '/src/Converters/Fields/Color.php',
         'Hananils\\Converters\\Fields\\ColorPalette' => __DIR__ . '/../..' . '/src/Converters/Fields/ColorPalette.php',
+        'Hananils\\Converters\\Fields\\Colors' => __DIR__ . '/../..' . '/src/Converters/Fields/Colors.php',
         'Hananils\\Converters\\Fields\\CropSelect' => __DIR__ . '/../..' . '/src/Converters/Fields/CropSelect.php',
         'Hananils\\Converters\\Fields\\Date' => __DIR__ . '/../..' . '/src/Converters/Fields/Date.php',
         'Hananils\\Converters\\Fields\\Email' => __DIR__ . '/../..' . '/src/Converters/Fields/Email.php',

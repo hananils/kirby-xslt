@@ -15,6 +15,7 @@ return array(
     'Hananils\\Converters\\Fields\\Choices' => $baseDir . '/src/Converters/Fields/Choices.php',
     'Hananils\\Converters\\Fields\\Color' => $baseDir . '/src/Converters/Fields/Color.php',
     'Hananils\\Converters\\Fields\\ColorPalette' => $baseDir . '/src/Converters/Fields/ColorPalette.php',
+    'Hananils\\Converters\\Fields\\Colors' => $baseDir . '/src/Converters/Fields/Colors.php',
     'Hananils\\Converters\\Fields\\CropSelect' => $baseDir . '/src/Converters/Fields/CropSelect.php',
     'Hananils\\Converters\\Fields\\Date' => $baseDir . '/src/Converters/Fields/Date.php',
     'Hananils\\Converters\\Fields\\Email' => $baseDir . '/src/Converters/Fields/Email.php',

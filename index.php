@@ -6,7 +6,7 @@ use Hananils\Cache;
 use Hananils\Xslt;
 use Kirby\Cms\App;
 
-Kirby::plugin('hananils/xslt', [
+Kirby::plugin('hananils/kirby-xslt', [
     'options' => [
         'cache' => true
     ],
