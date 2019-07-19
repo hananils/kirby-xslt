@@ -6,6 +6,7 @@ use Hananils\Converters\Fields\Builder;
 use Hananils\Converters\Fields\Choices;
 use Hananils\Converters\Fields\Color;
 use Hananils\Converters\Fields\ColorPalette;
+use Hananils\Converters\Fields\Colors;
 use Hananils\Converters\Fields\CropSelect;
 use Hananils\Converters\Fields\Date;
 use Hananils\Converters\Fields\Email;
@@ -57,7 +58,10 @@ class Content extends Xml
         foreach ($fields as $name => $blueprint) {
             $input = null;
 
-            if (is_array($this->included) && !array_key_exists($name, $this->included)) {
+            if (
+                is_array($this->included) &&
+                ($this->isNotIncluded($name) || $this->isExcluded($name))
+            ) {
                 continue;
             }
 
@@ -129,6 +133,9 @@ class Content extends Xml
                 case 'contrast-color':
                     $input = new Color($name);
                     break;
+                case 'colors':
+                    $input = new Colors($name);
+                    break;
                 default:
                     $input = new Unknown($name);
                     break;
@@ -139,10 +146,24 @@ class Content extends Xml
             }
 
             $field = $content->get($name);
-            $input->setIncluded($this->included[$name]);
+
+            if (isset($this->included[$name])) {
+                $input->setIncluded($this->included[$name]);
+            }
+
             $input->parse($field, $blueprint);
 
             $this->addElement($name, $input->root());
         }
+    }
+
+    private function isNotIncluded($name)
+    {
+        return (!array_key_exists($name, $this->included) && !array_key_exists('*', $this->included));
+    }
+
+    private function isExcluded($name)
+    {
+        return (array_key_exists($name, $this->included) && $this->included[$name] === false);
     }
 }
