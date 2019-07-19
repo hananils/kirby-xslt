@@ -19,6 +19,16 @@ class Colors extends Xml
             $value = $field->toColor($this->included['space']);
         }
 
+        if (isset($blueprint['contrast'])) {
+            if (is_array($blueprint['contrast'])) {
+                $readable = $field->toMostReadable($blueprint['contrast']);
+            } else {
+                $readable = $field->toMostReadable(['#fff', '#000']);
+            }
+
+            $this->addAttribute('most-readable', $readable);
+        }
+
         unset($attributes['original']);
 
         $this->addAttributes($attributes);
