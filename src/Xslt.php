@@ -170,7 +170,8 @@ class Xslt extends Template
         if (kirby()->languages()->count()) {
             $language = kirby()->language()->code();
         }
-        $translations = kirby()->plugin('hananils/xslt')->extends()['translations'][$language];
+
+        $translations = kirby()->plugin('hananils/kirby-xslt')->extends()['translations'][$language];
         foreach ($translations as $key => $translation) {
             $this->xml->addElement($key, $translation, null, $dictionary);
         }
