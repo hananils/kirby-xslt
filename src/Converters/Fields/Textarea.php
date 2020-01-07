@@ -24,7 +24,7 @@ class Textarea extends Xml
     {
         $value = $field->toString();
 
-        if (option('hananils.xslt.smartypants')) {
+        if (option('hananils.kirby-xslt.smartypants')) {
             $value = smartypants($value);
         }
 
@@ -46,7 +46,7 @@ class Textarea extends Xml
         }
 
         // This option is deprecated, use formatter array instead
-        if (option('hananils.xslt.smartypants')) {
+        if (option('hananils.kirby-xslt.smartypants')) {
             $field = $field->smartypants();
         }
 

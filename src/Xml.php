@@ -26,7 +26,7 @@ class Xml
         $this->document->appendChild($this->root);
         $this->name = $root;
 
-        $this->caching = option('hananils.xslt.cache');
+        $this->caching = option('hananils.kirby-xslt.cache');
     }
 
     public function document()

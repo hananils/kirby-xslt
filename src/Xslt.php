@@ -147,7 +147,7 @@ class Xslt extends Template
     private function addPluginElement()
     {
         $plugin = $this->xml->addElement(['https://hananils.de/kirby-xslt', 'hananils', 'kirby-xslt']);
-        $this->xml->addAttribute('cache', option('hananils.xslt.cache') === true ? 'true' : 'false', $plugin);
+        $this->xml->addAttribute('cache', option('hananils.kirby-xslt.cache') === true ? 'true' : 'false', $plugin);
 
         /* Add kirby node */
         $kirby = new Kirby('kirby');

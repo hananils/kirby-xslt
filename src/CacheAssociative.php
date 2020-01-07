@@ -12,7 +12,7 @@ class CacheAssociative
     {
         $id = self::generateId($context);
         $key = self::generateKey($name, $options);
-        $cache = kirby()->cache('hananils.xslt')->get($id);
+        $cache = kirby()->cache('hananils.kirby-xslt')->get($id);
 
         if ($cache) {
             if ($options === null) {
@@ -31,7 +31,7 @@ class CacheAssociative
     public static function set($context, $xml, $name, $options = [])
     {
         $id = self::generateId($context);
-        $cache = kirby()->cache('hananils.xslt')->get($id);
+        $cache = kirby()->cache('hananils.kirby-xslt')->get($id);
 
         $key = self::generateKey($name, $options);
         $cache[$key] = [
@@ -44,7 +44,7 @@ class CacheAssociative
             $cache[$key]['language'] = kirby()->language()->code();
         }
 
-        kirby()->cache('hananils.xslt')->set($id, $cache, self::$duration);
+        kirby()->cache('hananils.kirby-xslt')->set($id, $cache, self::$duration);
 
         self::setAssociation($context, $context);
     }
@@ -52,7 +52,7 @@ class CacheAssociative
     public static function getAssociations($context)
     {
         $id = self::generateId($context, 'associations');
-        $associations = kirby()->cache('hananils.xslt')->get($id);
+        $associations = kirby()->cache('hananils.kirby-xslt')->get($id);
 
         if (empty($associations)) {
             $associations = [];
@@ -70,16 +70,16 @@ class CacheAssociative
         $associations = array_unique($associations);
         $associations = array_filter($associations);
 
-        kirby()->cache('hananils.xslt')->set($id, $associations, self::$duration);
+        kirby()->cache('hananils.kirby-xslt')->set($id, $associations, self::$duration);
     }
 
     public static function clear($context = null)
     {
         if ($context) {
             self::clearAssociations($context);
-            kirby()->cache('hananils.xslt')->remove(self::generateId($context));
+            kirby()->cache('hananils.kirby-xslt')->remove(self::generateId($context));
         } else {
-            kirby()->cache('hananils.xslt')->flush();
+            kirby()->cache('hananils.kirby-xslt')->flush();
             kirby()->cache('pages')->flush();
         }
     }
@@ -92,10 +92,10 @@ class CacheAssociative
 
         $associations = self::getAssociations($context);
         foreach ($associations as $association) {
-            kirby()->cache('hananils.xslt')->remove($association);
+            kirby()->cache('hananils.kirby-xslt')->remove($association);
         }
 
-        kirby()->cache('hananils.xslt')->remove(self::generateId($context, 'associations'));
+        kirby()->cache('hananils.kirby-xslt')->remove(self::generateId($context, 'associations'));
     }
 
     public static function generateKey($name = 'page', $options = [])
