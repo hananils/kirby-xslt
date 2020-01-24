@@ -1,7 +1,7 @@
 <?php
 
-use Hananils\Cache;
+use Hananils\CacheAssociative;
 
 return function ($status, $file) {
-    Cache::clear($file->page());
+    CacheAssociative::clear($file->page());
 };
