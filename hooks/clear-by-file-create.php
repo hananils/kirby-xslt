@@ -2,6 +2,6 @@
 
 use Hananils\CacheAssociative;
 
-return function ($file) {
+return function ($status, $file) {
     CacheAssociative::clear($file->page());
 };
