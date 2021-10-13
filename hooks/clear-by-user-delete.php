@@ -1,7 +1,7 @@
 <?php
 
-use Hananils\Cache;
+use Hananils\CacheAssociative;
 
 return function ($status, $user) {
-    Cache::clearAssociations($user);
+    CacheAssociative::clearAssociations($user);
 };

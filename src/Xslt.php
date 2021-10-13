@@ -58,12 +58,17 @@ class Xslt extends Template
     public function renderData()
     {
         if (get('data') === 'raw') {
-            kirby()->response()->type('xml');
+            kirby()
+                ->response()
+                ->type('xml');
             $result = $this->xml->document()->saveXML();
         } else {
             $this->setMatches();
             $this->addPluginElement();
-            $result = $this->transform($this->xml, App::instance()->root('plugins') . '/xslt/templates/data.xsl');
+            $result = $this->transform(
+                $this->xml,
+                App::instance()->root('plugins') . '/xslt/templates/data.xsl'
+            );
         }
 
         return $result;
@@ -71,30 +76,42 @@ class Xslt extends Template
 
     public function renderErrors()
     {
-        $errors = $this->xml->addElement(['https://hananils.de/kirby-xslt', 'hananils', 'kirby-xslt-errors']);
+        $errors = $this->xml->addElement([
+            'https://hananils.de/kirby-xslt',
+            'hananils',
+            'kirby-xslt-errors'
+        ]);
 
         foreach ($this->errors as $error) {
             preg_match('/line (\d+)/', $error->message, $ref);
 
-            $this->xml->addElement('error', $error->message, [
-                'level' => $error->level,
-                'code' => $error->code,
-                'column' => $error->column,
-                'file' => $error->file,
-                'line' => $error->line,
-                'referenced-line' => isset($ref[1]) ? $ref[1] : ''
-            ], $errors);
+            $this->xml->addElement(
+                'error',
+                $error->message,
+                [
+                    'level' => $error->level,
+                    'code' => $error->code,
+                    'column' => $error->column,
+                    'file' => $error->file,
+                    'line' => $error->line,
+                    'referenced-line' => isset($ref[1]) ? $ref[1] : ''
+                ],
+                $errors
+            );
         }
 
         $file = null;
         if (!empty($this->errors[0]->file)) {
             $file = $this->errors[0]->file;
-        } elseif (preg_match('/file (.*) line/', $this->errors[0]->message, $matches)) {
+        } elseif (
+            $this->errors &&
+            preg_match('/file (.*) line/', $this->errors[0]->message, $matches)
+        ) {
             $file = $matches[1];
         }
 
         if ($file) {
-            $source = fopen($file, "r");
+            $source = fopen($file, 'r');
             if ($source) {
                 $file = $this->xml->addElement('file', null, null, $errors);
 
@@ -110,7 +127,10 @@ class Xslt extends Template
 
         $this->addPluginElement();
 
-        $result = $this->transform($this->xml, App::instance()->root('plugins') . '/xslt/templates/data.xsl');
+        $result = $this->transform(
+            $this->xml,
+            App::instance()->root('plugins') . '/xslt/templates/data.xsl'
+        );
 
         return $result;
     }
@@ -128,7 +148,11 @@ class Xslt extends Template
             $xslt->importStylesheet($stylesheet);
 
             $result = $xslt->transformToXML($xml->document());
-            $result = str_replace('<!DOCTYPE html SYSTEM "about:legacy-compat">', '<!DOCTYPE html>', $result);
+            $result = str_replace(
+                '<!DOCTYPE html SYSTEM "about:legacy-compat">',
+                '<!DOCTYPE html>',
+                $result
+            );
         } catch (Exception $e) {
             if (!$this->errors && kirby()->user()) {
                 $this->errors = libxml_get_errors();
@@ -146,8 +170,16 @@ class Xslt extends Template
 
     private function addPluginElement()
     {
-        $plugin = $this->xml->addElement(['https://hananils.de/kirby-xslt', 'hananils', 'kirby-xslt']);
-        $this->xml->addAttribute('cache', option('hananils.xslt.cache') === true ? 'true' : 'false', $plugin);
+        $plugin = $this->xml->addElement([
+            'https://hananils.de/kirby-xslt',
+            'hananils',
+            'kirby-xslt'
+        ]);
+        $this->xml->addAttribute(
+            'cache',
+            option('hananils.kirby-xslt.cache') === true ? 'true' : 'false',
+            $plugin
+        );
 
         /* Add kirby node */
         $kirby = new Kirby('kirby');
@@ -167,10 +199,19 @@ class Xslt extends Template
         /* Add dictionary */
         $dictionary = $this->xml->addElement('dictionary', null, null, $plugin);
         $language = 'en';
-        if (kirby()->languages()->count()) {
-            $language = kirby()->language()->code();
+        if (
+            kirby()
+                ->languages()
+                ->count()
+        ) {
+            $language = kirby()
+                ->language()
+                ->code();
         }
-        $translations = kirby()->plugin('hananils/xslt')->extends()['translations'][$language];
+
+        $translations = kirby()
+            ->plugin('hananils/kirby-xslt')
+            ->extends()['translations'][$language];
         foreach ($translations as $key => $translation) {
             $this->xml->addElement($key, $translation, null, $dictionary);
         }
@@ -178,15 +219,26 @@ class Xslt extends Template
         /* Add icons */
         $icons = $this->xml->addElement('icons', null, null, $plugin);
         $svg = new Xml('svg');
-        $svg->document()->load(kirby()->root('kirby') . '/panel/public/img/icons.svg');
-        $this->xml->addElement('svg', $svg->document()->documentElement, null, $icons);
+        $svg->document()->load(
+            kirby()->root('kirby') . '/panel/public/img/icons.svg'
+        );
+        $this->xml->addElement(
+            'svg',
+            $svg->document()->documentElement,
+            null,
+            $icons
+        );
 
         /* Add XSLT processing time of frontend template */
         if (!$this->errors) {
             $start = microtime(true);
             $this->renderTemplate();
             $end = microtime(true);
-            $this->xml->addAttribute('transformation-time', round(($end - $start) * 1000, 2), $plugin);
+            $this->xml->addAttribute(
+                'transformation-time',
+                round(($end - $start) * 1000, 2),
+                $plugin
+            );
         }
     }
 
@@ -205,9 +257,16 @@ class Xslt extends Template
 
         if ($matches) {
             foreach ($matches as $match) {
-                $this->xml->addAttribute(['https://hananils.de/kirby-xslt', 'hananils', 'xpath-matched'], 'true', $match);
+                $this->xml->addAttribute(
+                    [
+                        'https://hananils.de/kirby-xslt',
+                        'hananils',
+                        'xpath-matched'
+                    ],
+                    'true',
+                    $match
+                );
             }
         }
     }
-
 }

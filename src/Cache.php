@@ -11,7 +11,7 @@ class Cache
     public static function get($type, $name)
     {
         $id = self::generateId($type, $name);
-        $cache = kirby()->cache('hananils.xslt')->get($id);
+        $cache = kirby()->cache('hananils.kirby-xslt')->get($id);
 
         if ($cache) {
             $cached = new DomDocument('1.0', 'utf-8');
@@ -26,16 +26,16 @@ class Cache
     public static function set($xml, $type, $name)
     {
         $id = self::generateId($type, $name);
-        kirby()->cache('hananils.xslt')->set($id, $xml, self::$duration);
+        kirby()->cache('hananils.kirby-xslt')->set($id, $xml, self::$duration);
     }
 
     public static function clear($type = null, $name = null)
     {
         if ($type && $name) {
             $id = self::generateId($type, $name);
-            kirby()->cache('hananils.xslt')->remove($id);
+            kirby()->cache('hananils.kirby-xslt')->remove($id);
         } else {
-            kirby()->cache('hananils.xslt')->flush();
+            kirby()->cache('hananils.kirby-xslt')->flush();
             kirby()->cache('pages')->flush();
         }
     }

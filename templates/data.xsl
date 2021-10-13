@@ -42,7 +42,7 @@
                 <xsl:text>: </xsl:text>
                 <xsl:value-of select="$plugin/page/title" />
             </title>
-            <link rel="stylesheet" type="text/css" href="{$media}/plugins/hananils/xslt/styles/debug.css" />
+            <link rel="stylesheet" type="text/css" href="{$media}/plugins/hananils/kirby-xslt/styles/debug.css" />
         </head>
         <body id="app" lang="{$plugin/kirby/@language}">
             <xsl:copy-of select="hananils:kirby-xslt/icons/*" />
@@ -215,10 +215,10 @@
                     </ol>
                 </div>
             </main>
-            <script type="text/javascript" src="{$media}/plugins/hananils/xslt/scripts/app.register.js"></script>
-            <script type="text/javascript" src="{$media}/plugins/hananils/xslt/scripts/app.components.js"></script>
-            <script type="text/javascript" src="{$media}/plugins/hananils/xslt/scripts/app.switch.js"></script>
-            <script type="text/javascript" src="{$media}/plugins/hananils/xslt/scripts/app.js"></script>
+            <script type="text/javascript" src="{$media}/plugins/hananils/kirby-xslt/scripts/app.register.js"></script>
+            <script type="text/javascript" src="{$media}/plugins/hananils/kirby-xslt/scripts/app.components.js"></script>
+            <script type="text/javascript" src="{$media}/plugins/hananils/kirby-xslt/scripts/app.switch.js"></script>
+            <script type="text/javascript" src="{$media}/plugins/hananils/kirby-xslt/scripts/app.js"></script>
         </body>
     </html>
 </xsl:template>

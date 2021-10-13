@@ -39,7 +39,7 @@ class File extends Xml
     {
         $meta = new Content('meta');
         $meta->setIncluded($this->included['meta']);
-        $meta->parse($file->meta(), $file->blueprint()->fields(), $file);
+        $meta->parse($file->content(), $file->blueprint()->fields(), $file);
 
         $this->addElement('meta', $meta->root());
     }
@@ -64,8 +64,8 @@ class File extends Xml
                 $field = $file->content()->get($name);
                 $type = $file->blueprint()->field($name)['type'];
 
-                if ($type !== 'focus' && in_array($value, $positions)) {
-                    $options['crop'] = $crop;
+                if ($type !== 'focus' && in_array($field->value(), $positions)) {
+                    $options['crop'] = $field->value();
                 } else {
                     $options['crop'] = 'center';
                 }
