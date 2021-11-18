@@ -487,3 +487,8 @@ The plugin is work in progress. We are extending it based on our own needs:
 -   Field support is limited to the core fields and a few additional fields we use ourselves.
 
 Contributions are always welcome.
+
+# License
+
+This plugin is provided freely under the [MIT license](LICENSE.md) by [hana+nils · Büro für Gestaltung](https://hananils.de).  
+We create visual designs for digital and analog media.
