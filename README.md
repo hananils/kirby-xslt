@@ -1,35 +1,24 @@
-# XSLT for Kirby 3
+![Kirby XSLT](.github/title.png)
 
-We work as designers, and over the years we have fallen in love with XSLT for templating. XSLT allows you to transform XML to any other structure by applying templates and thus you can use it to generate HTML from structured data. The syntax looks like HTML and works like CSS conceptually.
+**XSLT** is a template component for [Kirby 3](https://getkirby.com) enabling XSLT support in your templates. It let's you specify the needed data for each blueprint which is then provided as XML on the frontend:
 
-This plugin enables XSLT templating in your Kirby install by generating XML for all front-end pages. You can setup custom nodes and specify included elements for each page.
+-   [Settings up XML output](#data)
+-   [Creating templates](#templates)
+-   [Shortcomings](#shortcomings)
 
-### Overview
+## Installation
 
-- [Installation](#installation)
-- [Settings up XML output](#data)
-- [Creating templates](#templates)
-- [Shortcomings](#shortcomings)
+### Download
 
-# Installation
+Download and copy this repository to `/site/plugins/xslt`.
 
-This plugin requires PHP's [LibXML module](https://secure.php.net/manual/en/book.libxml.php) with the [XSLT extension](https://secure.php.net/manual/en/book.xsl.php) enabled (`--with-xsl`) in order to work.
+### Git submodule
 
-## Via Download
-
-Download the latest release from https://github.com/hananils/kirby-xslt/releases, unzip all files and copy them to the plugin folder at `/site/plugins/xslt`.
-
-## Via Git Submodule
-
-Add this repository as submodule to `/site/plugins/xslt`:
-
-```git
+```
 git submodule add https://github.com/hananils/kirby-xslt.git site/plugins/xslt
 ```
 
-## Via Composer
-
-Require this plugin using composer:
+### Composer
 
 ```
 composer require hananils/kirby-xslt
@@ -104,24 +93,24 @@ Any object defined in a controller will be added to the XML output as well, e. g
 <?php
 
 return function ($kirby) {
-  return [
-    'projects' => $kirby->collection('projects')
-  ];
+    return [
+        'projects' => $kirby->collection('projects')
+    ];
 };
 ```
 
 Known types are:
 
-- `Kirby\Cms\App`, see [Kirby docs](https://getkirby.com/docs/reference/objects/kirby)
-- `Kirby\Cms\Site`, see [Kirby docs](https://getkirby.com/docs/reference/objects/site)
-- `Kirby\Cms\Pages`, see [Kirby docs](https://getkirby.com/docs/reference/objects/pages)
-- `Kirby\Cms\Page`, see [Kirby docs](https://getkirby.com/docs/reference/objects/page)
-- `Kirby\Cms\Files`, see [Kirby docs](https://getkirby.com/docs/reference/objects/files)
-- `Kirby\Cms\File`, see [Kirby docs](https://getkirby.com/docs/reference/objects/file)
-- `Kirby\Cms\Users`, see [Kirby docs](https://getkirby.com/docs/reference/objects/users)
-- `Kirby\Cms\User`, see [Kirby docs](https://getkirby.com/docs/reference/objects/user)
-- `DomDocument`, see [PHP docs](https://secure.php.net/manual/en/class.domdocument.php)
-- `DomElement`, see [PHP docs](https://secure.php.net/manual/en/class.domelement.php)
+-   `Kirby\Cms\App`, see [Kirby docs](https://getkirby.com/docs/reference/objects/kirby)
+-   `Kirby\Cms\Site`, see [Kirby docs](https://getkirby.com/docs/reference/objects/site)
+-   `Kirby\Cms\Pages`, see [Kirby docs](https://getkirby.com/docs/reference/objects/pages)
+-   `Kirby\Cms\Page`, see [Kirby docs](https://getkirby.com/docs/reference/objects/page)
+-   `Kirby\Cms\Files`, see [Kirby docs](https://getkirby.com/docs/reference/objects/files)
+-   `Kirby\Cms\File`, see [Kirby docs](https://getkirby.com/docs/reference/objects/file)
+-   `Kirby\Cms\Users`, see [Kirby docs](https://getkirby.com/docs/reference/objects/users)
+-   `Kirby\Cms\User`, see [Kirby docs](https://getkirby.com/docs/reference/objects/user)
+-   `DomDocument`, see [PHP docs](https://secure.php.net/manual/en/class.domdocument.php)
+-   `DomElement`, see [PHP docs](https://secure.php.net/manual/en/class.domelement.php)
 
 ## Included Elements
 
@@ -144,16 +133,16 @@ The `kirby` object has the following options that either switch a node on or off
 
 ```yml
 kirby:
-  attributes:
-    - content-extension
-    - language
-    - multilang
-    - version'
-  urls: true
-  request: true
-  languages: false
-  session: true
-  user: true
+    attributes:
+        - content-extension
+        - language
+        - multilang
+        - version'
+    urls: true
+    request: true
+    languages: false
+    session: true
+    user: true
 ```
 
 The `attributes` object allows to creation of node attributes from kirby methods. The name of the attribute has to match the method’s name, see [the Kirby docs](https://getkirby.com/docs/reference/objects/kirby).
@@ -173,24 +162,24 @@ The `page` objects have the following options:
 
 ```yml
 page:
-  attributes:
-    - id
-    - url
-  title: true
-  path: true
-  languages: true
-  content: true
-  files: true
-  children: false
+    attributes:
+        - id
+        - url
+    title: true
+    path: true
+    languages: true
+    content: true
+    files: true
+    children: false
 ```
 
-- The `attributes` object allows to creation of node attributes from page methods. The name of the attribute has to match the method’s name, see [the Kirby docs](https://getkirby.com/docs/reference/objects/page).
-- The `title` object can be switched on and off by setting `true` or `false`.
-- The `path` object is helpful to apply different templates base on the URL, it can be switched on and off by setting `true` or `false`.
-- The `languages` object is available in multilingual installs and offers link for all languages, it can be switched on and off by setting `true` or `false`.
-- The `content` subsetting takes and array of fields you'd like to include, e. g. `content: title, description, tags`.
-- The `files` object can be switched on and off by setting `true` or `false`. It also takes additional settings, see below.
-- The `children` object can be switched on and off by setting `true` or `false`. It also takes additional settings from the `pages` object, see below.
+-   The `attributes` object allows to creation of node attributes from page methods. The name of the attribute has to match the method’s name, see [the Kirby docs](https://getkirby.com/docs/reference/objects/page).
+-   The `title` object can be switched on and off by setting `true` or `false`.
+-   The `path` object is helpful to apply different templates base on the URL, it can be switched on and off by setting `true` or `false`.
+-   The `languages` object is available in multilingual installs and offers link for all languages, it can be switched on and off by setting `true` or `false`.
+-   The `content` subsetting takes and array of fields you'd like to include, e. g. `content: title, description, tags`.
+-   The `files` object can be switched on and off by setting `true` or `false`. It also takes additional settings, see below.
+-   The `children` object can be switched on and off by setting `true` or `false`. It also takes additional settings from the `pages` object, see below.
 
 If you'd like to pass options to a specific fields, you can still include all other field by using a wildcard:
 
@@ -212,40 +201,40 @@ To get unformatted source text, the field has to be set to `unformatted` in the 
 
 ```yml
 content:
-  title: true
-  description: unformatted
-  tags: true
+    title: true
+    description: unformatted
+    tags: true
 ```
 
 To get formatted output, the field has to be set to either `markdown` or `kirbytext`:
 
 ```yml
 content:
-  title: true
-  description: markdown
-  tags: true
+    title: true
+    description: markdown
+    tags: true
 ```
 
 To apply multiple formatters – like Kirbytext and SmartyPants –, the field also accepts a list of method:
 
 ```yml
 content:
-  title: true
-  description:
-    - kirbytext
-    - smartypants
-  tags: true
+    title: true
+    description:
+        - kirbytext
+        - smartypants
+    tags: true
 ```
 
 Methods are applied from top to bottom. [Any existing field method](https://getkirby.com/docs/reference/templates/field-methods) can be used so it's also possible to apply the `lower` method for example:
 
 ```yml
 content:
-  title: true
-  description:
-    - kirbytext
-    - lower
-  tags: true
+    title: true
+    description:
+        - kirbytext
+        - lower
+    tags: true
 ```
 
 #### Telephone field
@@ -264,17 +253,17 @@ The `files` object returns a collection of files grouped by file template:
 filename: true
 meta: description, credits, focus
 thumbs:
-  - width: 600
-    height: 400
-    crop: left
-  - width: 1200
-    crop: file.focus
-  - width: 1800
+    - width: 600
+      height: 400
+      crop: left
+    - width: 1200
+      crop: file.focus
+    - width: 1800
 ```
 
-- The `filename` can be switched on and off by setting `true` or `false`.
-- The `meta` object equals the `content` object of a page, see above.
-- The `thumbs` object lets you setup image thumbnails. It takes a list of thumbs with optional settings for `width`, `height` and `crop` position. If your crop position is stored in a field, you can reference it using the syntax `file.fieldname`.
+-   The `filename` can be switched on and off by setting `true` or `false`.
+-   The `meta` object equals the `content` object of a page, see above.
+-   The `thumbs` object lets you setup image thumbnails. It takes a list of thumbs with optional settings for `width`, `height` and `crop` position. If your crop position is stored in a field, you can reference it using the syntax `file.fieldname`.
 
 ### Extending Included Elements
 
@@ -294,23 +283,23 @@ extends: default
 filename: true
 meta: description, credits, focus
 thumbs:
-  - width: 600
-    height: 400
-    crop: left
-  - width: 1200
-    crop: fields.focus
-  - width: 1800
+    - width: 600
+      height: 400
+      crop: left
+    - width: 1200
+      crop: fields.focus
+    - width: 1800
 ```
 
 `/site/definitions/project.yml`
 
 ```yml
 page:
-  title: true
-  content: title, description, url, date, tags
-  files:
-  image:
-    extends: files/image
+    title: true
+    content: title, description, url, date, tags
+    files:
+    image:
+        extends: files/image
 ```
 
 #### Extending page definitions
@@ -326,7 +315,7 @@ path: true
 
 ```yml
 page:
-  extends: default
+    extends: default
 ```
 
 ### Helper Objects
@@ -337,10 +326,10 @@ The plugin bundles two helper objects to be used inside your controllers:
 <?php
 
 return function ($kirby) {
-  return [
-    'datetime' => $kirby->collection('datetime'),
-    'assets' => $kirby->collection('assets')
-  ];
+    return [
+        'datetime' => $kirby->collection('datetime'),
+        'assets' => $kirby->collection('assets')
+    ];
 };
 ```
 
@@ -387,7 +376,7 @@ The used locale can be set in the config:
 <?php
 
 return [
-  'locale' => 'en_CA.utf-8'
+    'locale' => 'en_CA.utf-8'
 ];
 ```
 
@@ -397,8 +386,8 @@ It’s possible to set the included node in the definition files:
 
 ```yml
 datetime:
-  today: true
-  languages: false
+    today: true
+    languages: false
 ```
 
 #### Assets
@@ -495,6 +484,6 @@ If you use `doctype-system="about:legacy-compat"` as in the example above, the p
 
 The plugin is work in progress. We are extending it based on our own needs:
 
-- Field support is limited to the core fields and a few additional fields we use ourselves.
+-   Field support is limited to the core fields and a few additional fields we use ourselves.
 
 Contributions are always welcome.
