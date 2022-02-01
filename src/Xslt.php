@@ -137,7 +137,6 @@ class Xslt extends Template
 
     public function transform($xml, $xsl)
     {
-        libxml_disable_entity_loader(false);
         libxml_use_internal_errors(true);
 
         try {
