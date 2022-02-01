@@ -11,7 +11,11 @@ Kirby::plugin('hananils/kirby-xslt', [
         'cache' => true
     ],
     'components' => [
-        'template' => function (App $kirby, string $name, string $contentType = null) {
+        'template' => function (
+            App $kirby,
+            string $name,
+            string $contentType = null
+        ) {
             return new Hananils\Xslt($name, $contentType);
         }
     ],
@@ -23,23 +27,32 @@ Kirby::plugin('hananils/kirby-xslt', [
         'site.update:after' => require __DIR__ . '/hooks/clear-by-page.php',
         'page.changeNum:after' => require __DIR__ . '/hooks/clear-by-page.php',
         'page.changeSlug:after' => require __DIR__ . '/hooks/clear-by-page.php',
-        'page.changeStatus:after' => require __DIR__ . '/hooks/clear-by-page.php',
-        'page.changeTemplate:after' => require __DIR__ . '/hooks/clear-by-page.php',
-        'page.changeTitle:after' => require __DIR__ . '/hooks/clear-by-page.php',
+        'page.changeStatus:after' => require __DIR__ .
+            '/hooks/clear-by-page.php',
+        'page.changeTemplate:after' => require __DIR__ .
+            '/hooks/clear-by-page.php',
+        'page.changeTitle:after' => require __DIR__ .
+            '/hooks/clear-by-page.php',
         'page.update:after' => require __DIR__ . '/hooks/clear-by-page.php',
         'page.create:after' => require __DIR__ . '/hooks/clear-by-child.php',
+        'page.delete:after' => require __DIR__ . '/hooks/clear-delete.php',
         'file.changeName:after' => require __DIR__ . '/hooks/clear-by-file.php',
         'file.changeSort:after' => require __DIR__ . '/hooks/clear-by-file.php',
         'file.replace:after' => require __DIR__ . '/hooks/clear-by-file.php',
         'file.update:after' => require __DIR__ . '/hooks/clear-by-file.php',
-        'file.create:after' => require __DIR__ . '/hooks/clear-by-file-create.php',
-        'file.delete:after' => require __DIR__ . '/hooks/clear-by-file-delete.php',
-        'user.changeEmail:after' => require __DIR__ . '/hooks/clear-by-user.php',
+        'file.create:after' => require __DIR__ .
+            '/hooks/clear-by-file-create.php',
+        'file.delete:after' => require __DIR__ .
+            '/hooks/clear-by-file-delete.php',
+        'user.changeEmail:after' => require __DIR__ .
+            '/hooks/clear-by-user.php',
         'user.changeName:after' => require __DIR__ . '/hooks/clear-by-user.php',
-        'user.changeLanguage:after' => require __DIR__ . '/hooks/clear-by-user.php',
+        'user.changeLanguage:after' => require __DIR__ .
+            '/hooks/clear-by-user.php',
         'user.changeRole:after' => require __DIR__ . '/hooks/clear-by-user.php',
         'user.update:after' => require __DIR__ . '/hooks/clear-by-user.php',
-        'user.delete:after' => require __DIR__ . '/hooks/clear-by-user-delete.php'
+        'user.delete:after' => require __DIR__ .
+            '/hooks/clear-by-user-delete.php'
     ],
     'routes' => [
         [
@@ -76,7 +89,8 @@ Kirby::plugin('hananils/kirby-xslt', [
         'de' => [
             'cache-off' => 'XML-Cache ist deaktiviert',
             'cache-on' => 'XML-Cache ist aktiviert',
-            'cache-switch' => 'Du kannst diese Einstellung in deiner Konfiguration ändern.',
+            'cache-switch' =>
+                'Du kannst diese Einstellung in deiner Konfiguration ändern.',
             'data' => 'Daten',
             'error' => 'Verarbeitungsfehler',
             'errors' => 'Verarbeitungsfehler',
