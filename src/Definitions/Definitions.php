@@ -81,6 +81,10 @@ class Definitions
                 $definitions[$node]['children']['content'] = $this->normalizeFields($definition['children']['content']);
             }
 
+            if (isset($definition['modules']['content']) && is_string($definition['modules']['content'])) {
+                $definitions[$node]['modules']['content'] = $this->normalizeFields($definition['modules']['content']);
+            }
+
             if (isset($definition['files']) && is_array($definition['files'])) {
                 foreach ($definition['files'] as $template => $files) {
                     if (isset($files['meta']) && is_string($files['meta'])) {

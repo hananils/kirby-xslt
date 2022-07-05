@@ -42,6 +42,7 @@ class Page extends Xml
             $this->addNode('languages', $page);
             $this->addNode('content', $page);
             $this->addNode('children', $page);
+            $this->addNode('modules', $page);
             $this->addNode('files', $page);
 
             if ($this->caching) {
@@ -106,6 +107,17 @@ class Page extends Xml
             }
 
             $this->addElement('children', $children->root());
+        }
+    }
+
+    public function addModules($page)
+    {
+        if ($page->hasModules()) {
+            $modules = new Pages('modules');
+            $modules->setIncluded($this->included['modules']);
+            $modules->import($page->modules());
+
+            $this->addElement('modules', $modules->root());
         }
     }
 
