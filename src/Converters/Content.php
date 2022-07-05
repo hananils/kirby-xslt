@@ -71,6 +71,7 @@ class Content extends Xml
                 case 'text':
                     $input = new Text($name);
                     break;
+                case 'markdown':
                 case 'textarea':
                     $input = new Textarea($name);
                     break;
