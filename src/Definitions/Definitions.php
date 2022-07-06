@@ -43,17 +43,35 @@ class Definitions
             $definitions = $this->extendNode('', $definitions['extends'], $definitions);
         }
 
+
         foreach ($definitions as $node => $definition) {
             if (isset($definition['extends'])) {
                 $definitions[$node] = $this->extendNode('pages', $definition['extends'], $definition);
             }
 
-            if (isset($definition['files']) && is_array($definition['files'])) {
-                foreach ($definition['files'] as $template => $files) {
-                    if (isset($files['extends'])) {
-                        $definitions[$node]['files'][$template] = $this->extendNode('files', $files['extends'], $files);
-                    }
-                }
+            if (isset($definition['files'])) {
+                $definitions[$node]['files'] = $this->extendFiles($definition['files']);
+            }
+
+            if (isset($definition['modules']) && isset($definition['modules']['files'])) {
+                $definitions[$node]['modules']['files'] = $this->extendFiles($definition['modules']['files']);
+            }
+        }
+
+        return $definitions;
+    }
+
+    private function extendFiles($files)
+    {
+        if (!is_array($files)) {
+            return $files;
+        }
+
+        $definitions = [];
+
+        foreach ($files as $template => $definition) {
+            if (isset($definition['extends'])) {
+                $definitions[$template] = $this->extendNode('files', $definition['extends'], $definition);
             }
         }
 
@@ -83,14 +101,14 @@ class Definitions
 
             if (isset($definition['modules']['content']) && is_string($definition['modules']['content'])) {
                 $definitions[$node]['modules']['content'] = $this->normalizeFields($definition['modules']['content']);
+
+                if (isset($definition['modules']['files']) && is_array($definition['modules']['files'])) {
+                    $definitions[$node]['modules']['files'] = $this->normalizeFiles($definitions[$node]['modules']['files']);
+                }
             }
 
             if (isset($definition['files']) && is_array($definition['files'])) {
-                foreach ($definition['files'] as $template => $files) {
-                    if (isset($files['meta']) && is_string($files['meta'])) {
-                        $definitions[$node]['files'][$template]['meta'] = $this->normalizeFields($files['meta']);
-                    }
-                }
+                $definitions[$node]['files'] = $this->normalizeFiles($definitions[$node]['files']);
             }
         }
 
@@ -104,6 +122,17 @@ class Definitions
         $fields = array_fill_keys($fields, true);
 
         return $fields;
+    }
+
+    private function normalizeFiles($files)
+    {
+        foreach ($files as $template => $definition) {
+            if (isset($definition['meta']) && is_string($definition['meta'])) {
+                $files[$template]['meta'] = $this->normalizeFields($definition['meta']);
+            }
+        }
+
+        return $files;
     }
 
     public function file()
