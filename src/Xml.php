@@ -3,7 +3,6 @@
 namespace Hananils;
 
 use DomDocument;
-use Hananils\Converters\Page;
 use Hananils\Definitions\Definitions;
 use Kirby\Toolkit\Str;
 
@@ -284,5 +283,4 @@ class Xml
     {
         return $this->document->saveXml();
     }
-
 }

@@ -35,7 +35,7 @@ class Xslt extends Template
     public function render(array $data = []): string
     {
         if ($this->exists() === false) {
-            throw new Exception($this->missingViewMessage());
+            throw new Exception('The view does not exist: ' . $this->name());
         }
 
         // Convert data
@@ -200,8 +200,8 @@ class Xslt extends Template
         $language = 'en';
         if (
             kirby()
-                ->languages()
-                ->count()
+            ->languages()
+            ->count()
         ) {
             $language = kirby()
                 ->language()

@@ -3,7 +3,7 @@
 namespace Hananils\Converters;
 
 use Hananils\Xml;
-use Kirby\Toolkit\Dir;
+use Kirby\Filesystem\Dir;
 
 class Directory extends Xml
 {

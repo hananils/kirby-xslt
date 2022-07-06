@@ -4,7 +4,7 @@ namespace Hananils\Definitions;
 
 use Exception;
 use Kirby\Data\Yaml;
-use Kirby\Toolkit\F;
+use Kirby\Filesystem\F;
 
 class Definitions
 {
