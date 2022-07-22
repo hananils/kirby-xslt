@@ -23,7 +23,11 @@ class Files extends Xml
             $this->wrapper = $this->addElement($group);
 
             if (isset($this->included) && ($this->included === true || array_key_exists($group, $this->included))) {
-                $included = $this->included[$group];
+                $included = $this->included;
+
+                if(isset($this->included[$group])) {
+                    $included = $this->included[$group];
+                }
 
                 foreach ($children->sortBy('sort') as $child) {
                     $this->addFile($child, $included);

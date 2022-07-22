@@ -18,7 +18,7 @@ class File extends Xml
         'attributes' => ['type', 'url'],
         'filename' => true,
         'meta' => true,
-        'thumbs' => true
+        'thumbs' => []
     ];
 
     public function import($file)
