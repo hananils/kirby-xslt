@@ -89,6 +89,18 @@ class File extends Xml
                 }
             }
 
+            if(!isset($attributes['height']) && isset($width)) {
+                $attributes['height'] = $width / $file->width() * $file->height();
+            } else {
+                $attributes['height'] = $file->height();
+            }
+
+            if(!isset($attributes['width']) && isset($height)) {
+                $attributes['width'] = $height / $file->height() * $file->width();
+            } else {
+                $attributes['width'] = $file->width();
+            }
+
             $this->addElement('url', $thumb->url(), $attributes, $thumbs);
         }
     }
