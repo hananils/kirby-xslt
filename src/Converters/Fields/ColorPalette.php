@@ -22,7 +22,12 @@ class ColorPalette extends Xml
                     } else {
                         $extracted = $this->addElement('selected');
                         foreach ($color as $extract) {
-                            $this->addElement('color', $extract, null, $extracted);
+                            $this->addElement(
+                                'color',
+                                $extract,
+                                null,
+                                $extracted
+                            );
                         }
                     }
                 } else {

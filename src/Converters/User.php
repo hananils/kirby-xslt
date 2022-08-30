@@ -59,5 +59,4 @@ class User extends Xml
 
         $this->addElement('content', $content->root());
     }
-
 }

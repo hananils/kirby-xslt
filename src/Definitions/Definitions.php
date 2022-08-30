@@ -40,21 +40,35 @@ class Definitions
     public function extend($definitions)
     {
         if (isset($definitions['extends'])) {
-            $definitions = $this->extendNode('', $definitions['extends'], $definitions);
+            $definitions = $this->extendNode(
+                '',
+                $definitions['extends'],
+                $definitions
+            );
         }
-
 
         foreach ($definitions as $node => $definition) {
             if (isset($definition['extends'])) {
-                $definitions[$node] = $this->extendNode('pages', $definition['extends'], $definition);
+                $definitions[$node] = $this->extendNode(
+                    'pages',
+                    $definition['extends'],
+                    $definition
+                );
             }
 
             if (isset($definition['files'])) {
-                $definitions[$node]['files'] = $this->extendFiles($definition['files']);
+                $definitions[$node]['files'] = $this->extendFiles(
+                    $definition['files']
+                );
             }
 
-            if (isset($definition['modules']) && isset($definition['modules']['files'])) {
-                $definitions[$node]['modules']['files'] = $this->extendFiles($definition['modules']['files']);
+            if (
+                isset($definition['modules']) &&
+                isset($definition['modules']['files'])
+            ) {
+                $definitions[$node]['modules']['files'] = $this->extendFiles(
+                    $definition['modules']['files']
+                );
             }
         }
 
@@ -71,7 +85,11 @@ class Definitions
 
         foreach ($files as $template => $definition) {
             if (isset($definition['extends'])) {
-                $definitions[$template] = $this->extendNode('files', $definition['extends'], $definition);
+                $definitions[$template] = $this->extendNode(
+                    'files',
+                    $definition['extends'],
+                    $definition
+                );
             }
         }
 
@@ -80,7 +98,10 @@ class Definitions
 
     public function extendNode($type, $path, $definition)
     {
-        $file = F::realpath($this->root() . '/' . $path . '.yml', $this->root() . '/' . $type);
+        $file = F::realpath(
+            $this->root() . '/' . $path . '.yml',
+            $this->root() . '/' . $type
+        );
         $extends = $this->load($file);
 
         unset($definition['extends']);
@@ -91,24 +112,48 @@ class Definitions
     public function normalize($definitions)
     {
         foreach ($definitions as $node => $definition) {
-            if (isset($definition['content']) && is_string($definition['content'])) {
-                $definitions[$node]['content'] = $this->normalizeFields($definition['content']);
+            if (
+                isset($definition['content']) &&
+                is_string($definition['content'])
+            ) {
+                $definitions[$node]['content'] = $this->normalizeFields(
+                    $definition['content']
+                );
             }
 
-            if (isset($definition['children']['content']) && is_string($definition['children']['content'])) {
-                $definitions[$node]['children']['content'] = $this->normalizeFields($definition['children']['content']);
+            if (
+                isset($definition['children']['content']) &&
+                is_string($definition['children']['content'])
+            ) {
+                $definitions[$node]['children'][
+                    'content'
+                ] = $this->normalizeFields($definition['children']['content']);
             }
 
-            if (isset($definition['modules']['content']) && is_string($definition['modules']['content'])) {
-                $definitions[$node]['modules']['content'] = $this->normalizeFields($definition['modules']['content']);
+            if (
+                isset($definition['modules']['content']) &&
+                is_string($definition['modules']['content'])
+            ) {
+                $definitions[$node]['modules'][
+                    'content'
+                ] = $this->normalizeFields($definition['modules']['content']);
 
-                if (isset($definition['modules']['files']) && is_array($definition['modules']['files'])) {
-                    $definitions[$node]['modules']['files'] = $this->normalizeFiles($definitions[$node]['modules']['files']);
+                if (
+                    isset($definition['modules']['files']) &&
+                    is_array($definition['modules']['files'])
+                ) {
+                    $definitions[$node]['modules'][
+                        'files'
+                    ] = $this->normalizeFiles(
+                        $definitions[$node]['modules']['files']
+                    );
                 }
             }
 
             if (isset($definition['files']) && is_array($definition['files'])) {
-                $definitions[$node]['files'] = $this->normalizeFiles($definitions[$node]['files']);
+                $definitions[$node]['files'] = $this->normalizeFiles(
+                    $definitions[$node]['files']
+                );
             }
         }
 
@@ -128,7 +173,9 @@ class Definitions
     {
         foreach ($files as $template => $definition) {
             if (isset($definition['meta']) && is_string($definition['meta'])) {
-                $files[$template]['meta'] = $this->normalizeFields($definition['meta']);
+                $files[$template]['meta'] = $this->normalizeFields(
+                    $definition['meta']
+                );
             }
         }
 
@@ -138,10 +185,16 @@ class Definitions
     public function file()
     {
         try {
-            return F::realpath($this->root() . '/' . $this->name() . '.yml', $this->root());
+            return F::realpath(
+                $this->root() . '/' . $this->name() . '.yml',
+                $this->root()
+            );
         } catch (Exception $e) {
             try {
-                return F::realpath($this->root() . '/default.yml', $this->root());
+                return F::realpath(
+                    $this->root() . '/default.yml',
+                    $this->root()
+                );
             } catch (Exception $e) {
                 return null;
             }
@@ -168,4 +221,4 @@ class Definitions
             false;
         }
     }
-};
+}

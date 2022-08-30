@@ -5,14 +5,14 @@
 
 var App = App || {};
 
-(function() {
+(function () {
     'use strict';
 
-    var init = function() {
+    var init = function () {
         App.Components.get('xml').addEventListener('click', handleHighlight);
 
         var switches = document.querySelectorAll('.m-index-switch');
-        switches.forEach(function(status) {
+        switches.forEach(function (status) {
             status.addEventListener('click', handleClick);
         });
 
@@ -23,7 +23,7 @@ var App = App || {};
      * Events
      *------------------------------------------------------------------------*/
 
-    var handleClick = function(event) {
+    var handleClick = function (event) {
         var target = event.target;
 
         if (target.matches('use')) {
@@ -35,7 +35,7 @@ var App = App || {};
         toggle(name);
     };
 
-    var handleHighlight = function(event) {
+    var handleHighlight = function (event) {
         var target = event.target;
 
         if (target.parentNode.parentNode.matches('.is-collapsed')) {
@@ -49,7 +49,7 @@ var App = App || {};
      * Interactions
      *------------------------------------------------------------------------*/
 
-    var toggle = function(name) {
+    var toggle = function (name) {
         var button = App.Components.get('index').querySelector(
             'a[href$="#' + name + '"] + .m-index-switch'
         );
@@ -64,7 +64,7 @@ var App = App || {};
         }
     };
 
-    var open = function(button, node, name) {
+    var open = function (button, node, name) {
         button.parentNode.classList.remove('is-collapsed');
         node.classList.remove('is-collapsed');
 
@@ -72,7 +72,7 @@ var App = App || {};
         forget(name);
     };
 
-    var close = function(button, node, name) {
+    var close = function (button, node, name) {
         button.parentNode.classList.add('is-collapsed');
         node.classList.add('is-collapsed');
 
@@ -80,7 +80,7 @@ var App = App || {};
         store(name);
     };
 
-    var setIcon = function(button, from, to) {
+    var setIcon = function (button, from, to) {
         var use = button.querySelector('use');
         var icon = use.getAttribute('xlink:href');
 
@@ -90,7 +90,7 @@ var App = App || {};
         );
     };
 
-    var store = function(name) {
+    var store = function (name) {
         var storage = localStorage.getItem('kirby-xslt.collapsed') || '';
         var collapsed = storage.split(',');
 
@@ -100,7 +100,7 @@ var App = App || {};
         localStorage.setItem('kirby-xslt.collapsed', collapsed.join(','));
     };
 
-    var forget = function(name) {
+    var forget = function (name) {
         var storage = localStorage.getItem('kirby-xslt.collapsed') || '';
         var collapsed = storage.split(',').filter(clean);
 
@@ -111,7 +111,7 @@ var App = App || {};
         localStorage.setItem('kirby-xslt.collapsed', collapsed.join(','));
     };
 
-    var restore = function() {
+    var restore = function () {
         var storage = localStorage.getItem('kirby-xslt.collapsed');
 
         if (!storage) {
@@ -120,7 +120,7 @@ var App = App || {};
 
         var collapsed = storage.split(',').filter(clean);
 
-        collapsed.forEach(function(name) {
+        collapsed.forEach(function (name) {
             toggle(name);
         });
     };
@@ -129,7 +129,7 @@ var App = App || {};
      * Utilities
      *------------------------------------------------------------------------*/
 
-    var clean = function(value, index, self) {
+    var clean = function (value, index, self) {
         if (!value) {
             return false;
         }

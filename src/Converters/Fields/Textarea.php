@@ -61,7 +61,20 @@ class Textarea extends Xml
         $tag = $this->root->tagName;
         $xml = new DOMDocument('1.0', 'utf-8');
 
-        if ($xml->loadHTML('<?xml encoding="UTF-8"><' . $tag . ' format="' . $this->format . '">' . $html . '</' . $tag . '>', LIBXML_HTML_NOIMPLIED)) {
+        if (
+            $xml->loadHTML(
+                '<?xml encoding="UTF-8"><' .
+                    $tag .
+                    ' format="' .
+                    $this->format .
+                    '">' .
+                    $html .
+                    '</' .
+                    $tag .
+                    '>',
+                LIBXML_HTML_NOIMPLIED
+            )
+        ) {
             $this->root = $xml->documentElement;
         } else {
             $error = $this->addElement('error', null, [

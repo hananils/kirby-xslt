@@ -22,10 +22,14 @@ class Files extends Xml
         foreach ($files->groupBy('template') as $group => $children) {
             $this->wrapper = $this->addElement($group);
 
-            if (isset($this->included) && ($this->included === true || array_key_exists($group, $this->included))) {
+            if (
+                isset($this->included) &&
+                ($this->included === true ||
+                    array_key_exists($group, $this->included))
+            ) {
                 $included = $this->included;
 
-                if(isset($this->included[$group])) {
+                if (isset($this->included[$group])) {
                     $included = $this->included[$group];
                 }
 

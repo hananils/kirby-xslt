@@ -18,8 +18,11 @@ class Xml
 
     public $caching = true;
 
-    public function __construct($root = 'data', $version = '1.0', $encoding = 'utf-8')
-    {
+    public function __construct(
+        $root = 'data',
+        $version = '1.0',
+        $encoding = 'utf-8'
+    ) {
         $this->document = new DOMDocument($version, $encoding);
         $this->root = $this->document->createElement($root);
         $this->document->appendChild($this->root);
@@ -59,30 +62,69 @@ class Xml
             }
 
             // The type equals the last uppercase word from the object's class name
-            $type = preg_replace('/.*([A-Z][a-z]+)$/', '$1', get_class($object));
+            $type = preg_replace(
+                '/.*([A-Z][a-z]+)$/',
+                '$1',
+                get_class($object)
+            );
 
             switch ($type) {
                 case 'App':
-                    $content = $this->getContent('Hananils\Converters\Kirby', $name, $included, $object);
+                    $content = $this->getContent(
+                        'Hananils\Converters\Kirby',
+                        $name,
+                        $included,
+                        $object
+                    );
                     break;
                 case 'Pages':
-                    $content = $this->getContent('Hananils\Converters\Pages', $name, $included, $object);
+                    $content = $this->getContent(
+                        'Hananils\Converters\Pages',
+                        $name,
+                        $included,
+                        $object
+                    );
                     break;
                 case 'Site':
                 case 'Page':
-                    $content = $this->getContent('Hananils\Converters\Page', $name, $included, $object);
+                    $content = $this->getContent(
+                        'Hananils\Converters\Page',
+                        $name,
+                        $included,
+                        $object
+                    );
                     break;
                 case 'Files':
-                    $content = $this->getContent('Hananils\Converters\Files', $name, $included, $object);
+                    $content = $this->getContent(
+                        'Hananils\Converters\Files',
+                        $name,
+                        $included,
+                        $object
+                    );
                     break;
                 case 'File':
-                    $content = $this->getContent('Hananils\Converters\File', $name, $included, $object);
+                    $content = $this->getContent(
+                        'Hananils\Converters\File',
+                        $name,
+                        $included,
+                        $object
+                    );
                     break;
                 case 'Users':
-                    $content = $this->getContent('Hananils\Converters\Users', $name, $included, $object);
+                    $content = $this->getContent(
+                        'Hananils\Converters\Users',
+                        $name,
+                        $included,
+                        $object
+                    );
                     break;
                 case 'User':
-                    $content = $this->getContent('Hananils\Converters\User', $name, $included, $object);
+                    $content = $this->getContent(
+                        'Hananils\Converters\User',
+                        $name,
+                        $included,
+                        $object
+                    );
                     break;
                 case 'Document':
                     $content = $object->documentElement;
@@ -97,7 +139,15 @@ class Xml
 
                 if ($measure === true) {
                     $end = microtime(true);
-                    $this->addAttribute(['https://hananils.de/kirby-xslt', 'hananils', 'execution-time'], round(($end - $start) * 1000, 2), $element);
+                    $this->addAttribute(
+                        [
+                            'https://hananils.de/kirby-xslt',
+                            'hananils',
+                            'execution-time'
+                        ],
+                        round(($end - $start) * 1000, 2),
+                        $element
+                    );
                 }
             }
         }
@@ -112,22 +162,33 @@ class Xml
         return $node->root();
     }
 
-    public function addElement($name, $content = null, $attributes = null, $context = null)
-    {
+    public function addElement(
+        $name,
+        $content = null,
+        $attributes = null,
+        $context = null
+    ) {
         if (is_a($content, 'DOMElement') || is_a($content, 'DOMNode')) {
             $element = $this->document->importNode($content, true);
         } else {
             $namespace = null;
             if (is_array($name)) {
-                list($namespace, $prefix, $name) = $name;
+                [$namespace, $prefix, $name] = $name;
             }
 
             $name = Str::slug($name);
 
             if ($namespace) {
-                $element = $this->document->createElementNS($namespace, $prefix . ':' . $name, $this->sanitize($content));
+                $element = $this->document->createElementNS(
+                    $namespace,
+                    $prefix . ':' . $name,
+                    $this->sanitize($content)
+                );
             } else {
-                $element = $this->document->createElement($name, $this->sanitize($content));
+                $element = $this->document->createElement(
+                    $name,
+                    $this->sanitize($content)
+                );
             }
         }
 
@@ -140,8 +201,11 @@ class Xml
         return $context->appendChild($element);
     }
 
-    public function addAttributes($attributes = [], $element = null, $force = false)
-    {
+    public function addAttributes(
+        $attributes = [],
+        $element = null,
+        $force = false
+    ) {
         if (!is_array($attributes)) {
             return;
         }
@@ -167,13 +231,16 @@ class Xml
 
         $namespace = null;
         if (is_array($name)) {
-            list($namespace, $prefix, $name) = $name;
+            [$namespace, $prefix, $name] = $name;
         }
 
         $name = Str::slug($name);
 
         if ($namespace) {
-            $attribute = $this->document->createAttributeNS($namespace, $prefix . ':' . $name);
+            $attribute = $this->document->createAttributeNS(
+                $namespace,
+                $prefix . ':' . $name
+            );
         } else {
             $attribute = $this->document->createAttribute($name);
         }
@@ -201,7 +268,10 @@ class Xml
 
         if (is_array($included)) {
             if (is_array($this->included)) {
-                $this->included = array_replace_recursive($this->included, $included);
+                $this->included = array_replace_recursive(
+                    $this->included,
+                    $included
+                );
             } else {
                 $this->included = $included;
             }
@@ -212,7 +282,12 @@ class Xml
     {
         $handler = 'add' . Str::ucfirst($name);
 
-        if ($this->included === true || (isset($this->included[$name]) && ($this->included[$name] === true || is_array($this->included[$name])))) {
+        if (
+            $this->included === true ||
+            (isset($this->included[$name]) &&
+                ($this->included[$name] === true ||
+                    is_array($this->included[$name])))
+        ) {
             $this->$handler($context);
         }
     }
@@ -276,7 +351,12 @@ class Xml
 
     public function sanitize($string)
     {
-        return htmlspecialchars(html_entity_decode($string), ENT_COMPAT, 'UTF-8', false);
+        return htmlspecialchars(
+            html_entity_decode($string),
+            ENT_COMPAT,
+            'UTF-8',
+            false
+        );
     }
 
     public function generate()

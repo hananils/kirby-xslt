@@ -12,7 +12,7 @@ class Time extends Xml
             return;
         }
 
-        list($hours, $minutes) = explode(':', $field->toString());
+        [$hours, $minutes] = explode(':', $field->toString());
 
         $this->setAttributes([
             'hours' => $hours,

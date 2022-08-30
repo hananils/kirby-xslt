@@ -19,7 +19,16 @@ class Page extends Xml
     ];
 
     public $includedTrue = [
-        'attributes' => ['id', 'num', 'parent', 'slug', 'status', 'intended-template', 'uid', 'url'],
+        'attributes' => [
+            'id',
+            'num',
+            'parent',
+            'slug',
+            'status',
+            'intended-template',
+            'uid',
+            'url'
+        ],
         'title' => true,
         'path' => true,
         'languages' => true,
@@ -32,7 +41,14 @@ class Page extends Xml
 
     public function import($page)
     {
-        if ($this->caching && $cache = CacheAssociative::get($page, $this->name, $this->included)) {
+        if (
+            $this->caching &&
+            ($cache = CacheAssociative::get(
+                $page,
+                $this->name,
+                $this->included
+            ))
+        ) {
             $this->root = $cache;
         } else {
             $this->addNodeAttributes($page);
@@ -46,7 +62,12 @@ class Page extends Xml
             $this->addNode('files', $page);
 
             if ($this->caching) {
-                CacheAssociative::set($page, $this->generate(), $this->name, $this->included);
+                CacheAssociative::set(
+                    $page,
+                    $this->generate(),
+                    $this->name,
+                    $this->included
+                );
             }
         }
     }
@@ -78,10 +99,15 @@ class Page extends Xml
 
         foreach (kirby()->languages() as $language) {
             $content = $page->translation($language->code())->content();
-            $item = $this->addElement('language', $content['title'], [
-                'code' => $language->code(),
-                'url' => $page->urlForLanguage($language->code())
-            ], $languages);
+            $item = $this->addElement(
+                'language',
+                $content['title'],
+                [
+                    'code' => $language->code(),
+                    'url' => $page->urlForLanguage($language->code())
+                ],
+                $languages
+            );
         }
     }
 
@@ -100,7 +126,10 @@ class Page extends Xml
             $children = new Pages('children');
             $children->setIncluded($this->included['children']);
 
-            if (isset($this->included['children']['drafts']) && $this->included['children']['drafts'] === true) {
+            if (
+                isset($this->included['children']['drafts']) &&
+                $this->included['children']['drafts'] === true
+            ) {
                 $children->import($page->childrenAndDrafts());
             } else {
                 $children->import($page->children());

@@ -12,7 +12,13 @@ class Path extends Xml
             $url = $page->uri();
         }
 
-        $url = str_replace(kirby()->urls()->index(), '', $url);
+        $url = str_replace(
+            kirby()
+                ->urls()
+                ->index(),
+            '',
+            $url
+        );
         $path = array_filter(explode('/', $url));
         $step = '';
 
@@ -33,7 +39,9 @@ class Path extends Xml
 
         $this->addAttribute(
             'url',
-            kirby()->urls()->index() . $step
+            kirby()
+                ->urls()
+                ->index() . $step
         );
     }
 }

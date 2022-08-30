@@ -11,19 +11,19 @@ var App = App || {};
  * Module register
  */
 
-(function() {
+(function () {
     'use strict';
 
     var register = [];
 
-    var add = function(name, trigger) {
+    var add = function (name, trigger) {
         register.push({
             name: name,
             trigger: trigger
         });
     };
 
-    var get = function() {
+    var get = function () {
         return register;
     };
 

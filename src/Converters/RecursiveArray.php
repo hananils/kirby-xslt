@@ -28,7 +28,12 @@ class RecursiveArray extends Xml
                     $attributes['name'] = $key;
                 }
 
-                $this->addElement($key, htmlspecialchars($value), $attributes, $context);
+                $this->addElement(
+                    $key,
+                    htmlspecialchars($value),
+                    $attributes,
+                    $context
+                );
             }
         }
     }

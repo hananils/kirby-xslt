@@ -36,17 +36,46 @@ class Pages extends Xml
                 'total' => $context->total()
             ]);
 
-            $this->addElement('first', $context->firstPageUrl(), null, $pagination);
-            $this->addElement('previous', $context->prevPageUrl(), null, $pagination);
-            $this->addElement('current', $context->pageUrl(), null, $pagination);
-            $this->addElement('next', $context->nextPageUrl(), null, $pagination);
-            $this->addElement('last', $context->lastPageUrl(), null, $pagination);
+            $this->addElement(
+                'first',
+                $context->firstPageUrl(),
+                null,
+                $pagination
+            );
+            $this->addElement(
+                'previous',
+                $context->prevPageUrl(),
+                null,
+                $pagination
+            );
+            $this->addElement(
+                'current',
+                $context->pageUrl(),
+                null,
+                $pagination
+            );
+            $this->addElement(
+                'next',
+                $context->nextPageUrl(),
+                null,
+                $pagination
+            );
+            $this->addElement(
+                'last',
+                $context->lastPageUrl(),
+                null,
+                $pagination
+            );
         }
 
         foreach ($pages->data() as $child) {
             $page = new Page('page');
 
-            if (is_array($this->included) && array_key_exists('children', $this->included) && count($this->included) === 1) {
+            if (
+                is_array($this->included) &&
+                array_key_exists('children', $this->included) &&
+                count($this->included) === 1
+            ) {
                 $page->setIncluded($this->included['children']);
             } else {
                 $page->setIncluded($this->included);

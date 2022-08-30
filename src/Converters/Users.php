@@ -20,4 +20,4 @@ class Users extends Xml
             $this->addElement('user', $user->root());
         }
     }
-};
+}

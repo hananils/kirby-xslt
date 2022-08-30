@@ -11,7 +11,12 @@ use Hananils\Xml;
 class Kirby extends Xml
 {
     public $included = [
-        'attributes' => ['content-extension', 'language', 'multilang', 'version'],
+        'attributes' => [
+            'content-extension',
+            'language',
+            'multilang',
+            'version'
+        ],
         'urls' => true,
         'request' => true,
         'languages' => false,
@@ -20,7 +25,12 @@ class Kirby extends Xml
     ];
 
     public $includedTrue = [
-        'attributes' => ['content-extension', 'language', 'multilang', 'version'],
+        'attributes' => [
+            'content-extension',
+            'language',
+            'multilang',
+            'version'
+        ],
         'urls' => true,
         'request' => true,
         'languages' => true,
@@ -40,7 +50,7 @@ class Kirby extends Xml
 
     public function addUrls($kirby)
     {
-        if ($this->caching && $cache = Cache::get('kirby', 'urls')) {
+        if ($this->caching && ($cache = Cache::get('kirby', 'urls'))) {
             $this->addElement('urls', $cache->firstChild);
         } else {
             $element = $this->addElement('urls');
@@ -75,7 +85,10 @@ class Kirby extends Xml
 
     public function addPath($kirby, $parent)
     {
-        $url = $kirby->request()->url()->toString();
+        $url = $kirby
+            ->request()
+            ->url()
+            ->toString();
         $url = preg_replace('/\/(?!localhost)[-_0-9a-zA-Z]*\:.*/', '', $url);
         $url = preg_replace('/\/?\?.*/', '', $url);
 
@@ -119,12 +132,17 @@ class Kirby extends Xml
         }
 
         foreach ($kirby->languages()->data() as $code => $language) {
-            $item = $this->addElement('language', $language->name(), [
-                'code' => $code,
-                'direction' => $language->direction(),
-                'locale' => $language->locale(),
-                'url' => $language->url()
-            ], $languages);
+            $item = $this->addElement(
+                'language',
+                $language->name(),
+                [
+                    'code' => $code,
+                    'direction' => $language->direction(),
+                    'locale' => $language->locale(),
+                    'url' => $language->url()
+                ],
+                $languages
+            );
 
             if ($language->isDefault()) {
                 $this->addAttribute('default', 'true', $item);

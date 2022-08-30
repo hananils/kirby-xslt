@@ -33,20 +33,30 @@ class Content extends Xml
     public function parse($content, $fields, $context = null)
     {
         // Errors
-        if ($context && isset($this->included['errors']) && $this->included['errors'] === true) {
+        if (
+            $context &&
+            isset($this->included['errors']) &&
+            $this->included['errors'] === true
+        ) {
             $errors = $context->errors();
 
             $validation = $this->addElement('errors', null, [
                 'type' => 'validation',
                 'count' => count($errors),
-                'note' => 'Please note that validation is done on request which will decrease performance on large collections.'
+                'note' =>
+                    'Please note that validation is done on request which will decrease performance on large collections.'
             ]);
 
             foreach ($errors as $field => $error) {
-                $item = $this->addElement($field, null, [
-                    'label' => $error['label'],
-                    'type' => 'invalid'
-                ], $validation);
+                $item = $this->addElement(
+                    $field,
+                    null,
+                    [
+                        'label' => $error['label'],
+                        'type' => 'invalid'
+                    ],
+                    $validation
+                );
 
                 foreach ($error['message'] as $type => $message) {
                     $this->addElement($type, $message, null, $item);
@@ -130,7 +140,7 @@ class Content extends Xml
                 case 'focus':
                     $input = new Focus($name);
                     break;
-                case 'color';
+                case 'color':
                 case 'contrast-color':
                     $input = new Color($name);
                     break;
@@ -160,11 +170,13 @@ class Content extends Xml
 
     private function isNotIncluded($name)
     {
-        return (!array_key_exists($name, $this->included) && !array_key_exists('*', $this->included));
+        return !array_key_exists($name, $this->included) &&
+            !array_key_exists('*', $this->included);
     }
 
     private function isExcluded($name)
     {
-        return (array_key_exists($name, $this->included) && $this->included[$name] === false);
+        return array_key_exists($name, $this->included) &&
+            $this->included[$name] === false;
     }
 }

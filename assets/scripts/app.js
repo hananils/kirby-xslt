@@ -7,10 +7,10 @@
 
 var App = App || {};
 
-(function() {
+(function () {
     'use strict';
 
-    var init = function() {
+    var init = function () {
         App.Components.get('app').classList.add('is-interactive');
 
         // Init modules
@@ -22,7 +22,7 @@ var App = App || {};
         }
     };
 
-    var error = function() {
+    var error = function () {
         document.body.className = '';
     };
 

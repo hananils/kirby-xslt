@@ -34,5 +34,4 @@ class Colors extends Xml
         $this->addAttributes($attributes);
         $this->root->nodeValue = $this->sanitize($value);
     }
-
 }

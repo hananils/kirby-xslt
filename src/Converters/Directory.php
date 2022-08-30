@@ -13,11 +13,16 @@ class Directory extends Xml
             $path = $folder . '/' . $item;
 
             if (is_file($path)) {
-                $this->addElement('file', htmlspecialchars($item), [
-                    'modified' => filemtime($path),
-                    'mime' => mime_content_type($path),
-                    'extension' => pathinfo($path, PATHINFO_EXTENSION)
-                ], $context);
+                $this->addElement(
+                    'file',
+                    htmlspecialchars($item),
+                    [
+                        'modified' => filemtime($path),
+                        'mime' => mime_content_type($path),
+                        'extension' => pathinfo($path, PATHINFO_EXTENSION)
+                    ],
+                    $context
+                );
             } else {
                 $directory = $this->addElement($item, null, null, $context);
                 $this->read($path, $directory);

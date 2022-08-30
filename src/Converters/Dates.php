@@ -37,11 +37,23 @@ class Dates extends Xml
     public function addLanguages()
     {
         $codes = [];
-        if (kirby()->languages()->count()) {
+        if (
+            kirby()
+                ->languages()
+                ->count()
+        ) {
             $codes = [];
 
-            foreach (kirby()->languages()->codes() as $code) {
-                $locale = kirby()->languages()->get($code)->locale(LC_TIME);
+            foreach (
+                kirby()
+                    ->languages()
+                    ->codes()
+                as $code
+            ) {
+                $locale = kirby()
+                    ->languages()
+                    ->get($code)
+                    ->locale(LC_TIME);
                 $codes[] = explode('.', $locale)[0];
             }
         } else {
@@ -80,7 +92,11 @@ class Dates extends Xml
             setlocale(LC_TIME, $code);
 
             // Language strings
-            $format = new IntlDateFormatter($code, IntlDateFormatter::FULL, IntlDateFormatter::FULL);
+            $format = new IntlDateFormatter(
+                $code,
+                IntlDateFormatter::FULL,
+                IntlDateFormatter::FULL
+            );
             $language = $this->addElement('language', null, [
                 'id' => $format->getLocale(),
                 'locale' => $code
@@ -90,20 +106,30 @@ class Dates extends Xml
             $count = 1;
             $months = $this->addElement('months', null, null, $language);
             foreach ($timestamps['months'] as $month) {
-                $this->addElement('month', strftime('%B', $month), [
-                    'id' => $count++,
-                    'abbr' => strftime('%b', $month)
-                ], $months);
+                $this->addElement(
+                    'month',
+                    strftime('%B', $month),
+                    [
+                        'id' => $count++,
+                        'abbr' => strftime('%b', $month)
+                    ],
+                    $months
+                );
             }
 
             // Generate weekdays
             $count = 1;
             $weekdays = $this->addElement('weekdays', null, null, $language);
             foreach ($timestamps['weekdays'] as $weekday) {
-                $this->addElement('weekday', strftime('%A', $weekday), [
-                    'id' => $count++,
-                    'abbr' => strftime('%a', $weekday)
-                ], $weekdays);
+                $this->addElement(
+                    'weekday',
+                    strftime('%A', $weekday),
+                    [
+                        'id' => $count++,
+                        'abbr' => strftime('%a', $weekday)
+                    ],
+                    $weekdays
+                );
             }
         }
     }

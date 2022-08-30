@@ -7,7 +7,7 @@
 
 var App = App || {};
 
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -23,7 +23,7 @@ var App = App || {};
      * @param Element element
      *  Element node
      */
-    var set = function(name, element) {
+    var set = function (name, element) {
         if (!element) {
             element = document.getElementById(name);
         }
@@ -39,7 +39,7 @@ var App = App || {};
      * @param string id
      *  The element id
      */
-    var get = function(name) {
+    var get = function (name) {
         if (!cache[name]) {
             set(name);
         }

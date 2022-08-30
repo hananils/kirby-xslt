@@ -91,7 +91,14 @@ class Choices extends Xml
         }
 
         $id = $blueprint['query']['fetch'];
-        $id = preg_replace('/^page.siblings/', $field->parent()->parent()->id(), $id);
+        $id = preg_replace(
+            '/^page.siblings/',
+            $field
+                ->parent()
+                ->parent()
+                ->id(),
+            $id
+        );
         $id = preg_replace('/^page/', $field->parent()->parent(), $id);
         $id = Str::slug($id);
 
@@ -117,5 +124,4 @@ class Choices extends Xml
 
         return $references;
     }
-
-};
+}

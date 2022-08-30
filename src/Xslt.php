@@ -200,8 +200,8 @@ class Xslt extends Template
         $language = 'en';
         if (
             kirby()
-            ->languages()
-            ->count()
+                ->languages()
+                ->count()
         ) {
             $language = kirby()
                 ->language()
