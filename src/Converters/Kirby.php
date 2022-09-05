@@ -34,8 +34,8 @@ class Kirby extends Xml
         'urls' => true,
         'request' => true,
         'languages' => true,
-        'session' => true,
-        'user' => true
+        'session' => false,
+        'user' => false
     ];
 
     public function import($kirby)
