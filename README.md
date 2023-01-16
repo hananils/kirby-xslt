@@ -480,6 +480,26 @@ Template naming conventions follow the default Kirby scheme, see https://getkirb
 
 If you use `doctype-system="about:legacy-compat"` as in the example above, the plugin will automatically shorten the default doctype output `<!DOCTYPE html SYSTEM "about:legacy-compat">` to `<!DOCTYPE html>`.
 
+## Content representations and emails
+
+As of version 3.0, XSL template are only enabled for HTML and XML content by default. For any other content representations and for emails, native templating is used. You can set allowed types for XSLT rendering in your config:
+
+```php
+return [
+    'hananils.kirby-xslt.types' => ['rss']
+];
+```
+
+## Disable XSL templates
+
+As of version 3.0, you can disable XSL templating in your config:
+
+```php
+return [
+    'hananils.kirby-xslt.enabled' => false
+];
+```
+
 # Shortcomings
 
 The plugin is work in progress. We are extending it based on our own needs:

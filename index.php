@@ -17,9 +17,13 @@ Kirby::plugin('hananils/kirby-xslt', [
             string $type = null,
             string $defaultType = null
         ) {
+            $enabled = option('hananils.kirby-xslt.enabled', true);
+            $types = option('hananils.kirby-xslt.types', ['xml']);
+
             if (
-                ($type === 'html' && strpos($name, 'emails/') !== 0) ||
-                in_array($type, option('hananils.kirby-xslt.types', ['xml']))
+                $enabled === true &&
+                (($type === 'html' && strpos($name, 'emails/') !== 0) ||
+                    in_array($type, $types))
             ) {
                 return new Hananils\Xslt($name, $type);
             }
