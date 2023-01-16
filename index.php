@@ -14,9 +14,23 @@ Kirby::plugin('hananils/kirby-xslt', [
         'template' => function (
             App $kirby,
             string $name,
-            string $contentType = null
+            string $type = null,
+            string $defaultType = null
         ) {
-            return new Hananils\Xslt($name, $contentType);
+            if (
+                ($type === 'html' && strpos($name, 'emails/') !== 0) ||
+                in_array($type, option('hananils.kirby-xslt.types', ['xml']))
+            ) {
+                return new Hananils\Xslt($name, $type);
+            }
+
+            // default to native component
+            return $kirby->nativeComponent('template')(
+                $kirby,
+                $name,
+                $type,
+                $defaultType
+            );
         }
     ],
     'collections' => [
